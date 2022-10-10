@@ -1,12 +1,4 @@
-// import io.Direction;
-// import io.NatureTerrain;
-
-// enum NatureTerrain{
-//     TERRAIN_LIBRE, EAU, HABITAT, FORET, ROCHE;
-// }
-// enum Direction{
-//     NORD, SUD, EST, OUEST;
-// }
+ import io.Direction;
 
 public class Carte {
     private int tailleCases;
@@ -48,19 +40,20 @@ public class Carte {
         c = src.getColonne();
         l = src.getLigne();
 
-        // switch(dir){
-        //     case NORD:
-        //         return l>0; // l-1>=0
+        switch(dir){
+            case NORD:
+                return l>0; // l-1>=0
             
-        //     case SUD:
-        //         return l<this.getNbLignes();
+            case SUD:
+                return l< this.getNbLignes();
 
-        //     case EST:
-        //         return c<this.getNbColonne();
+            case EST:
+                return c< this.getNbColonnes();
 
-        //     case OUEST:
-        //         return c>0;
-        // }
+            case OUEST:
+                return c>0;
+        }
+        return false;  // a discuter !!!!!
     }
 
     public Case getVoisin(Case src, Direction dir){
@@ -70,23 +63,23 @@ public class Carte {
             c = src.getColonne();
             l = src.getLigne();
 
-            // switch(dir){
-            //     case NORD:
-            //         return getCase(l-1,c); 
+            switch(dir){
+                case NORD:
+                    return getCase(l-1,c); 
                    
-            //     case SUD:
-            //         return getCase(l+1,c); 
+                case SUD:
+                    return getCase(l+1,c); 
 
-            //     case EST:
-            //         return getCase(l,c+1); 
+                case EST:
+                    return getCase(l,c+1); 
 
-            //     case OUEST:
-            //         return getCase(l,c-1); 
-            // }
+                case OUEST:
+                    return getCase(l,c-1); 
+            }
         }
-
-        else throw new IllegalArgumentExeption("No Voisin !");
+        else throw new IllegalArgumentException("No Voisin !");
+        return getCase(0,0); // ......??????????????
     }
-
 }
+    
 

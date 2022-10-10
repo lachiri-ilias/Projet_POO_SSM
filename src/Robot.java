@@ -1,12 +1,7 @@
+import io.Direction;
+import io.NatureTerrain;
 
-// import io.Direction;
-// import io.NatureTerrain;
-enum NatureTerrain{
-    TERRAIN_LIBRE, EAU, HABITAT, FORET, ROCHE;
-}
-enum Direction{
-    NORD, SUD, EST, OUEST;
-}
+
 public abstract class Robot {
     protected Case position;
     protected double vitesse;
@@ -79,7 +74,7 @@ class Drone extends Robot {
 
     public void setVitesse(double v){
         if(v<=150) this.vitesse = v;
-        else throw new IllegalArgumentExeption("Vitesse Drone < 150 km/h !");
+        else throw new IllegalArgumentException("Vitesse Drone < 150 km/h !");
     }
 
     public boolean verif_depl(Direction d, Case voisin){
@@ -104,7 +99,8 @@ class R_Roue extends Robot {
     }
 
     public boolean verif_depl(Direction d, Case voisin){
-        return (voisin.getNature()==TERRAIN_LIBRE || voisin.getNature()==HABITAT);
+        return (voisin.getNature()==NatureTerrain.TERRAIN_LIBRE 
+        || voisin.getNature()==NatureTerrain.HABITAT);
     }
 }
 
@@ -122,14 +118,15 @@ class R_Chenille extends Robot {
 
     public void setVitesse(double v){
         if(v<=80){
-            if(this.position.getNature()==FORET) this.vitesse = v/2;
+            if(this.position.getNature()==NatureTerrain.FORET) this.vitesse = v/2;
             else this.vitesse = v;
         }
-        else  throw new IllegalArgumentExeption("Vitesse R_Chenille < 80 km/h !"); 
+        else  throw new IllegalArgumentException("Vitesse R_Chenille < 80 km/h !"); 
     }
 
     public boolean verif_depl(Direction d, Case voisin){
-        return !(voisin.getNature()==EAU || voisin.getNature()==ROCHE);
+        return !(voisin.getNature() == NatureTerrain.EAU 
+        || voisin.getNature() == NatureTerrain.ROCHE);
     }
 }
 
@@ -147,13 +144,13 @@ class R_Pates extends Robot {
 
     public void setVitesse(double v){
         if(v<=80){
-            if(this.position.getNature()==ROCHE) this.vitesse = 10;
+            if(this.position.getNature()==NatureTerrain.ROCHE) this.vitesse = 10;
             else this.vitesse = v;
         }
-        else  throw new IllegalArgumentExeption("Vitesse R_Chenille < 80 km/h !");
+        else  throw new IllegalArgumentException("Vitesse R_Chenille < 80 km/h !");
     }
 
     public boolean verif_depl(Direction d, Case voisin){
-        return !(voisin.getNature()==EAU);
+        return !(voisin.getNature()==NatureTerrain.EAU);
     }
 }

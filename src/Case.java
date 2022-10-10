@@ -1,4 +1,4 @@
-
+import io.NatureTerrain;
 
 public class Case {
     private int ligne, colonne;
@@ -14,7 +14,7 @@ public class Case {
     public Case(int l, int c){
         this.ligne = l;
         this.colonne = c;
-        this.nature = TERRAIN_LIBRE;
+        this.nature = NatureTerrain.TERRAIN_LIBRE;
     }
 
     public Case(Case other){
@@ -22,7 +22,7 @@ public class Case {
     }
 
     public Case(){
-        this(100, 100, TERRAIN_LIBRE);
+        this(100, 100, NatureTerrain.TERRAIN_LIBRE);
     }
 
     public int getColonne(){

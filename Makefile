@@ -30,13 +30,13 @@ testLecture:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
 
 Robot:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Robot.java
+	javac -d bin -sourcepath src src/Robot.java
 
 Carte:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Carte.java
+	javac -d bin  -sourcepath src src/Carte.java
 
 Case:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Case.java
+	javac -d bin  -sourcepath src src/Case.java
 
 
 
@@ -53,3 +53,4 @@ exeLecture:
 
 clean:
 	rm -rf bin/*.class
+	rm -rf bin/io/*.Class
