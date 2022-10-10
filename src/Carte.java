@@ -1,3 +1,12 @@
+// import io.Direction;
+// import io.NatureTerrain;
+
+// enum NatureTerrain{
+//     TERRAIN_LIBRE, EAU, HABITAT, FORET, ROCHE;
+// }
+// enum Direction{
+//     NORD, SUD, EST, OUEST;
+// }
 
 public class Carte {
     private int tailleCases;
@@ -39,19 +48,19 @@ public class Carte {
         c = src.getColonne();
         l = src.getLigne();
 
-        switch(dir){
-            case "NORD":
-                return l>0; // l-1>=0
+        // switch(dir){
+        //     case NORD:
+        //         return l>0; // l-1>=0
             
-            case "SUD":
-                return l<getNbLignes();
+        //     case SUD:
+        //         return l<this.getNbLignes();
 
-            case "EST":
-                return c<getColonne();
+        //     case EST:
+        //         return c<this.getNbColonne();
 
-            case "OUEST":
-                return c>0;
-        }
+        //     case OUEST:
+        //         return c>0;
+        // }
     }
 
     public Case getVoisin(Case src, Direction dir){
@@ -61,19 +70,19 @@ public class Carte {
             c = src.getColonne();
             l = src.getLigne();
 
-            switch(dir){
-                case "NORD":
-                    return getCase(l-1,c); 
+            // switch(dir){
+            //     case NORD:
+            //         return getCase(l-1,c); 
                    
-                case "SUD":
-                    return getCase(l+1,c); 
+            //     case SUD:
+            //         return getCase(l+1,c); 
 
-                case "EST":
-                    return getCase(l,c+1); 
+            //     case EST:
+            //         return getCase(l,c+1); 
 
-                case "OUEST":
-                    return getCase(l,c-1); 
-            }
+            //     case OUEST:
+            //         return getCase(l,c-1); 
+            // }
         }
 
         else throw new IllegalArgumentExeption("No Voisin !");

@@ -1,12 +1,4 @@
 
-enum NatureTerrain{
-    TERRAIN_LIBRE, EAU, HABITAT, FORET, ROCHE;
-}
-
-enum Direction{
-    NORD, SUD, EST, OUEST;
-}
-
 
 public class Case {
     private int ligne, colonne;
@@ -41,6 +33,14 @@ public class Case {
         return ligne;
     }
 
+    public void setColonne(int col){
+        this.colonne = col;
+    }
+
+    public void setLigne(int lig){
+        this.ligne = lig;
+    }
+
     public NatureTerrain getNature(){
         return nature;
     }
@@ -50,7 +50,7 @@ public class Case {
     }
 
     @Override
-    public String toString(args){
+    public String toString(){
         return "ligne : "+getLigne()+" colonne : "+getColonne()+" nature : "+getNature();
     }
 }
