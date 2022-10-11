@@ -53,4 +53,4 @@ exeLecture:
 
 clean:
 	rm -rf bin/*.class
-	rm -rf bin/io/*.Class
+	rm -rf bin/io/*.class
