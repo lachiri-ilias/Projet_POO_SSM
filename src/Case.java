@@ -4,7 +4,7 @@ public class Case {
     private int ligne, colonne;
     private NatureTerrain nature;
 
-    
+
     public Case(int l, int c, NatureTerrain n){
         this.ligne = l;
         this.colonne = c;

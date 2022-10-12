@@ -29,6 +29,7 @@ import java.util.zip.DataFormatException;
  */
 public class LecteurDonnees {
 
+    public DonneesSimulation data;
 
     /**
      * Lit et affiche le contenu d'un fichier de donnees (cases,
@@ -78,6 +79,10 @@ public class LecteurDonnees {
             System.out.println("Carte " + nbLignes + "x" + nbColonnes
                     + "; taille des cases = " + tailleCases);
 
+            // this.data.carte.setnbLignes(nbLignes);
+            // this.data.carte.setnbColonnes(nbColonnes);
+            // this.data.carte.settailleCases(tailleCases);
+
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     lireCase(lig, col);
@@ -112,6 +117,8 @@ public class LecteurDonnees {
             verifieLigneTerminee();
 
             System.out.print("nature = " + chaineNature);
+
+            // this.data.carte.carte[lig][col].setNature(chaineNature);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de case invalide. "

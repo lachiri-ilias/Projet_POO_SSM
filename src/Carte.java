@@ -1,4 +1,5 @@
- import io.Direction;
+import io.Direction;
+import io.NatureTerrain;
 
 public class Carte {
     private int tailleCases;
@@ -16,15 +17,23 @@ public class Carte {
                 carte[i][j] = new Case(i, j);
             }
         }
-        
+
     }
 
     public int getNbLignes(){
         return nbLignes;
     }
 
+    public int setNbLignes(int nbLignes){
+        this.nbLignes = nbLignes;
+    }
+
     public int getNbColonnes(){
         return nbColonnes;
+    }
+
+    public int setNbColonnes(int nbColonnes){
+        this.nbColonnes = nbColonnes;
     }
 
     public int getTailleCases(){
@@ -43,7 +52,7 @@ public class Carte {
         switch(dir){
             case NORD:
                 return l>0; // l-1>=0
-            
+
             case SUD:
                 return l< this.getNbLignes();
 
@@ -65,21 +74,26 @@ public class Carte {
 
             switch(dir){
                 case NORD:
-                    return getCase(l-1,c); 
-                   
+                    return getCase(l-1,c);
+
                 case SUD:
-                    return getCase(l+1,c); 
+                    return getCase(l+1,c);
 
                 case EST:
-                    return getCase(l,c+1); 
+                    return getCase(l,c+1);
 
                 case OUEST:
-                    return getCase(l,c-1); 
+                    return getCase(l,c-1);
             }
         }
         else throw new IllegalArgumentException("No Voisin !");
         return getCase(0,0); // ......??????????????
     }
-}
-    
 
+    public boolean existeTypeVoisin(Case src, NatureTerrain nature){
+      for(Direction dir : Direction.values()){
+        if(this.getVoisin(src, dir).getNature() == nature) return true;
+      }
+      return false;
+    }
+}
