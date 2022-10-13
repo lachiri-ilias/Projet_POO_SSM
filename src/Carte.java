@@ -24,7 +24,7 @@ public class Carte {
         return nbLignes;
     }
 
-    public int setNbLignes(int nbLignes){
+    public void setNbLignes(int nbLignes){
         this.nbLignes = nbLignes;
     }
 
@@ -32,7 +32,7 @@ public class Carte {
         return nbColonnes;
     }
 
-    public int setNbColonnes(int nbColonnes){
+    public void setNbColonnes(int nbColonnes){
         this.nbColonnes = nbColonnes;
     }
 

@@ -27,7 +27,7 @@ import java.util.zip.DataFormatException;
  * créent les objets adéquats et les ajoutent ds l'instance de
  * DonneesSimulation.
  */
-public class LecteurDonnees {
+public class SaveDonnees {
 
     //public DonneesSimulation data;
 
@@ -60,7 +60,7 @@ public class LecteurDonnees {
      * Constructeur prive; impossible d'instancier la classe depuis l'exterieur
      * @param fichierDonnees nom du fichier a lire
      */
-    private LecteurDonnees(String fichierDonnees)
+    private SaveDonnees(String fichierDonnees)
         throws FileNotFoundException {
         scanner = new Scanner(new File(fichierDonnees));
         scanner.useLocale(Locale.US);
@@ -70,22 +70,20 @@ public class LecteurDonnees {
      * Lit et affiche les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
-    private void lireCarte() throws DataFormatException {
+    private void saveCarte() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbLignes = scanner.nextInt();
             int nbColonnes = scanner.nextInt();
-            int tailleCases = scanner.nextInt();	// en m
-            System.out.println("Carte " + nbLignes + "x" + nbColonnes
-                    + "; taille des cases = " + tailleCases);
-
-            // this.data.carte.setnbLignes(nbLignes);
-            // this.data.carte.setnbColonnes(nbColonnes);
-            // this.data.carte.settailleCases(tailleCases);
+            int tailleCases = scanner.nextInt();	
+            // ***************************************************
+            this.data.carte.setnbLignes(nbLignes);
+            this.data.carte.setnbColonnes(nbColonnes);
+            this.data.carte.settailleCases(tailleCases);
 
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
-                    lireCase(lig, col);
+                    saveCase(lig, col);
                 }
             }
 
@@ -102,9 +100,9 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees d'une case.
      */
-    private void lireCase(int lig, int col) throws DataFormatException {
+    private void saveCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
-        System.out.print("Case (" + lig + "," + col + "): ");
+        //System.out.print("Case (" + lig + "," + col + "): ");
         String chaineNature = new String();
         //		NatureTerrain nature;
 
@@ -113,19 +111,13 @@ public class LecteurDonnees {
             // si NatureTerrain est un Enum, vous pouvez recuperer la valeur
             // de l'enum a partir d'une String avec:
             //			NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
-
             verifieLigneTerminee();
-
-            System.out.print("nature = " + chaineNature);
-
-            // this.data.carte.carte[lig][col].setNature(chaineNature);
+            this.data.carte.carte[lig][col].setNature(chaineNature);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de case invalide. "
                     + "Attendu: nature altitude [valeur_specifique]");
         }
-
-        System.out.println();
     }
 
 
