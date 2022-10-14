@@ -145,7 +145,7 @@ public class SaveDonnees {
                         + "nb litres pour eteindre doit etre > 0");
             }
             verifieLigneTerminee();
-            this.data.ajouteIncendie(new Incendie(intensite,lig,col));
+            this.data.ajouteIncendie(new Incendie(intensite,new Case(lig,col)));
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
