@@ -17,4 +17,16 @@ public class DonneesSimulation {
     this.listeRobot = new LinkedList<Robot>();
     this.listeIncendie = new LinkedList<Incendie>();
   }
+  public void ajouteRobot(Robot r){
+    listeRobot.add(r);
+  }
+  public void ajouteIncendie(Incendie i){
+    listeIncendie.add(i);
+  }
+  public int getNbRobot(){
+    return listeRobot.size();
+  }
+  public int getNbIncendie(){
+    return listeIncendie.size();
+  }
 }

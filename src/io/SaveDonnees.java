@@ -128,7 +128,6 @@ public class SaveDonnees {
         }
     }
 
-
     /**
      * Lit et affiche les donnees du i-eme incendie.
      * @param i
@@ -146,9 +145,7 @@ public class SaveDonnees {
                         + "nb litres pour eteindre doit etre > 0");
             }
             verifieLigneTerminee();
-
-            System.out.println("position = (" + lig + "," + col
-                    + ");\t intensite = " + intensite);
+            this.data.ajouteIncendie(new Incendie(intensite,lig,col));
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format d'incendie invalide. "
@@ -189,23 +186,27 @@ public class SaveDonnees {
             int col = scanner.nextInt();
             System.out.print("position = (" + lig + "," + col + ");");
             String type = scanner.next();
-
             System.out.print("\t type = " + type);
-
+            switch(type){
+                case "DRONE" :  this.data.ajouteRobot(new Robot(new Case(lig,col))); break;
+                case "ROUES" :  this.data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
+                case "CHENILLE" :  this.data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
+                case "PATES" :  this.data.ajouteRobot(new R_Pates(new Case(lig,col))); break;
+                
+            }
 
             // lecture eventuelle d'une vitesse du robot (entier)
             System.out.print("; \t vitesse = ");
             String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
-
             if (s == null) {
                 System.out.print("valeur par defaut");
             } else {
                 int vitesse = Integer.parseInt(s);
+                this.data.listeRobot.get(i).setVitesse(vitesse);
                 System.out.print(vitesse);
             }
             verifieLigneTerminee();
-
             System.out.println();
 
         } catch (NoSuchElementException e) {
