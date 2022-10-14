@@ -79,10 +79,6 @@ public class LecteurDonnees {
             System.out.println("Carte " + nbLignes + "x" + nbColonnes
                     + "; taille des cases = " + tailleCases);
 
-            // this.data.carte.setnbLignes(nbLignes);
-            // this.data.carte.setnbColonnes(nbColonnes);
-            // this.data.carte.settailleCases(tailleCases);
-
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     lireCase(lig, col);

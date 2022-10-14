@@ -29,7 +29,7 @@ import java.util.zip.DataFormatException;
  */
 public class SaveDonnees {
 
-    //public DonneesSimulation data;
+    private SaveDonnees save;
 
     /**
      * Lit et affiche le contenu d'un fichier de donnees (cases,
@@ -38,19 +38,17 @@ public class SaveDonnees {
      * LecteurDonnees.lire(fichierDonnees)
      * @param fichierDonnees nom du fichier à lire
      */
-    public static void lire(String fichierDonnees)
+    public static void save(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
-        System.out.println("\n == Lecture du fichier" + fichierDonnees);
-        LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-        lecteur.lireCarte();
-        lecteur.lireIncendies();
-        lecteur.lireRobots();
-        scanner.close();
-        System.out.println("\n == Lecture terminee");
+        System.out.println("\n == save du fichier" + fichierDonnees);
+        this.save = new SaveDonnees(fichierDonnees);
+        DonneesSimulation data= new DonneesSimulation();
+        save.saveCarte();
+        save.saveIncendies();
+        save.saveRobots();
+        save.close();
+        System.out.println("\n == sauvgarde* terminee");
     }
-
-
-
 
     // Tout le reste de la classe est prive!
 
@@ -76,17 +74,15 @@ public class SaveDonnees {
             int nbLignes = scanner.nextInt();
             int nbColonnes = scanner.nextInt();
             int tailleCases = scanner.nextInt();	
-            // ***************************************************
+
             this.data.carte.setnbLignes(nbLignes);
             this.data.carte.setnbColonnes(nbColonnes);
             this.data.carte.settailleCases(tailleCases);
-
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     saveCase(lig, col);
                 }
             }
-
         } catch (NoSuchElementException e) {
             throw new DataFormatException("Format invalide. "
                     + "Attendu: nbLignes nbColonnes tailleCases");
@@ -94,25 +90,18 @@ public class SaveDonnees {
         // une ExceptionFormat levee depuis lireCase est remontee telle quelle
     }
 
-
-
-
     /**
      * Lit et affiche les donnees d'une case.
      */
     private void saveCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
-        //System.out.print("Case (" + lig + "," + col + "): ");
-        String chaineNature = new String();
-        //		NatureTerrain nature;
-
         try {
             chaineNature = scanner.next();
             // si NatureTerrain est un Enum, vous pouvez recuperer la valeur
             // de l'enum a partir d'une String avec:
-            //			NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
+            NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
             verifieLigneTerminee();
-            this.data.carte.carte[lig][col].setNature(chaineNature);
+            this.data.carte.carte[lig][col].setNature(nature);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de case invalide. "
@@ -171,7 +160,7 @@ public class SaveDonnees {
     /**
      * Lit et affiche les donnees des robots.
      */
-    private void lireRobots() throws DataFormatException {
+    private void saveRobots() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
@@ -191,7 +180,7 @@ public class SaveDonnees {
      * Lit et affiche les donnees du i-eme robot.
      * @param i
      */
-    private void lireRobot(int i) throws DataFormatException {
+    private void saveRobot(int i) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Robot " + i + ": ");
 
@@ -224,9 +213,6 @@ public class SaveDonnees {
                     + "Attendu: ligne colonne type [valeur_specifique]");
         }
     }
-
-
-
 
     /** Ignore toute (fin de) ligne commencant par '#' */
     private void ignorerCommentaires() {
