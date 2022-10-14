@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture TestLecteurDonnees Carte Case SaveDonnees Robot TestSaveDonnees DonneesSimulation  Incendie 
+all: testInvader testLecture TestLecteurDonnees Carte Case SaveDonnees Robot TestSaveDonnees DonneesSimulation  Incendie
 
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
@@ -36,7 +36,7 @@ TestSaveDonnees:
 
 TestLecteurDonnees:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
-SaveDonnees: 
+SaveDonnees:
 	javac -d bin  -sourcepath src src/SaveDonnees.java
 Robot:
 	javac -d bin -classpath bin/robot -sourcepath src src/robot/Robot.java
@@ -57,16 +57,18 @@ Incendie:
 #   > java -classpath bin:bin/gui.jar TestInvader
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
-exeInvader: 
+exeInvader:
 	java -classpath bin:bin/gui.jar TestInvader
 
-exeLecture: 
+exeLecture:
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
 
-exeSave: 
+exeSave:
 	java -classpath bin TestSaveDonnees cartes/carteSujet.map
 
 
 clean:
 	rm -rf bin/*.class
 	rm -rf bin/io/*.class
+	rm -rf bin/plan/*.class
+	rm -rf bin/robot/*.class
