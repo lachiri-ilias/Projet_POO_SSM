@@ -1,9 +1,10 @@
-//package io;
 
-
-import java.util.LinkedList;
 import robot.*;
 import plan.*;
+
+import java.util.*;
+import java.util.LinkedList;
+
 
 public class DonneesSimulation {
   private Carte carte;
@@ -32,5 +33,11 @@ public class DonneesSimulation {
   }
   public int getNbIncendie(){
     return listeIncendie.size();
+  }
+  public Carte getCarte(){
+    return this.carte;
+  }
+  public LinkedList<Robot> getListeRobot(){
+    return this.listeRobot;
   }
 }

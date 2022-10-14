@@ -1,6 +1,8 @@
+
 import robot.*;
 import plan.*;
 import io.*;
+import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
@@ -27,7 +29,12 @@ import java.util.zip.DataFormatException;
  * DonneesSimulation.
  */
 public class SaveDonnees {
-    private DonneesSimulation data;
+    //private DonneesSimulation data;
+     public DonneesSimulation data;
+     
+     public SaveDonnees(){
+      this.data = new DonneesSimulation();
+     }
     /**
      * Lit et affiche le contenu d'un fichier de donnees (cases,
      * robots et incendies).
@@ -35,16 +42,17 @@ public class SaveDonnees {
      * LecteurDonnees.lire(fichierDonnees)
      * @param fichierDonnees nom du fichier à lire
      */
-    public static void save(String fichierDonnees)
+    public static void creeDonnees(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == save du fichier" + fichierDonnees);
         SaveDonnees save = new SaveDonnees(fichierDonnees);
-        DonneesSimulation data= new DonneesSimulation();
+       
         save.saveCarte();
         save.saveIncendies();
         save.saveRobots();
         scanner.close();
         System.out.println("\n == sauvgarde* terminee");
+      
     }
 
     // Tout le reste de la classe est prive!
@@ -72,9 +80,9 @@ public class SaveDonnees {
             int nbColonnes = scanner.nextInt();
             int tailleCases = scanner.nextInt();	
 
-            data.carte.setnbLignes(nbLignes);
-            data.carte.setnbColonnes(nbColonnes);
-            data.carte.settailleCases(tailleCases);
+            data.getCarte().setNbLignes(nbLignes);
+            data.getCarte().setNbColonnes(nbColonnes);
+            data.getCarte().setTailleCases(tailleCases);
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     saveCase(lig, col);
@@ -99,7 +107,7 @@ public class SaveDonnees {
             // de l'enum a partir d'une String avec:
             NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
             verifieLigneTerminee();
-            this.data.carte.carte[lig][col].setNature(nature);
+            data.getCarte().getCase(lig,col).setNature(nature);
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de case invalide. "
@@ -201,7 +209,7 @@ public class SaveDonnees {
                 System.out.print("valeur par defaut");
             } else {
                 int vitesse = Integer.parseInt(s);
-                data.listeRobot.get(i).setVitesse(vitesse);
+                data.getListeRobot().get(i).setVitesse(vitesse);
                 System.out.print(vitesse);
             }
             verifieLigneTerminee();
