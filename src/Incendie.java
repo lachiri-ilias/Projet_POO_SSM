@@ -4,9 +4,10 @@ public class Incendie {
     private int nbLitresEau;
     private Case position;
 
-    public Incendie(int nbl, Case c){
+    public Incendie(int nbl, int l, int c){
+        Case case = new Case(l,c);
         this.nbLitresEau = nbl;
-        this.position = c;
+        this.position = case;
     }
 
     public getLitresEau(){
