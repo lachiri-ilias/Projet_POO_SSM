@@ -1,7 +1,6 @@
-package io;
-
-
-import java.io.*;
+import robot.*;
+import plan.*;
+import io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
@@ -28,9 +27,7 @@ import java.util.zip.DataFormatException;
  * DonneesSimulation.
  */
 public class SaveDonnees {
-
-    private SaveDonnees save;
-
+    private DonneesSimulation data;
     /**
      * Lit et affiche le contenu d'un fichier de donnees (cases,
      * robots et incendies).
@@ -41,12 +38,12 @@ public class SaveDonnees {
     public static void save(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == save du fichier" + fichierDonnees);
-        this.save = new SaveDonnees(fichierDonnees);
+        SaveDonnees save = new SaveDonnees(fichierDonnees);
         DonneesSimulation data= new DonneesSimulation();
         save.saveCarte();
         save.saveIncendies();
         save.saveRobots();
-        save.close();
+        scanner.close();
         System.out.println("\n == sauvgarde* terminee");
     }
 
@@ -75,9 +72,9 @@ public class SaveDonnees {
             int nbColonnes = scanner.nextInt();
             int tailleCases = scanner.nextInt();	
 
-            this.data.carte.setnbLignes(nbLignes);
-            this.data.carte.setnbColonnes(nbColonnes);
-            this.data.carte.settailleCases(tailleCases);
+            data.carte.setnbLignes(nbLignes);
+            data.carte.setnbColonnes(nbColonnes);
+            data.carte.settailleCases(tailleCases);
             for (int lig = 0; lig < nbLignes; lig++) {
                 for (int col = 0; col < nbColonnes; col++) {
                     saveCase(lig, col);
@@ -96,6 +93,7 @@ public class SaveDonnees {
     private void saveCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
         try {
+            String chaineNature = new String();
             chaineNature = scanner.next();
             // si NatureTerrain est un Enum, vous pouvez recuperer la valeur
             // de l'enum a partir d'une String avec:
@@ -113,13 +111,13 @@ public class SaveDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private void lireIncendies() throws DataFormatException {
+    private void saveIncendies() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
             System.out.println("Nb d'incendies = " + nbIncendies);
             for (int i = 0; i < nbIncendies; i++) {
-                lireIncendie(i);
+                saveIncendie(i);
             }
 
         } catch (NoSuchElementException e) {
@@ -132,7 +130,7 @@ public class SaveDonnees {
      * Lit et affiche les donnees du i-eme incendie.
      * @param i
      */
-    private void lireIncendie(int i) throws DataFormatException {
+    private void saveIncendie(int i) throws DataFormatException {
         ignorerCommentaires();
         System.out.print("Incendie " + i + ": ");
 
@@ -163,7 +161,7 @@ public class SaveDonnees {
             int nbRobots = scanner.nextInt();
             System.out.println("Nb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
-                lireRobot(i);
+                saveRobot(i);
             }
 
         } catch (NoSuchElementException e) {
@@ -188,10 +186,10 @@ public class SaveDonnees {
             String type = scanner.next();
             System.out.print("\t type = " + type);
             switch(type){
-                case "DRONE" :  this.data.ajouteRobot(new Robot(new Case(lig,col))); break;
-                case "ROUES" :  this.data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
-                case "CHENILLE" :  this.data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
-                case "PATES" :  this.data.ajouteRobot(new R_Pates(new Case(lig,col))); break;
+                case "DRONE" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
+                case "ROUES" :  data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
+                case "CHENILLE" :  data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
+                case "PATES" :  data.ajouteRobot(new R_Pates(new Case(lig,col))); break;
                 
             }
 
@@ -203,7 +201,7 @@ public class SaveDonnees {
                 System.out.print("valeur par defaut");
             } else {
                 int vitesse = Integer.parseInt(s);
-                this.data.listeRobot.get(i).setVitesse(vitesse);
+                data.listeRobot.get(i).setVitesse(vitesse);
                 System.out.print(vitesse);
             }
             verifieLigneTerminee();

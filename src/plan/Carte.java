@@ -1,3 +1,5 @@
+package plan;
+
 import io.Direction;
 import io.NatureTerrain;
 

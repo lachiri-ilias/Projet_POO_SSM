@@ -1,3 +1,5 @@
+package plan;
+
 import io.NatureTerrain;
 
 public class Case {

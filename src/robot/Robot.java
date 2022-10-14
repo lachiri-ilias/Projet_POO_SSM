@@ -1,6 +1,8 @@
+package robot;
+
 import io.Direction;
 import io.NatureTerrain;
-
+import plan.*;
 
 public abstract class Robot {
     protected Case position;

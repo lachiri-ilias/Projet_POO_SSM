@@ -1,4 +1,4 @@
-
+import plan.*;
 
 public class Incendie {
     private int nbLitresEau;
@@ -9,19 +9,19 @@ public class Incendie {
         this.position = pos;
     }
 
-    public getLitresEau(){
+    public int getLitresEau(){
         return this.nbLitresEau;
     }
 
-    public getCase(){
+    public Case getCase(){
         return this.position;
     }
 
-    public setLitresEau(int nbl){
+    public void setLitresEau(int nbl){
         this.nbLitresEau=nbl;
     }
 
-    public setCase(Case c){
+    public void setCase(Case c){
         this.position=c;
     }
 }
