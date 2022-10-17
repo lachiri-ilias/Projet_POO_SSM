@@ -31,7 +31,7 @@ import java.util.zip.DataFormatException;
 public class SaveDonnees {
     //private DonneesSimulation data;
      public static DonneesSimulation data;
-     
+
      public SaveDonnees(){
       this.data = new DonneesSimulation();
      }
@@ -46,14 +46,14 @@ public class SaveDonnees {
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == save du fichier" + fichierDonnees);
         SaveDonnees save = new SaveDonnees(fichierDonnees);
-       
+
         save.saveCarte();
         save.saveIncendies();
         save.saveRobots();
         scanner.close();
         System.out.println("\n == sauvgarde terminee");
         return data;
-      
+
     }
 
     // Tout le reste de la classe est prive!
@@ -79,7 +79,7 @@ public class SaveDonnees {
         try {
             int nbLignes = scanner.nextInt();
             int nbColonnes = scanner.nextInt();
-            int tailleCases = scanner.nextInt();	
+            int tailleCases = scanner.nextInt();
 
             data.getCarte().setNbLignes(nbLignes);
             data.getCarte().setNbColonnes(nbColonnes);
@@ -168,7 +168,7 @@ public class SaveDonnees {
         ignorerCommentaires();
         try {
             int nbRobots = scanner.nextInt();
-            System.out.println("Nb de robots = " + nbRobots);
+            System.out.println("\nNb de robots = " + nbRobots);
             for (int i = 0; i < nbRobots; i++) {
                 saveRobot(i);
             }
@@ -198,8 +198,7 @@ public class SaveDonnees {
                 case "DRONE" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
                 case "ROUES" :  data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
                 case "CHENILLE" :  data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
-                case "PATES" :  data.ajouteRobot(new R_Pates(new Case(lig,col))); break;
-                
+                case "PATTES" :  data.ajouteRobot(new R_Pattes(new Case(lig,col))); break;
             }
 
             // lecture eventuelle d'une vitesse du robot (entier)

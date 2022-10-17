@@ -21,23 +21,29 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testLecture TestLecteurDonnees Carte Case SaveDonnees Robot TestSaveDonnees DonneesSimulation  Incendie
+all: testInvader testSimulateur testLecture TestLecteurDonnees Carte Case SaveDonnees Robot TestSaveDonnees DonneesSimulation  Incendie
 
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
+
+testSimulateur:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestSimulateur.java
 
 testLecture:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
 
 DonneesSimulation:
 	javac -d bin -sourcepath src src/DonneesSimulation.java
+
 TestSaveDonnees:
 	javac -d bin -sourcepath src src/TestSaveDonnees.java
 
 TestLecteurDonnees:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
+
 SaveDonnees:
 	javac -d bin  -sourcepath src src/SaveDonnees.java
+
 Robot:
 	javac -d bin -classpath bin/robot -sourcepath src src/robot/Robot.java
 
@@ -60,11 +66,15 @@ Incendie:
 exeInvader:
 	java -classpath bin:bin/gui.jar TestInvader
 
+exeSimulateur:
+	java -classpath bin:bin/gui.jar TestSimulateur cartes/carteSujet.map
+
 exeLecture:
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
 
 exeSave:
 	java -classpath bin TestSaveDonnees cartes/carteSujet.map
+
 
 
 clean:
