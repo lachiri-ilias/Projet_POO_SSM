@@ -30,7 +30,7 @@ import java.util.zip.DataFormatException;
  */
 public class SaveDonnees {
     //private DonneesSimulation data;
-     public DonneesSimulation data;
+     public static DonneesSimulation data;
      
      public SaveDonnees(){
       this.data = new DonneesSimulation();
@@ -42,7 +42,7 @@ public class SaveDonnees {
      * LecteurDonnees.lire(fichierDonnees)
      * @param fichierDonnees nom du fichier à lire
      */
-    public static void creeDonnees(String fichierDonnees)
+    public static DonneesSimulation creeDonnees(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == save du fichier" + fichierDonnees);
         SaveDonnees save = new SaveDonnees(fichierDonnees);
@@ -51,7 +51,8 @@ public class SaveDonnees {
         save.saveIncendies();
         save.saveRobots();
         scanner.close();
-        System.out.println("\n == sauvgarde* terminee");
+        System.out.println("\n == sauvgarde terminee");
+        return data;
       
     }
 

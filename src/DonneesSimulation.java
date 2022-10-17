@@ -40,4 +40,8 @@ public class DonneesSimulation {
   public LinkedList<Robot> getListeRobot(){
     return this.listeRobot;
   }
+
+  public LinkedList<Incendie> getListeIncendie(){
+    return this.listeIncendie;
+  }
 }
