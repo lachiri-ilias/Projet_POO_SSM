@@ -77,19 +77,35 @@ class Simulateur implements Simulable {
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         gui.setSimulable(this);				// association a la gui!
-        planCoordinates();
+        parcourt_simple();
         draw();
     }
-
-
-
-    private void planCoordinates() {
-        // panel must be large enough... unchecked here!
-        // total invader size: height == 120, width == 80
+    private void parcourt1() {
         int xMin = 0;
         int yMin = 0;
-        int xMax = 600;
-        int yMax = 600;
+        int xMax = 700;
+        int yMax = 700;
+        List<Integer> xCoords = new ArrayList<Integer>();
+        List<Integer> yCoords = new ArrayList<Integer>();
+
+      for (int x = xMin ; x <= xMax-400; x += 10) {
+          xCoords.add(x);
+          yCoords.add(yMin );
+      }
+        this.xIterator = xCoords.iterator();
+        this.yIterator = yCoords.iterator();
+        this.x_drone = xMin;
+        this.y_drone = yMin;		
+    }
+
+    private void parcourt(Case deppart, Case arrive){
+      /* a copmleter */ 
+    }
+    private void parcourt_simple() {
+        int xMin = 0;
+        int yMin = 0;
+        int xMax = 700;
+        int yMax = 700;
         // int xMax = gui.getWidth() - xMin ;
         // xMax -= xMax % 10;
         // int yMax = gui.getHeight() - yMin ;
@@ -98,39 +114,32 @@ class Simulateur implements Simulable {
         // let's plan the invader displacement!
         List<Integer> xCoords = new ArrayList<Integer>();
         List<Integer> yCoords = new ArrayList<Integer>();
-        // going right
-        for (int x = xMin ; x <= xMax; x += 10) {
-            xCoords.add(x);
-            yCoords.add(yMin);
+        for(int k =0; k<8;k+=2){
+              for (int x = xMin ; x <= xMax; x += 10) {
+                  xCoords.add(x);
+                  yCoords.add(yMin+k*100 );
+              }
+              for (int y = yMin + k*100 ; y <= (k+1)*100 ; y += 10) {
+                  xCoords.add(xMax);
+                  yCoords.add(y);
+              }
+              for (int x = xMax ; x >= xMin; x -= 10) {
+                  xCoords.add(x);
+                  yCoords.add(yMin+(k+1)*100 );
+              }
+              if(k!=6){
+                  for (int y = yMin + (k+1)*100 ; y <= (k+2)*100 ; y += 10) {
+                      xCoords.add(xMin);
+                      yCoords.add(y);
+                  }
+              }
         }
-        // going down
-        for (int y = yMin ; y <= yMax; y += 10) {
-            xCoords.add(xMax);
-            yCoords.add(y);
-        }
-        // going left
-        for (int x = xMax ; x >= xMin; x -= 10) {
-            xCoords.add(x);
-            yCoords.add(yMax);
-        }
-
         this.xIterator = xCoords.iterator();
         this.yIterator = yCoords.iterator();
         // current position
         this.x_drone = xMin;
         this.y_drone = yMin;		
     }
-    // @Override
-    // public void next() {
-    //     draw();
-    // }
-
-    // @Override
-    // public void restart() {
-    //     // planCoordinates();
-    //     // draw();
-    //     gui.reset();
-    // }
 
     @Override
     public void next() {
@@ -140,11 +149,25 @@ class Simulateur implements Simulable {
         if (this.yIterator.hasNext())
             this.y_drone = this.yIterator.next();		
         draw();
+
+    // **************************************************************************
+                //   /*  COMMENT AJOUTER DES  MOUVEMENT   */ 
+                //   if (!this.xIterator.hasNext()){
+                // //  if(true){  // ajout fct verif deplacement  :  droit par exemple
+                //       List<Integer> xCoords = new ArrayList<Integer>();
+                //       for(int i= x_drone;i<=x_drone+100;i+=10){ // +100 : la case  +10 vitesse a modifier apres 
+                //             xCoords.add(i);
+                //       }
+                //       this.xIterator = xCoords.iterator();
+                // //  }
+                // }
+    // *****************************************************************
+
     }
 
     @Override
     public void restart() {
-        planCoordinates();
+        parcourt_simple();
         draw();
     }
 
@@ -203,16 +226,16 @@ class Simulateur implements Simulable {
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
                   
         }
-        for(Robot robots : getListeRobot()){
-              switch(robots.getType()){
-                  case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
-                  case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.gif",factor,factor,gui));break;
-                  case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
-                  case "R_chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
-              }
-        }
+        // for(Robot robots : getListeRobot()){
+        //       switch(robots.getType()){
+        //           case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
+        //           case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
+        //           case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
+        //           case "R_chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
+        //       }
+        // }
         /* Drone */
-        //gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
+        gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
         System.out.println("\n FIN AFFICHAGE CARTE !\n");
         
 
