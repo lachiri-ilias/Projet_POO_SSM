@@ -68,6 +68,8 @@ exeInvader:
 
 exeSimulateur:
 	java -classpath bin:bin/gui.jar TestSimulateur cartes/carteSujet.map
+# java -classpath bin:bin/gui.jar TestSimulateur cartes/desertOfDeath-20x20.map
+# java -classpath bin:bin/gui.jar TestSimulateur cartes/spiralOfMadness-50x50.map
 
 exeLecture:
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
