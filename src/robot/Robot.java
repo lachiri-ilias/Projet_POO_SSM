@@ -57,6 +57,7 @@ public abstract class Robot {
     public abstract void deverserEau(int vol);
     public abstract void remplirReservoir(Carte carte);
     public abstract boolean verif_depl(Direction d, Case voisin);
+    public abstract String getType();
 }
 
 

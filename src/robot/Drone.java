@@ -40,5 +40,8 @@ public class Drone extends Robot {
     public boolean verif_depl(Direction d, Case voisin){
         return true;
     }
+    public String getType(){
+        return "Drone";
+    }
 
 }

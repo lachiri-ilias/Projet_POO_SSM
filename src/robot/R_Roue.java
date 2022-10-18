@@ -36,4 +36,7 @@ public class R_Roue extends Robot {
         return (voisin.getNature()==NatureTerrain.TERRAIN_LIBRE
         || voisin.getNature()==NatureTerrain.HABITAT);
     }
+    public String getType(){
+        return "R_Roue";
+    }
 }

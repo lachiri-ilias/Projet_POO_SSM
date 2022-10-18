@@ -42,4 +42,7 @@ public class R_Chenille extends Robot {
         return !(voisin.getNature() == NatureTerrain.EAU
         || voisin.getNature() == NatureTerrain.ROCHE);
     }
+    public String getType(){
+        return "R_Chenille";
+    }
 }

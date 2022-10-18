@@ -31,4 +31,8 @@ public  class R_Pattes extends Robot {
     }
 
     public void remplirReservoir(Carte carte){};
+
+    public String getType(){
+        return "R_Pattes";
+    }
 }
