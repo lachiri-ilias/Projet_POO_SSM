@@ -236,6 +236,12 @@ class Simulateur implements Simulable {
         // }
         /* Drone */
         gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
+        gui.addGraphicalElement(new ImageElement(2*factor,3*factor,"image/r_pattes.png",factor,factor,gui));
+        gui.addGraphicalElement(new ImageElement(6*factor,2*factor,"image/r_roue.png",factor,factor,gui));
+        gui.addGraphicalElement(new ImageElement(7*factor,1*factor,"image/r_chenille.png",factor,factor,gui));
+        gui.addGraphicalElement(new ImageElement(3*factor,2*factor,"image/r_roue2.png",factor,factor,gui));
+        gui.addGraphicalElement(new ImageElement(0*factor,1*factor,"image/r_pattes2.png",factor,factor,gui));
+        
         System.out.println("\n FIN AFFICHAGE CARTE !\n");
         
 
