@@ -65,7 +65,7 @@ public class Carte {
             case OUEST:
                 return c>0;
         }
-        return false;  // a discuter !!!!!
+        return false;
     }
 
     public Case getVoisin(Case src, Direction dir){

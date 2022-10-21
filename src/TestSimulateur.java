@@ -48,7 +48,12 @@ public class TestSimulateur {
           int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateur simulateur = new Simulateur(gui, data, factor);
-          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
+          // for(int i=0;i<2;i++){
+            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
+           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
+           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
+            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),4,data.getCarte()));
+            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),5,data.getCarte()));
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -80,6 +85,7 @@ class Simulateur implements Simulable {
         this.carte = data.getCarte();
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
+        this.listeEvenement = new LinkedList<Evenement>();
         gui.setSimulable(this);				// association a la gui!
         draw();
     }
@@ -163,18 +169,23 @@ class Simulateur implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        System.out.println("next\n");
+        System.out.println("[next] la liste fait "+ this.listeEvenement.size()+"\n");
         if(simulationTerminee()){
           System.out.println("Plus d'event a lancer FFIIINNN \n");
         }
         else{
           for(Evenement e : getListeEvenements()){
+            System.out.println("["+getDateSimulation()+"] l'evenement e est de date : "+e.getDate()+"\n");
+            // System.out.println("liste devent ="+getListeEvenements());
             if(e.getDate()==getDateSimulation()){
-              System.out.println("execution\n");
-              e.execute();
+              System.out.println("Execution\n");
+              
+              e.execute(getDateSimulation());
+              // getListeEvenements().remove(0);
               draw();
             }
           }
+          // getListeEvenements().remove(0);
       }
     }
     // @Override
@@ -231,28 +242,28 @@ class Simulateur implements Simulable {
 
         for(int i=0; i<this.getCarte().getNbLignes();i++){
           for(int j=0; j<this.getCarte().getNbColonnes();j++){
-            System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
-            System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
+            // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
+            // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
             switch(this.getCarte().getCase(i,j).getNature()){
               case TERRAIN_LIBRE :
-                 System.out.println("libre ");
+                 // System.out.println("libre ");
                 // gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/terrain_libre.png",50,50,gui));  break;
                 gui.addGraphicalElement(new Rectangle(j*factor + (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#af601a"),factor)); break;
               case EAU :
-               System.out.println("eau ");
+               // System.out.println("eau ");
                //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/eau.png",50,50,gui));  break;
                 gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2e86c1"),factor)); break;
               case HABITAT :
-              System.out.println("habitat ");
+              // System.out.println("habitat ");
              // break;
                //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/maison.png",45,45,gui));  break;
                 gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#884ea0"),factor)); break;
               case FORET :
-              System.out.println("foret ");
+              // System.out.println("foret ");
                 //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/foret.png",50,50,gui));  break;
                 gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor)); break;
               case ROCHE :
-              System.out.println("roche ");
+              // System.out.println("roche ");
               //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/roche.png",50,50,gui));  break;
               gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#717d7e"),factor)); break;
               default : break;
@@ -272,6 +283,7 @@ class Simulateur implements Simulable {
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
+              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
         }
         /* Drone */
         // gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));

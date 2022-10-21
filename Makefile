@@ -85,3 +85,4 @@ clean:
 	rm -rf bin/io/*.class
 	rm -rf bin/plan/*.class
 	rm -rf bin/robot/*.class
+	rm -rf bin/evenement/*.class
