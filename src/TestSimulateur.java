@@ -49,11 +49,13 @@ public class TestSimulateur {
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateur simulateur = new Simulateur(gui, data, factor);
           // for(int i=0;i<2;i++){
+            /*  TODO  init variable tempsFin !!!  */
+            //data.getListeRobot().get(0).setTempsFin(1);
             simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
-            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),4,data.getCarte()));
-            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),5,data.getCarte()));
+            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
+            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -169,7 +171,7 @@ class Simulateur implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        System.out.println("[next] la liste fait "+ this.listeEvenement.size()+"\n");
+        // System.out.println("[next] la liste fait "+ this.listeEvenement.size()+"\n");
         if(simulationTerminee()){
           System.out.println("Plus d'event a lancer FFIIINNN \n");
         }

@@ -31,19 +31,22 @@ public abstract class Robot {
     public long getTempsFin(){
         return this.tps_fin_act;
     }
+    public void setTempsFin(long tps_fin_act){
+        this.tps_fin_act = tps_fin_act;
+    }
 
     protected void setPosition(Case c){
         this.position = c;
     }
 
     public void deplacer(Direction d, Carte carte){
-        System.out.println("[exe1] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
-        System.out.println("VOISIN EXISTE : "+carte.voisinExiste(this.position, d)+"\n");
+        // System.out.println("[exe1] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
+        // System.out.println("VOISIN EXISTE : "+carte.voisinExiste(this.position, d)+"\n");
         if(carte.voisinExiste(this.position, d)){
             Case voisin = carte.getVoisin(this.position, d);
-            System.out.println("VERIF DEPL : "+this.verif_depl(d, voisin)+"\n");
+            //System.out.println("VERIF DEPL : "+this.verif_depl(d, voisin)+"\n");
             if(this.verif_depl(d, voisin)){
-                System.out.println("on se deplace :"+d+"\n");
+                //System.out.println("on se deplace :"+d+"\n");
                 // TODO : renvoyer une erreur lorsque la position est innateignable !
                 switch(d){
                     case NORD:
@@ -68,7 +71,7 @@ public abstract class Robot {
                 }
             }
         }
-         System.out.println("[exe2] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
+         //System.out.println("[exe2] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
     }
 
     public abstract double getVitesse(NatureTerrain nat);
