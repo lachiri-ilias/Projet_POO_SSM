@@ -2,6 +2,7 @@
 import robot.*;
 import plan.*;
 import io.*;
+import incendie.*;
 import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;

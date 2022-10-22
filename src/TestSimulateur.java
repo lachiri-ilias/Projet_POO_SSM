@@ -14,6 +14,7 @@ import robot.*;
 import plan.*;
 import io.*;
 import evenement.*;
+import incendie.*;
 
 import java.io.*;
 import java.util.*;
@@ -51,11 +52,23 @@ public class TestSimulateur {
           // for(int i=0;i<2;i++){
             /*  TODO  init variable tempsFin !!!  */
             //data.getListeRobot().get(0).setTempsFin(1);
-            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
-           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
-            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
-            simulateur.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
+            // simulation 1 
+          // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
+          // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
+          // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
+          // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
+          // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
+            // simulation 2
+          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
+          simulateur.ajouteEvenement(new Remplire_Eau(data.getListeRobot().get(0),2,data.getCarte()));
+          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),3,data.getCarte()));
+          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),6,data.getCarte()));
+          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),8,data.getCarte()));
+          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),9,data.getCarte()));
+          simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),10,data.getCarte()));
+          simulateur.ajouteEvenement(new Feux_Eteint(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte()));
+        
+
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {

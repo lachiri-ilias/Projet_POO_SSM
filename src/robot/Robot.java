@@ -9,7 +9,7 @@ public abstract class Robot {
     protected double vitesse;
     protected int cap_max; // CHANGER
     protected int cap_actuelle;
-    protected int tps_remplissage;
+    protected long tps_remplissage;
     protected int tps_deversage;
     protected int qte_deversage;
     protected long tps_fin_act=0;
@@ -37,6 +37,10 @@ public abstract class Robot {
 
     protected void setPosition(Case c){
         this.position = c;
+    }
+    
+    public long getTempsRemplissage(){
+        return this.tps_remplissage;
     }
 
     public void deplacer(Direction d, Carte carte){

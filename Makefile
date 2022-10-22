@@ -54,7 +54,7 @@ Case:
 	javac -d bin -classpath bin/plan  -sourcepath src src/plan/Case.java
 
 Incendie:
-	javac -d bin -sourcepath src src/Incendie.java
+	javac -d bin -classpath bin/incendie -sourcepath src src/incendie/Incendie.java
 
 
 
@@ -86,3 +86,4 @@ clean:
 	rm -rf bin/plan/*.class
 	rm -rf bin/robot/*.class
 	rm -rf bin/evenement/*.class
+	rm -f bin/incendie/*.class

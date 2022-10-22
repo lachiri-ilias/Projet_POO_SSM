@@ -19,18 +19,19 @@ public class Deplacer_Robot extends Evenement{
         
     public void execute(long dateSimulation){
         /* TODO : Trouver comment gerer  */
-        //System.out.println("***1*****["+dateSimulation+" ] laaa "+ robot.getTempsFin()+"\n");
+        System.out.println("**Deplacer le robot entree*****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
+            robot.setTempsFin(dateSimulation);
             robot.deplacer(direction,carte);
-            // if(dateSimulation==robot.getTempsFin() ){
-            //     robot.setTempsFin(dateSimulation+dateDeplacerRobot);
-            // }
+            if(dateSimulation==robot.getTempsFin() ){
+                robot.setTempsFin(dateSimulation+dateDeplacerRobot);
+            }
         }
         else{
-            System.out.println("heeerree");
+            System.out.println("heeerree SSUUUIIIIIII");
             setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
             // robot.setTempsFin(robot.getTempsFin()+dateDeplacerRobot);
         }
-        //System.out.println("***2*****["+dateSimulation+" ] laaa "+ robot.getTempsFin()+"\n");
+        System.out.println("**Deplacer le robot sortie *****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
     }
 }

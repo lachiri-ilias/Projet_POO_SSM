@@ -7,7 +7,8 @@ import plan.*;
 public class Drone extends Robot {
 
     public Drone(Case c){
-        super(c, 100, 10000, 0, 30*60, 30, 10000);
+       // super(c, 100, 10000, 0, 30*60, 30, 10000);
+         super(c, 100, 10000, 0, 3, 30, 10000);  // modifier le temps pour le test !!!
     }
 
     public void setPosition(Case c){
@@ -31,7 +32,7 @@ public class Drone extends Robot {
 
     public void remplirReservoir(Carte carte){
       if(this.getPosition().getNature() == NatureTerrain.EAU){
-        int t=0;
+        long t=0;
         while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
         this.cap_actuelle = this.cap_max;
       }
