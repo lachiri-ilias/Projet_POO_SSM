@@ -1,3 +1,5 @@
+package incendie;
+
 import plan.*;
 
 public class Incendie {
