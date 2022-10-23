@@ -10,13 +10,13 @@ public class Deplacer_Robot extends Evenement{
     private Carte carte;
     private long dateDeplacerRobot = 1;
 
-    public Deplacer_Robot(Direction direction,Robot robot,long date,Carte carte){ 
+    public Deplacer_Robot(Direction direction,Robot robot,long date,Carte carte){
         super(date);
         this.direction = direction;
         this.robot =robot;
         this.carte =carte;
     }
-        
+
     public void execute(long dateSimulation){
         /* TODO : Trouver comment gerer  */
         System.out.println("**Deplacer le robot entree*****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
@@ -33,5 +33,11 @@ public class Deplacer_Robot extends Evenement{
             // robot.setTempsFin(robot.getTempsFin()+dateDeplacerRobot);
         }
         System.out.println("**Deplacer le robot sortie *****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
+
+        /* POUR LA SUITE
+        System.out.println("["+dateSimulation+"] Le Robot "+robot+ " se déplace !\n");
+        robot.deplacer(direction,carte);
+        */
+
     }
 }

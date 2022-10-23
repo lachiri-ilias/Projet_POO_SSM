@@ -30,12 +30,14 @@ public class Drone extends Robot {
         else throw new IllegalArgumentException("Drone ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
-    public void remplirReservoir(Carte carte){
+    public int remplirReservoir(Carte carte){
       if(this.getPosition().getNature() == NatureTerrain.EAU){
         long t=0;
         while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
         this.cap_actuelle = this.cap_max;
+        return 1;
       }
+      return 0;
     }
 
     public boolean verif_depl(Direction d, Case voisin){

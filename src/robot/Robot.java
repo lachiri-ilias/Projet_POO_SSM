@@ -27,7 +27,7 @@ public abstract class Robot {
     public Case getPosition(){
         return this.position;
     }
-    
+
     public long getTempsFin(){
         return this.tps_fin_act;
     }
@@ -38,7 +38,7 @@ public abstract class Robot {
     protected void setPosition(Case c){
         this.position = c;
     }
-    
+
     public long getTempsRemplissage(){
         return this.tps_remplissage;
     }
@@ -81,11 +81,7 @@ public abstract class Robot {
     public abstract double getVitesse(NatureTerrain nat);
     public abstract void setVitesse(double v);
     public abstract void deverserEau(int vol);
-    public abstract void remplirReservoir(Carte carte);
+    public abstract int remplirReservoir(Carte carte);
     public abstract boolean verif_depl(Direction d, Case voisin);
     public abstract String getType();
 }
-
-
-
-

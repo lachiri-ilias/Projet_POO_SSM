@@ -30,7 +30,7 @@ public  class R_Pattes extends Robot {
         return !(voisin.getNature()==NatureTerrain.EAU);
     }
 
-    public void remplirReservoir(Carte carte){};
+    public int remplirReservoir(Carte carte){};
 
     public String getType(){
         return "R_Pattes";

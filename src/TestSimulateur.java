@@ -39,7 +39,7 @@ public class TestSimulateur {
 
         try {
           // crée la fenêtre graphique dans laquelle dessiner
-         
+
           // crée l'invader, en l'associant à la fenêtre graphique précédente
           // Invader invader = new Invader(gui, Color.decode("#f2ff28"));
           // TODO : ajouter les verifications (cf TestSaveDonnees)
@@ -52,7 +52,7 @@ public class TestSimulateur {
           // for(int i=0;i<2;i++){
             /*  TODO  init variable tempsFin !!!  */
             //data.getListeRobot().get(0).setTempsFin(1);
-            // simulation 1 
+            // simulation 1
           // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
           // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
           // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
@@ -60,14 +60,14 @@ public class TestSimulateur {
           // simulateur.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
             // simulation 2
           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-          simulateur.ajouteEvenement(new Remplire_Eau(data.getListeRobot().get(0),2,data.getCarte()));
+          simulateur.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),2,data.getCarte()));
           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),3,data.getCarte()));
           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),6,data.getCarte()));
           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),8,data.getCarte()));
           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),9,data.getCarte()));
           simulateur.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),10,data.getCarte()));
-          simulateur.ajouteEvenement(new Feux_Eteint(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte()));
-        
+          simulateur.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte()));
+
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
@@ -91,7 +91,7 @@ class Simulateur implements Simulable {
     private Iterator<Integer> yIterator;
     // private Iterator<Integer> xIterator;
     // private Iterator<Integer> yIterator;
-    
+
 
 
     public Simulateur(GUISimulator gui, DonneesSimulation data, int f) {
@@ -116,7 +116,7 @@ class Simulateur implements Simulable {
     }
     private boolean simulationTerminee(){
       return this.listeEvenement.isEmpty();
-    } 
+    }
     private LinkedList<Evenement> getListeEvenements(){
       return this.listeEvenement;
     }
@@ -136,11 +136,11 @@ class Simulateur implements Simulable {
     //     this.xIterator = xCoords.iterator();
     //     this.yIterator = yCoords.iterator();
     //     this.x_drone = xMin;
-    //     this.y_drone = yMin;		
+    //     this.y_drone = yMin;
     // }
 
     // private void parcourt(Case deppart, Case arrive){
-    //   /* a copmleter */ 
+    //   /* a copmleter */
     // }
     // private void parcourt_simple() {
     //     int xMin = 0;
@@ -179,7 +179,7 @@ class Simulateur implements Simulable {
     //     this.yIterator = yCoords.iterator();
     //     // current position
     //     this.x_drone = xMin;
-    //     this.y_drone = yMin;		
+    //     this.y_drone = yMin;
     // }
     @Override
     public void next() {
@@ -194,7 +194,7 @@ class Simulateur implements Simulable {
             // System.out.println("liste devent ="+getListeEvenements());
             if(e.getDate()==getDateSimulation()){
               System.out.println("Execution\n");
-              
+
               e.execute(getDateSimulation());
               // getListeEvenements().remove(0);
               draw();
@@ -210,17 +210,17 @@ class Simulateur implements Simulable {
     //     }
     //     System.out.println("X  : " + this.x_drone + ";  Y : "+this.y_drone);
     //     if (this.xIterator.hasNext())
-    //         this.x_drone = this.xIterator.next();		
+    //         this.x_drone = this.xIterator.next();
     //     if (this.yIterator.hasNext())
-    //         this.y_drone = this.yIterator.next();		
+    //         this.y_drone = this.yIterator.next();
     //     draw();
 
     // // **************************************************************************
-    //             //   /*  COMMENT AJOUTER DES  MOUVEMENT   */ 
+    //             //   /*  COMMENT AJOUTER DES  MOUVEMENT   */
     //             //   if (!this.xIterator.hasNext()){
     //             // //  if(true){  // ajout fct verif deplacement  :  droit par exemple
     //             //       List<Integer> xCoords = new ArrayList<Integer>();
-    //             //       for(int i= x_drone;i<=x_drone+100;i+=10){ // +100 : la case  +10 vitesse a modifier apres 
+    //             //       for(int i= x_drone;i<=x_drone+100;i+=10){ // +100 : la case  +10 vitesse a modifier apres
     //             //             xCoords.add(i);
     //             //       }
     //             //       this.xIterator = xCoords.iterator();
@@ -289,7 +289,7 @@ class Simulateur implements Simulable {
         for(Incendie incendies : getListeIncendie()){
             //gui.addGraphicalElement(new Rectangle(( incendies.getCase().getColonne())*factor+ (factor/2), ( incendies.getCase().getLigne())*factor+ (factor/2), Color.decode("#000000"), Color.decode("#00000000"),factor));
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
-                  
+
         }
         for(Robot robots : getListeRobot()){
               switch(robots.getType()){
@@ -307,9 +307,9 @@ class Simulateur implements Simulable {
         // gui.addGraphicalElement(new ImageElement(7*factor,1*factor,"image/r_chenille.png",factor,factor,gui));
         // gui.addGraphicalElement(new ImageElement(3*factor,2*factor,"image/r_roue2.png",factor,factor,gui));
         // gui.addGraphicalElement(new ImageElement(0*factor,1*factor,"image/r_pattes2.png",factor,factor,gui));
-        
+
         System.out.println("\n FIN AFFICHAGE CARTE !\n");
-        
+
 
         // gui.addGraphicalElement(new Text(40,120, Color.decode("#f2ff28"), "MAP"));
     }
