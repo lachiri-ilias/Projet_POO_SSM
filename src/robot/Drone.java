@@ -8,19 +8,19 @@ public class Drone extends Robot {
 
     public Drone(Case c){
        // super(c, 100, 10000, 0, 30*60, 30, 10000);
-         super(c, 100, 10000, 0, 3, 30, 10000);  // modifier le temps pour le test !!!
+         super(c, 100, 150, 10000, 0, 3, 30, 10000);  // modifier le temps pour le test !!!
     }
 
     public void setPosition(Case c){
         this.position = c;
     }
 
-    public double getVitesse(NatureTerrain nat){
+    public double getVitesseTerrain(NatureTerrain nat){
         return this.vitesse;
     }
 
     public void setVitesse(double v){
-        if(v<=150) this.vitesse = v;
+        if(v<=getVitesseMax()) this.vitesse = v;
         else throw new IllegalArgumentException("Vitesse Drone < 150 km/h !");
     }
 
@@ -30,14 +30,14 @@ public class Drone extends Robot {
         else throw new IllegalArgumentException("Drone ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
-    public int remplirReservoir(Carte carte){
+    public boolean remplirReservoir(Carte carte){
       if(this.getPosition().getNature() == NatureTerrain.EAU){
         long t=0;
         while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
         this.cap_actuelle = this.cap_max;
-        return 1;
+        return true;
       }
-      return 0;
+      return false;
     }
 
     public boolean verif_depl(Direction d, Case voisin){

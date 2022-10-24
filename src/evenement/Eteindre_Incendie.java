@@ -32,7 +32,7 @@ public class Eteindre_Incendie extends Evenement{
               this.listeIncendie.remove(this.ind_incendie);
             }
             else{
-              this.listeIncendie.get(this.ind_incendie).setLitresEau(this.listeIncendie.get(this.ind_incendie).getLitresEau - this.robot.getCapActuelle);
+              this.listeIncendie.get(this.ind_incendie).setLitresEau(this.listeIncendie.get(this.ind_incendie).getLitresEau() - this.robot.getCapActuelle());
             }
             if(dateSimulation==robot.getTempsFin() ){
                 robot.setTempsFin(dateSimulation+dateEteintFeux);

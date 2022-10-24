@@ -1,4 +1,4 @@
-# Un exemple de carte 8x8, cases de 10000m de cote
+# Un exemple de carte 8x8, cases de 10000m de cote -> plus complique a afficher -> mise a 100m de cote  
 8 8 100
 
 # l0
@@ -76,14 +76,14 @@ TERRAIN_LIBRE
 
 # Incendies
 6
-7 0 50000 
+7 0 50000
 7 1 10000
 6 0 10000
 6 1 20000
 5 5 8000
 7 7 5000
 
-	
+
 # Robots
 3
 3 3 DRONE 150

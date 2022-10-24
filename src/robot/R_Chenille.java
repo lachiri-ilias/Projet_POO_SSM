@@ -9,17 +9,20 @@ import plan.*;
 public class R_Chenille extends Robot {
 
     public R_Chenille(Case c){
-        super(c, 60, 2000, 0, 5*60, 8, 100);
+        super(c, 60, 60, 2000, 0, 5*60, 8, 100);
     }
 
-    public double getVitesse(NatureTerrain nat){
-        return this.vitesse;
+    public double getVitesseTerrain(NatureTerrain nat){
+      if(nat==NatureTerrain.FORET) return this.vitesse/2;
+      return this.vitesse;
     }
 
+    // UTILISER getVitesseTerrain avant setVitesse
     public void setVitesse(double v){
-        if(v<=80){
-            if(this.position.getNature()==NatureTerrain.FORET) this.vitesse = v/2;
-            else this.vitesse = v;
+        if(v<=getVitesseMax()){
+            // if(this.position.getNature()==NatureTerrain.FORET) this.vitesse = v/2;
+            // else this.vitesse = v;
+            this.vitesse = v;
         }
         else  throw new IllegalArgumentException("Vitesse R_Chenille < 80 km/h !");
     }
@@ -30,14 +33,14 @@ public class R_Chenille extends Robot {
         else throw new IllegalArgumentException("R_Chenille ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
-    public int remplirReservoir(Carte carte){
+    public boolean remplirReservoir(Carte carte){
       if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
         int t=0;
         while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
         this.cap_actuelle = this.cap_max;
-        return 1;
+        return true;
       }
-      return 0;
+      return false;
     }
 
     public boolean verif_depl(Direction d, Case voisin){

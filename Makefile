@@ -21,13 +21,16 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testSimulateur testLecture TestLecteurDonnees Carte Case SaveDonnees Robot TestSaveDonnees DonneesSimulation  Incendie
+all: testInvader testSimulateur testResolution testLecture TestLecteurDonnees Carte Case SaveDonnees Robot_Empereur Amiral Robot TestSaveDonnees DonneesSimulation  Incendie
 
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
 
 testSimulateur:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestSimulateur.java
+
+testResolution:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestResolution.java
 
 testLecture:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
@@ -43,6 +46,12 @@ TestLecteurDonnees:
 
 SaveDonnees:
 	javac -d bin  -sourcepath src src/SaveDonnees.java
+
+Robot_Empereur:
+	javac -d bin -classpath bin/manager -sourcepath src src/manager/Robot_Empereur.java
+
+Amiral:
+	javac -d bin -classpath bin/manager -sourcepath src src/manager/Amiral.java
 
 Robot:
 	javac -d bin -classpath bin/robot -sourcepath src src/robot/Robot.java
@@ -67,10 +76,13 @@ exeInvader:
 	java -classpath bin:bin/gui.jar TestInvader
 
 exeSimulateur:
-		java -classpath bin:bin/gui.jar TestSimulateur cartes/carteSujet_test.map	
+		java -classpath bin:bin/gui.jar TestSimulateur cartes/carteSujet_test.map
 # java -classpath bin:bin/gui.jar TestSimulateur cartes/carteSujet.map
 # java -classpath bin:bin/gui.jar TestSimulateur cartes/desertOfDeath-20x20.map
 # java -classpath bin:bin/gui.jar TestSimulateur cartes/spiralOfMadness-50x50.map
+
+exeResolution:
+		java -classpath bin:bin/gui.jar TestResolution cartes/carteSujet.map
 
 exeLecture:
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
@@ -85,5 +97,6 @@ clean:
 	rm -rf bin/io/*.class
 	rm -rf bin/plan/*.class
 	rm -rf bin/robot/*.class
+	rm -rf bin/manager/*.class
 	rm -rf bin/evenement/*.class
 	rm -f bin/incendie/*.class

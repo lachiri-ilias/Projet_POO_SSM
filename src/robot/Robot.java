@@ -7,6 +7,7 @@ import plan.*;
 public abstract class Robot {
     protected Case position;
     protected double vitesse;
+    protected double vitesse_max;
     protected int cap_max; // CHANGER
     protected int cap_actuelle;
     protected long tps_remplissage;
@@ -14,9 +15,10 @@ public abstract class Robot {
     protected int qte_deversage;
     protected long tps_fin_act=0;
 
-    public Robot(Case c, double v, int cm, int ca, int tr, int td, int qd){
+    public Robot(Case c, double v, double vm, int cm, int ca, int tr, int td, int qd){
         this.position = c;
         this.vitesse = v;
+        this.vitesse_max = vm;
         this.cap_max = cm;
         this.cap_actuelle = ca;
         this.tps_remplissage = tr;
@@ -24,8 +26,30 @@ public abstract class Robot {
         this.qte_deversage = qd;
     }
 
+    public Robot(Robot robot){
+      this.position = robot.position;
+      this.vitesse = robot.vitesse;
+      this.cap_max = robot.cap_max;
+      this.cap_actuelle = robot.cap_actuelle;
+      this.tps_remplissage = robot.tps_remplissage;
+      this.tps_deversage = robot.tps_deversage;
+      this.qte_deversage = robot.qte_deversage;
+    }
+
     public Case getPosition(){
         return this.position;
+    }
+
+    public double getVitesseMax(){
+      return this.vitesse_max;
+    }
+
+    public int getCapActuelle(){
+        return this.cap_actuelle;
+    }
+
+    public int getCapMax(){
+        return this.cap_max;
     }
 
     public long getTempsFin(){
@@ -75,13 +99,14 @@ public abstract class Robot {
                 }
             }
         }
+        setVitesse(getVitesseMax());
          //System.out.println("[exe2] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
     }
 
-    public abstract double getVitesse(NatureTerrain nat);
+    public abstract double getVitesseTerrain(NatureTerrain nat);
     public abstract void setVitesse(double v);
     public abstract void deverserEau(int vol);
-    public abstract int remplirReservoir(Carte carte);
+    public abstract boolean remplirReservoir(Carte carte);
     public abstract boolean verif_depl(Direction d, Case voisin);
     public abstract String getType();
 }

@@ -2,6 +2,7 @@ package evenement;
 import io.Direction;
 import robot.*;
 import plan.*;
+import manager.*;
 
 
 public class Deplacer_Robot extends Evenement{
@@ -19,6 +20,7 @@ public class Deplacer_Robot extends Evenement{
 
     public void execute(long dateSimulation){
         /* TODO : Trouver comment gerer  */
+
         System.out.println("**Deplacer le robot entree*****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
             robot.setTempsFin(dateSimulation);

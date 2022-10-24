@@ -7,12 +7,14 @@ import plan.*;
 public class R_Roue extends Robot {
 
     public R_Roue(Case c){
-        super(c, 80, 5000, 0, 10*60, 5, 100);
+        super(c, 80, (int)Double.POSITIVE_INFINITY, 5000, 0, 10*60, 5, 100);
     }
 
-    public double getVitesse(NatureTerrain nat){
-        return this.vitesse;
+
+    public double getVitesseTerrain(NatureTerrain nat){
+      return this.vitesse;
     }
+
 
     public void setVitesse(double v){
          this.vitesse = v;
@@ -24,14 +26,14 @@ public class R_Roue extends Robot {
         else throw new IllegalArgumentException("R_Roue ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
-    public int remplirReservoir(Carte carte){
+    public boolean remplirReservoir(Carte carte){
       if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
         int t=0;
         while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
-        this.cap_actuelle = this.cap_max
-        return 1;
+        this.cap_actuelle = this.cap_max;
+        return true;
       }
-      return 0;
+      return false;
     }
 
     public boolean verif_depl(Direction d, Case voisin){

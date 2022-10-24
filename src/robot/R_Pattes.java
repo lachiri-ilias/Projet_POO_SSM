@@ -8,16 +8,18 @@ import plan.*;
 public  class R_Pattes extends Robot {
 
     public R_Pattes(Case c){
-        super(c, 30, (int)Double.POSITIVE_INFINITY, 0, 0, 1, 10);
+        super(c, 30, (int)Double.POSITIVE_INFINITY, (int)Double.POSITIVE_INFINITY, 0, 0, 1, 10);
     }
 
-    public double getVitesse(NatureTerrain nat){
+    public double getVitesseTerrain(NatureTerrain nat){
+      if(nat==NatureTerrain.ROCHE) return 10;
         return this.vitesse;
     }
 
     public void setVitesse(double v){
-        if(this.position.getNature()==NatureTerrain.ROCHE) this.vitesse = 10;
-        else this.vitesse = v;
+        // if(this.position.getNature()==NatureTerrain.ROCHE) this.vitesse = 10;
+        // else this.vitesse = v;
+        this.vitesse = v;
     }
 
     public void deverserEau(int vol){
@@ -30,7 +32,7 @@ public  class R_Pattes extends Robot {
         return !(voisin.getNature()==NatureTerrain.EAU);
     }
 
-    public int remplirReservoir(Carte carte){};
+    public boolean remplirReservoir(Carte carte) {return true;};
 
     public String getType(){
         return "R_Pattes";

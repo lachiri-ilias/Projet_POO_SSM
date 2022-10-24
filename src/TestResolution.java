@@ -9,7 +9,7 @@ import gui.Simulable;
 import gui.Text;
 import gui.ImageElement;
 
-
+import manager.*;
 import robot.*;
 import plan.*;
 import io.*;
@@ -30,7 +30,7 @@ TODO :
   - Dimensionner factor en fonction de la taille de la carte (ie fenetre)
 */
 
-public class TestSimulateur {
+public class TestResolution {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -38,35 +38,12 @@ public class TestSimulateur {
         }
 
         try {
-          // crée la fenêtre graphique dans laquelle dessiner
-
-          // crée l'invader, en l'associant à la fenêtre graphique précédente
-          // Invader invader = new Invader(gui, Color.decode("#f2ff28"));
-          // TODO : ajouter les verifications (cf TestSaveDonnees)
           DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
           int factor = data.getCarte().getTailleCases();
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
-          Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
-          // for(int i=0;i<2;i++){
-            /*  TODO  init variable tempsFin !!!  */
-            //data.getListeRobot().get(0).setTempsFin(1);
-            // simulation 1
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
-            // simulation 2
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),2,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),3,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),6,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),8,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),9,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),10,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte(), 0));
+          Simulateur simulateur = new Simulateur(gui, data, factor);
 
 
         } catch (FileNotFoundException e) {
@@ -77,7 +54,7 @@ public class TestSimulateur {
     }
 }
 
-class Simulateurr implements Simulable {
+class Simulateur implements Simulable {
     private GUISimulator gui;
     private Carte carte;
     private LinkedList<Robot> listeRobot;
@@ -85,22 +62,18 @@ class Simulateurr implements Simulable {
     private LinkedList<Evenement> listeEvenement;
     private int factor;
     private long dateSimulation;
-    private int x_drone;
-    private int y_drone;
-    private Iterator<Integer> xIterator;
-    private Iterator<Integer> yIterator;
-    // private Iterator<Integer> xIterator;
-    // private Iterator<Integer> yIterator;
+    private Robot_Empereur robotEmpereur;
 
 
 
-    public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
+    public Simulateur(GUISimulator gui, DonneesSimulation data, int f) {
         this.factor = f;
         this.gui = gui;
         this.carte = data.getCarte();
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
+        this.robotEmpereur = new Robot_Empereur(data);
         gui.setSimulable(this);				// association a la gui!
         draw();
     }
@@ -111,76 +84,28 @@ class Simulateurr implements Simulable {
     public long getDateSimulation(){
       return this.dateSimulation;
     }
+    public Robot_Empereur getRobotEmpereur(){
+      return this.robotEmpereur;
+    }
     private void incrementeDate(){
       this.dateSimulation ++;
     }
     private boolean simulationTerminee(){
       return this.listeEvenement.isEmpty();
     }
+    public Carte getCarte(){
+       return this.carte;
+    }
     private LinkedList<Evenement> getListeEvenements(){
       return this.listeEvenement;
     }
+    private LinkedList<Incendie> getListeIncendie(){
+      return this.listeIncendie;
+    }
+    public LinkedList<Robot> getListeRobot(){
+      return this.listeRobot;
+    }
 
-    // private void parcourt1() { /* parcours  */
-    //     int xMin = 0;
-    //     int yMin = 0;
-    //     int xMax = 700;
-    //     int yMax = 700;
-    //     List<Integer> xCoords = new ArrayList<Integer>();
-    //     List<Integer> yCoords = new ArrayList<Integer>();
-
-    //   for (int x = xMin ; x <= xMax-400; x += 10) {
-    //       xCoords.add(x);
-    //       yCoords.add(yMin );
-    //   }
-    //     this.xIterator = xCoords.iterator();
-    //     this.yIterator = yCoords.iterator();
-    //     this.x_drone = xMin;
-    //     this.y_drone = yMin;
-    // }
-
-    // private void parcourt(Case deppart, Case arrive){
-    //   /* a copmleter */
-    // }
-    // private void parcourt_simple() {
-    //     int xMin = 0;
-    //     int yMin = 0;
-    //     int xMax = 700;
-    //     int yMax = 700;
-    //     // int xMax = gui.getWidth() - xMin ;
-    //     // xMax -= xMax % 10;
-    //     // int yMax = gui.getHeight() - yMin ;
-    //     // yMax -= yMax % 10;
-
-    //     // let's plan the invader displacement!
-    //     List<Integer> xCoords = new ArrayList<Integer>();
-    //     List<Integer> yCoords = new ArrayList<Integer>();
-    //     for(int k =0; k<8;k+=2){
-    //           for (int x = xMin ; x <= xMax; x += 10) {
-    //               xCoords.add(x);
-    //               yCoords.add(yMin+k*100 );
-    //           }
-    //           for (int y = yMin + k*100 ; y <= (k+1)*100 ; y += 10) {
-    //               xCoords.add(xMax);
-    //               yCoords.add(y);
-    //           }
-    //           for (int x = xMax ; x >= xMin; x -= 10) {
-    //               xCoords.add(x);
-    //               yCoords.add(yMin+(k+1)*100 );
-    //           }
-    //           if(k!=6){
-    //               for (int y = yMin + (k+1)*100 ; y <= (k+2)*100 ; y += 10) {
-    //                   xCoords.add(xMin);
-    //                   yCoords.add(y);
-    //               }
-    //           }
-    //     }
-    //     this.xIterator = xCoords.iterator();
-    //     this.yIterator = yCoords.iterator();
-    //     // current position
-    //     this.x_drone = xMin;
-    //     this.y_drone = yMin;
-    // }
     @Override
     public void next() {
         incrementeDate();
@@ -189,46 +114,23 @@ class Simulateurr implements Simulable {
           System.out.println("Plus d'event a lancer FFIIINNN \n");
         }
         else{
+
+          getRobotEmpereur().ordonne(getListeEvenements(), getDateSimulation());
+
+
           for(Evenement e : getListeEvenements()){
             System.out.println("["+getDateSimulation()+"] l'evenement e est de date : "+e.getDate()+"\n");
             // System.out.println("liste devent ="+getListeEvenements());
             if(e.getDate()==getDateSimulation()){
-              System.out.println("Execution\n");
+              System.out.println("["+getDateSimulation()+"] l'evenement "+e+" s'execute !\n");
 
               e.execute(getDateSimulation());
-              // getListeEvenements().remove(0);
               draw();
             }
           }
-          // getListeEvenements().remove(0);
       }
     }
-    // @Override
-    // public void next() {
-    //     if(simulationTerminee()){
 
-    //     }
-    //     System.out.println("X  : " + this.x_drone + ";  Y : "+this.y_drone);
-    //     if (this.xIterator.hasNext())
-    //         this.x_drone = this.xIterator.next();
-    //     if (this.yIterator.hasNext())
-    //         this.y_drone = this.yIterator.next();
-    //     draw();
-
-    // // **************************************************************************
-    //             //   /*  COMMENT AJOUTER DES  MOUVEMENT   */
-    //             //   if (!this.xIterator.hasNext()){
-    //             // //  if(true){  // ajout fct verif deplacement  :  droit par exemple
-    //             //       List<Integer> xCoords = new ArrayList<Integer>();
-    //             //       for(int i= x_drone;i<=x_drone+100;i+=10){ // +100 : la case  +10 vitesse a modifier apres
-    //             //             xCoords.add(i);
-    //             //       }
-    //             //       this.xIterator = xCoords.iterator();
-    //             // //  }
-    //             // }
-    // // *****************************************************************
-
-    // }
 
     @Override
     public void restart() {
@@ -237,21 +139,6 @@ class Simulateurr implements Simulable {
     }
 
 
-    /**
-     * Dessine l'invader.
-     */
-    public Carte getCarte(){
-       return this.carte;
-    }
-    public LinkedList<Robot> getListeRobot(){
-      return this.listeRobot;
-    }
-    public LinkedList<Incendie> getListeIncendie(){
-      return this.listeIncendie;
-    }
-    private void draw_2() {
-         gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
-    }
     private void draw() {
          gui.reset();	// clear the window
 
@@ -300,17 +187,8 @@ class Simulateurr implements Simulable {
               }
               System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
         }
-        /* Drone */
-        // gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(2*factor,3*factor,"image/r_pattes.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(6*factor,2*factor,"image/r_roue.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(7*factor,1*factor,"image/r_chenille.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(3*factor,2*factor,"image/r_roue2.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(0*factor,1*factor,"image/r_pattes2.png",factor,factor,gui));
 
         System.out.println("\n FIN AFFICHAGE CARTE !\n");
 
-
-        // gui.addGraphicalElement(new Text(40,120, Color.decode("#f2ff28"), "MAP"));
     }
 }
