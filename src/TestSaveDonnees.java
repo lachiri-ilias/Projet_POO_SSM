@@ -1,6 +1,7 @@
 import robot.*;
 import plan.*;
 import io.*;
+import donnees.*;
 import incendie.*;
 import java.io.*;
 import java.util.*;

@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: testInvader testSimulateur testResolution testLecture TestLecteurDonnees Carte Case SaveDonnees Robot_Empereur Amiral Robot TestSaveDonnees DonneesSimulation  Incendie
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Amiral Robot_Empereur  TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees
 
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
@@ -36,7 +36,7 @@ testLecture:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
 
 DonneesSimulation:
-	javac -d bin -sourcepath src src/DonneesSimulation.java
+	javac -d bin  -classpath bin/donnees -sourcepath src src/donnees/DonneesSimulation.java
 
 TestSaveDonnees:
 	javac -d bin -sourcepath src src/TestSaveDonnees.java
@@ -46,12 +46,6 @@ TestLecteurDonnees:
 
 SaveDonnees:
 	javac -d bin  -sourcepath src src/SaveDonnees.java
-
-Robot_Empereur:
-	javac -d bin -classpath bin/manager -sourcepath src src/manager/Robot_Empereur.java
-
-Amiral:
-	javac -d bin -classpath bin/manager -sourcepath src src/manager/Amiral.java
 
 Robot:
 	javac -d bin -classpath bin/robot -sourcepath src src/robot/Robot.java
@@ -64,6 +58,12 @@ Case:
 
 Incendie:
 	javac -d bin -classpath bin/incendie -sourcepath src src/incendie/Incendie.java
+
+Amiral:
+	javac -d bin -classpath bin/robot -sourcepath src src/robot/Amiral.java
+
+Robot_Empereur:
+	javac -d bin -classpath bin/robot -sourcepath src src/robot/Robot_Empereur.java
 
 
 
@@ -100,3 +100,4 @@ clean:
 	rm -rf bin/manager/*.class
 	rm -rf bin/evenement/*.class
 	rm -f bin/incendie/*.class
+	rm -f bin/manager/*.class

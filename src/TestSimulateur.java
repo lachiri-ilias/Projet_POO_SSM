@@ -14,6 +14,7 @@ import robot.*;
 import plan.*;
 import io.*;
 import evenement.*;
+import donnees.*;
 import incendie.*;
 
 import java.io.*;

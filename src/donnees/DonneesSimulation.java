@@ -1,3 +1,5 @@
+package donnees;
+
 import robot.*;
 import plan.*;
 import incendie.*;

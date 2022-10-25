@@ -1,12 +1,18 @@
 package manager;
+
+import io.Direction;
 import io.NatureTerrain;
 import plan.*;
-import incendie.*;
-import evenement.*;
-import robot.*;
-import io.*;
 
+
+import evenement.*;
+//import robot.*;
+import donnees.*;
+
+import java.io.*;
+import java.util.*;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.LinkedList;
 // import DonneesSimulation;
 
@@ -33,27 +39,41 @@ public class Amiral {
         }
     }
   }
+  
+  private LinkedList<Case> getListeCaseEau(){
+    return this.listeCaseEau;
+  }
 
   public void goEteindre(Incendie incendie, LinkedList<Evenement> listeEvenement, long dateSimulation){
-    Robot robotPlusProche = plusProcheRobot(incendie.getCase());
-    creeDeplacement(robotPlusProche, incendie.getCase(),listeEvenement);
+    Robot robotPlusProche = data.getListeRobot().getFirst();
+    for(Robot robot : data.getListeRobot()){
+      if(estLibre(robot, dateSimulation)){
+        if(dureeDeplacement(robot, Parcours(robot, case))<dureeDeplacement(robotPlusProche, Parcours(robotPlusProche, case))){
+          robotPlusProche = robot;
+        }
+      }
+    }
+    // Robot robotPlusProche = plusProcheRobot(incendie.getCase());
+    creeDeplacement(robotPlusProche, incendie.getCase(),listeEvenement, dateSimulation);
     listeEvenement.add(new remplirReservoir(robotPlusProche, dateSimulation, data.getCarte()));
   }
 
+  /*
   public Robot plusProcheRobot(Case case, long dateSimulation){
     Robot robotPlusProche = data.getListeRobot().getFirst();
     for(Robot robot : data.getListeRobot()){
       if(estLibre(robot, dateSimulation)){
-        if(dureeDeplacement(robot, Parcours(robot, case))<dureeDeplacement(robotPlusProche, Parcours(robotPlusProche, case)))){
+        if(dureeDeplacement(robot, Parcours(robot, case))<dureeDeplacement(robotPlusProche, Parcours(robotPlusProche, case))){
           robotPlusProche = robot;
         }
       }
     }
     return robotPlusProche;
   }
+  */
 
-  public void goRemplir(Robot robot, LinkedList<Evenement> listeEvenement){
-    creeDeplacement(robot, plusProcheCase(robot), listeEvenement);
+  public void goRemplir(Robot robot, LinkedList<Evenement> listeEvenement, long dateSimulation){
+    creeDeplacement(robot, plusProcheCase(robot), listeEvenement, dateSimulation);
   }
 
   public boolean estRempli(Robot robot){
@@ -86,7 +106,7 @@ public class Amiral {
   }
 
   private void creeDeplacement(Robot robot, Case c, LinkedList<Evenement> listeEvenement, long dateSimulation){
-    LinkedList<Case> parcours = Parcours(robot, c);
+    ArrayList<Case> parcours = Parcours(robot, c);
     Case bufferCase = parcours.next();
     while(parcours.hasNext()){
       Case actuelleCase = parcours.next();
@@ -119,19 +139,18 @@ public class Amiral {
   }
 
   // TODO : AMELIORER GRANDEMENT CETTE FONCTION !
-  private LinkedList<Case> Parcours(Robot robot, Case arrivee){
+  private ArrayList<Case> Parcours(Robot robot, Case arrivee){
     int lr = robot.getPosition().getLigne();
     int cr = robot.getPosition().getColonne();
     int l = arrivee.getLigne();
     int c = arrivee.getColonne();
-    // new Robot impossible car classe abstract !!!
-    // sauvegarder sa position et l y remettre a la fin !
-    Robot robCopy = new Robot(robot);
+    // new Robot impossible car classe abstract !!!  //c'est normal 
+    // sauvegarder sa position et l y remettre a la fin !  // oui pourquoi pas
+    Robot robCopy = new Robot(robot); 
     boolean b_nord=false, b_sud=false, b_est=false, b_ouest=false;
-    LinkedList<Case> parcours = new LinkedList<Case>();
+    ArrayList<Case> parcours = new ArrayList<Case>();
 
-    while((lr! = l) && (cr != c)){
-
+    while((lr != l) && (cr != c)){
       // DEPLACEMENT HORIZONTAL
       if(lr<l && robCopy.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
         lr++;
@@ -143,7 +162,7 @@ public class Amiral {
         parcours.add(data.getCarte().getCase(lr-1,cr));
         robCopy.deplacer(Direction.NORD, data.getCarte());
       }
-      else if(lr==l && (b_est || b_ouest){
+      else if(lr==l && (b_est || b_ouest)){
         if(robCopy.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
           lr++;
           parcours.add(data.getCarte().getCase(lr+1,cr));
@@ -168,7 +187,7 @@ public class Amiral {
         parcours.add(data.getCarte().getCase(lr,cr-1));
         robCopy.deplacer(Direction.OUEST, data.getCarte());
       }
-      else if(cr==c && (b_nord || b_sud){
+      else if(cr==c && (b_nord || b_sud)){
         if(robCopy.verif_depl(Direction.EST, data.getCarte().getCase(lr,cr+1))){
           cr++;
           parcours.add(data.getCarte().getCase(lr,cr+1));
