@@ -63,7 +63,7 @@ class Simulateur implements Simulable {
     private LinkedList<Evenement> listeEvenement;
     private int factor;
     private long dateSimulation;
-    private Robot_Empereur robotEmpereur;
+    private Empereur empereur;
 
 
 
@@ -74,7 +74,7 @@ class Simulateur implements Simulable {
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
-        this.robotEmpereur = new Robot_Empereur(data);
+        this.empereur = new Empereur(data);
         gui.setSimulable(this);				// association a la gui!
         draw();
     }
@@ -85,8 +85,8 @@ class Simulateur implements Simulable {
     public long getDateSimulation(){
       return this.dateSimulation;
     }
-    public Robot_Empereur getRobotEmpereur(){
-      return this.robotEmpereur;
+    public Empereur getEmpereur(){
+      return this.empereur;
     }
     private void incrementeDate(){
       this.dateSimulation ++;
@@ -116,7 +116,7 @@ class Simulateur implements Simulable {
         }
         else{
 
-          getRobotEmpereur().ordonne(getListeEvenements(), getDateSimulation());
+          getEmpereur().ordonne(getListeEvenements(), getDateSimulation());
 
 
           for(Evenement e : getListeEvenements()){

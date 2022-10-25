@@ -3,11 +3,10 @@ package manager;
 import io.Direction;
 import io.NatureTerrain;
 import plan.*;
-
-
 import evenement.*;
-//import robot.*;
+import robot.*;
 import donnees.*;
+import incendie.*;
 
 import java.io.*;
 import java.util.*;
@@ -48,14 +47,14 @@ public class Amiral {
     Robot robotPlusProche = data.getListeRobot().getFirst();
     for(Robot robot : data.getListeRobot()){
       if(estLibre(robot, dateSimulation)){
-        if(dureeDeplacement(robot, Parcours(robot, case))<dureeDeplacement(robotPlusProche, Parcours(robotPlusProche, case))){
+        if(dureeDeplacement(robot, Parcours(robot, incendie.getCase()))<dureeDeplacement(robotPlusProche, Parcours(robotPlusProche, incendie.getCase()))){  // ICI case PAR incendie.getCase()
           robotPlusProche = robot;
         }
       }
     }
     // Robot robotPlusProche = plusProcheRobot(incendie.getCase());
     creeDeplacement(robotPlusProche, incendie.getCase(),listeEvenement, dateSimulation);
-    listeEvenement.add(new remplirReservoir(robotPlusProche, dateSimulation, data.getCarte()));
+    listeEvenement.add(new Remplir_Reservoir(robotPlusProche, dateSimulation, data.getCarte()));
   }
 
   /*
@@ -82,56 +81,48 @@ public class Amiral {
 
   private Case plusProcheCase(Robot robot){
     Case casePlusProche = getListeCaseEau().getFirst();
-    for(Case case : data.getListeCaseEau()){
-      if(dureeDeplacement(robot, Parcours(robot, case))<dureeDeplacement(robot, Parcours(robot, casePlusProche)))){
-        casePlusProche = case;
+    for(Case c : getListeCaseEau()){
+      if(dureeDeplacement(robot, Parcours(robot, c))<dureeDeplacement(robot, Parcours(robot, casePlusProche))){
+        casePlusProche = c;
       }
     }
-    return case;
+    return casePlusProche;
   }
 
-
-
-  public long dureeDeplacement(Robot robot, LinkedList<Case> parcours){
+  public long dureeDeplacement(Robot robot, List<Case> parcours){
     int tailleCase = data.getCarte().getTailleCases();
     long compt_tps = 0;
 
-    for(Case case : parcours){
-      long vitesse = robot.getVitesseTerrain(case.getNature())/3.6; // en m/s
+    for(Case c : parcours){
+      long vitesse =(long) (robot.getVitesseTerrain(c.getNature()) /3.6) ;// en m/s *************************
       compt_tps += tailleCase/vitesse;
     }
-
     return compt_tps;
 
   }
 
   private void creeDeplacement(Robot robot, Case c, LinkedList<Evenement> listeEvenement, long dateSimulation){
-    ArrayList<Case> parcours = Parcours(robot, c);
+    Iterator<Case> parcours = Parcours(robot, c).iterator();
     Case bufferCase = parcours.next();
     while(parcours.hasNext()){
       Case actuelleCase = parcours.next();
-      switch(actuelleCase){
-
-          case (bufferCase.getLigne()==actuelleCase.getLigne()-1):
+      if(bufferCase.getLigne()==actuelleCase.getLigne()-1){
             listeEvenement.add(new Deplacer_Robot(Direction.SUD, robot, dateSimulation, data.getCarte()));
-            break;
-
-          case (bufferCase.getLigne()==actuelleCase.getLigne()+1):
+          }
+      else if (bufferCase.getLigne()==actuelleCase.getLigne()+1){
             listeEvenement.add(new Deplacer_Robot(Direction.NORD, robot, dateSimulation, data.getCarte()));
-            break;
-
-          case (bufferCase.getColonne()==actuelleCase.getColonne()+1):
-            listeEvenement.add(new Deplacer_Robot(Direction.OUEST, robot, dateSimulation, data.getCarte()));
-            break;
-
-          case (bufferCase.getColonne()==actuelleCase.getColonne()-1):
-            listeEvenement.add(new Deplacer_Robot(Direction.EST, robot, dateSimulation, data.getCarte()));
-            break;
+          }
+      else if  (bufferCase.getColonne()==actuelleCase.getColonne()+1){
+        listeEvenement.add(new Deplacer_Robot(Direction.OUEST, robot, dateSimulation, data.getCarte()));
       }
+      else if  (bufferCase.getColonne()==actuelleCase.getColonne()-1){
+        listeEvenement.add(new Deplacer_Robot(Direction.EST, robot, dateSimulation, data.getCarte()));
+      }
+      
       bufferCase = actuelleCase;
     }
-
-    robot.setTempsFin(dateSimulation + dureeDeplacement(robot, parcours));
+   // robot.setTempsFin(dateSimulation + dureeDeplacement(robot, parcours));  // A DISCUTER !!!!!
+    robot.setTempsFin(dateSimulation + dureeDeplacement(robot, Parcours(robot, c))); 
   }
 
   private boolean estLibre(Robot robot, long dateSimulation){
@@ -139,68 +130,70 @@ public class Amiral {
   }
 
   // TODO : AMELIORER GRANDEMENT CETTE FONCTION !
-  private ArrayList<Case> Parcours(Robot robot, Case arrivee){
+  private List<Case> Parcours(Robot robot, Case arrivee){
     int lr = robot.getPosition().getLigne();
     int cr = robot.getPosition().getColonne();
     int l = arrivee.getLigne();
     int c = arrivee.getColonne();
     // new Robot impossible car classe abstract !!!  //c'est normal 
     // sauvegarder sa position et l y remettre a la fin !  // oui pourquoi pas
-    Robot robCopy = new Robot(robot); 
+    Case init_pos = robot.getPosition();
+    //Robot robCopy = new Robot(robot); 
     boolean b_nord=false, b_sud=false, b_est=false, b_ouest=false;
-    ArrayList<Case> parcours = new ArrayList<Case>();
-
+    List<Case> parcours = new ArrayList<Case>();
     while((lr != l) && (cr != c)){
       // DEPLACEMENT HORIZONTAL
-      if(lr<l && robCopy.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
+      if(lr<l && robot.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
         lr++;
         parcours.add(data.getCarte().getCase(lr+1,cr));
-        robCopy.deplacer(Direction.SUD, data.getCarte());
+        robot.deplacer(Direction.SUD, data.getCarte());
       }
-      else if(lr>l && robCopy.verif_depl(Direction.NORD, data.getCarte().getCase(lr-1,cr))){
+      else if(lr>l && robot.verif_depl(Direction.NORD, data.getCarte().getCase(lr-1,cr))){
         lr--;
         parcours.add(data.getCarte().getCase(lr-1,cr));
-        robCopy.deplacer(Direction.NORD, data.getCarte());
+        robot.deplacer(Direction.NORD, data.getCarte());
       }
       else if(lr==l && (b_est || b_ouest)){
-        if(robCopy.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
+        if(robot.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
           lr++;
           parcours.add(data.getCarte().getCase(lr+1,cr));
-          robCopy.deplacer(Direction.SUD, data.getCarte());
+          robot.deplacer(Direction.SUD, data.getCarte());
         }
-        else if(robCopy.verif_depl(Direction.NORD, data.getCarte().getCase(lr-1,cr))){
+        else if(robot.verif_depl(Direction.NORD, data.getCarte().getCase(lr-1,cr))){
           lr--;
           parcours.add(data.getCarte().getCase(lr-1,cr));
-          robCopy.deplacer(Direction.NORD, data.getCarte());
+          robot.deplacer(Direction.NORD, data.getCarte());
         }
         else System.out.println("[Amiral.Parcours] bloquage du robot "+robot+" en ligne="+lr+" colonne="+cr);
       }
 
       // DEPLACEMENT VERTICAL
-      if(cr<c && robCopy.verif_depl(Direction.EST, data.getCarte().getCase(lr,cr+1))){
+      if(cr<c && robot.verif_depl(Direction.EST, data.getCarte().getCase(lr,cr+1))){
         cr++;
         parcours.add(data.getCarte().getCase(lr,cr+1));
-        robCopy.deplacer(Direction.EST, data.getCarte());
+        robot.deplacer(Direction.EST, data.getCarte());
       }
-      else if(cr>c && robCopy.verif_depl(Direction.OUEST, data.getCarte().getCase(lr,cr-1))){
+      else if(cr>c && robot.verif_depl(Direction.OUEST, data.getCarte().getCase(lr,cr-1))){
         cr--;
         parcours.add(data.getCarte().getCase(lr,cr-1));
-        robCopy.deplacer(Direction.OUEST, data.getCarte());
+        robot.deplacer(Direction.OUEST, data.getCarte());
       }
       else if(cr==c && (b_nord || b_sud)){
-        if(robCopy.verif_depl(Direction.EST, data.getCarte().getCase(lr,cr+1))){
+        if(robot.verif_depl(Direction.EST, data.getCarte().getCase(lr,cr+1))){
           cr++;
           parcours.add(data.getCarte().getCase(lr,cr+1));
-          robCopy.deplacer(Direction.EST, data.getCarte());
+          robot.deplacer(Direction.EST, data.getCarte());
         }
-        else if(robCopy.verif_depl(Direction.OUEST, data.getCarte().getCase(lr,cr-1))){
+        else if(robot.verif_depl(Direction.OUEST, data.getCarte().getCase(lr,cr-1))){
           cr--;
           parcours.add(data.getCarte().getCase(lr,cr-1));
-          robCopy.deplacer(Direction.OUEST, data.getCarte());
+          robot.deplacer(Direction.OUEST, data.getCarte());
         }
         else System.out.println("[Amiral.Parcours] bloquage du robot "+robot+" en ligne="+lr+" colonne="+cr);
       }
     }
+    robot.getPosition().setLigne(init_pos.getLigne());
+    robot.getPosition().setColonne(init_pos.getColonne());
     return parcours;
   }
 
