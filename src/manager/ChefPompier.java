@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.LinkedList;
 
 
-public class Empereur {
+public class ChefPompier {
   private DonneesSimulation data;
   private Amiral amiral;
 
-  public Empereur(DonneesSimulation data){
+  public ChefPompier(DonneesSimulation data){
     this.data = data;
     this.amiral = new Amiral(data);
   }

@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
-// import DonneesSimulation;
+
 
 /*
 TODO : gros soucis sur le temps d'une opération :
@@ -101,6 +101,7 @@ public class Amiral {
 
   }
 
+//  changer le next par une parcours liste simple (2 case par 2 case )
   private void creeDeplacement(Robot robot, Case c, LinkedList<Evenement> listeEvenement, long dateSimulation){
     Iterator<Case> parcours = Parcours(robot, c).iterator();
     Case bufferCase = parcours.next();

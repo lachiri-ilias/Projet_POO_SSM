@@ -45,6 +45,7 @@ public class TestResolution {
           int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateur simulateur = new Simulateur(gui, data, factor);
+          simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
 
 
         } catch (FileNotFoundException e) {
@@ -63,7 +64,7 @@ class Simulateur implements Simulable {
     private LinkedList<Evenement> listeEvenement;
     private int factor;
     private long dateSimulation;
-    private Empereur empereur;
+    private ChefPompier chefPompier;
 
 
 
@@ -74,7 +75,7 @@ class Simulateur implements Simulable {
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
-        this.empereur = new Empereur(data);
+        this.chefPompier = new ChefPompier(data);
         gui.setSimulable(this);				// association a la gui!
         draw();
     }
@@ -85,8 +86,8 @@ class Simulateur implements Simulable {
     public long getDateSimulation(){
       return this.dateSimulation;
     }
-    public Empereur getEmpereur(){
-      return this.empereur;
+    public ChefPompier getChefPompier(){
+      return this.chefPompier;
     }
     private void incrementeDate(){
       this.dateSimulation ++;
@@ -97,10 +98,10 @@ class Simulateur implements Simulable {
     public Carte getCarte(){
        return this.carte;
     }
-    private LinkedList<Evenement> getListeEvenements(){
+    public LinkedList<Evenement> getListeEvenements(){
       return this.listeEvenement;
     }
-    private LinkedList<Incendie> getListeIncendie(){
+    public LinkedList<Incendie> getListeIncendie(){
       return this.listeIncendie;
     }
     public LinkedList<Robot> getListeRobot(){
@@ -110,13 +111,14 @@ class Simulateur implements Simulable {
     @Override
     public void next() {
         incrementeDate();
+        getChefPompier().ordonne(getListeEvenements(), getDateSimulation());
         // System.out.println("[next] la liste fait "+ this.listeEvenement.size()+"\n");
         if(simulationTerminee()){
           System.out.println("Plus d'event a lancer FFIIINNN \n");
         }
         else{
 
-          getEmpereur().ordonne(getListeEvenements(), getDateSimulation());
+          
 
 
           for(Evenement e : getListeEvenements()){
