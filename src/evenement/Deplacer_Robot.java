@@ -30,7 +30,7 @@ public class Deplacer_Robot extends Evenement{
             }
         }
         else{
-            System.out.println("heeerree SSUUUIIIIIII");
+            // System.out.println("heeerree SSUUUIIIIIII");
             setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
             // robot.setTempsFin(robot.getTempsFin()+dateDeplacerRobot);
         }

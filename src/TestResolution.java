@@ -117,16 +117,11 @@ class Simulateur implements Simulable {
           System.out.println("Plus d'event a lancer FFIIINNN \n");
         }
         else{
-
-          
-
-
           for(Evenement e : getListeEvenements()){
             System.out.println("["+getDateSimulation()+"] l'evenement e est de date : "+e.getDate()+"\n");
             // System.out.println("liste devent ="+getListeEvenements());
             if(e.getDate()==getDateSimulation()){
               System.out.println("["+getDateSimulation()+"] l'evenement "+e+" s'execute !\n");
-
               e.execute(getDateSimulation());
               draw();
             }

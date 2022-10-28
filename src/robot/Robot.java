@@ -78,22 +78,22 @@ public abstract class Robot {
                 // TODO : renvoyer une erreur lorsque la position est innateignable !
                 switch(d){
                     case NORD:
-                        System.out.println("NORD");
+                       System.out.println(this + "se deplace au NORD");
                        getPosition().setLigne(getPosition().getLigne()-1);
                        break;
 
                     case SUD:
-                        System.out.println("SUD");
+                        System.out.println(this + "se deplace au SUD");
                         getPosition().setLigne(getPosition().getLigne()+1);
                         break;
 
                     case EST:
-                        System.out.println("EST");
+                        System.out.println(this + "se deplace au EST");
                         getPosition().setColonne(getPosition().getColonne()+1);
                         break;
 
                     case OUEST:
-                        System.out.println("OUEST");
+                        System.out.println(this + "se deplace au OUEST");
                         getPosition().setColonne(getPosition().getColonne()-1);
                         break;
                 }

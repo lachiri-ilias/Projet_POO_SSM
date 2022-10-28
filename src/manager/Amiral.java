@@ -38,7 +38,7 @@ public class Amiral {
         }
     }
   }
-  
+
   private LinkedList<Case> getListeCaseEau(){
     return this.listeCaseEau;
   }
@@ -103,8 +103,29 @@ public class Amiral {
 
 //  changer le next par une parcours liste simple (2 case par 2 case )
   private void creeDeplacement(Robot robot, Case c, LinkedList<Evenement> listeEvenement, long dateSimulation){
-    Iterator<Case> parcours = Parcours(robot, c).iterator();
-    Case bufferCase = parcours.next();
+    LinkedList<Case> parcours = Parcours(robot, c);
+    Case bufferCase, actuelleCase;
+    for(int i=1; i<parcours.size(); i++){
+      bufferCase = parcours.get(i-1);
+      actuelleCase = parcours.get(i);
+      if(bufferCase.getLigne()==actuelleCase.getLigne()-1){
+        listeEvenement.add(new Deplacer_Robot(Direction.SUD, robot, dateSimulation, data.getCarte()));
+        System.out.println("["+dateSimulation+"] AJOUT event Deplacement SUD du robot : "+robot);
+      }
+      else if (bufferCase.getLigne()==actuelleCase.getLigne()+1){
+        listeEvenement.add(new Deplacer_Robot(Direction.NORD, robot, dateSimulation, data.getCarte()));
+        System.out.println("["+dateSimulation+"] AJOUT event Deplacement NORD du robot : "+robot);
+      }
+      else if  (bufferCase.getColonne()==actuelleCase.getColonne()+1){
+        listeEvenement.add(new Deplacer_Robot(Direction.OUEST, robot, dateSimulation, data.getCarte()));
+        System.out.println("["+dateSimulation+"] AJOUT event Deplacement OUEST du robot : "+robot);
+      }
+      else if  (bufferCase.getColonne()==actuelleCase.getColonne()-1){
+        listeEvenement.add(new Deplacer_Robot(Direction.EST, robot, dateSimulation, data.getCarte()));
+        System.out.println("["+dateSimulation+"] AJOUT event Deplacement EST du robot : "+robot);
+      }
+    }
+    /*
     while(parcours.hasNext()){
       Case actuelleCase = parcours.next();
       if(bufferCase.getLigne()==actuelleCase.getLigne()-1){
@@ -119,11 +140,12 @@ public class Amiral {
       else if  (bufferCase.getColonne()==actuelleCase.getColonne()-1){
         listeEvenement.add(new Deplacer_Robot(Direction.EST, robot, dateSimulation, data.getCarte()));
       }
-      
+
       bufferCase = actuelleCase;
     }
+    */
    // robot.setTempsFin(dateSimulation + dureeDeplacement(robot, parcours));  // A DISCUTER !!!!!
-    robot.setTempsFin(dateSimulation + dureeDeplacement(robot, Parcours(robot, c))); 
+    robot.setTempsFin(dateSimulation + dureeDeplacement(robot, Parcours(robot, c)));
   }
 
   private boolean estLibre(Robot robot, long dateSimulation){
@@ -131,17 +153,17 @@ public class Amiral {
   }
 
   // TODO : AMELIORER GRANDEMENT CETTE FONCTION !
-  private List<Case> Parcours(Robot robot, Case arrivee){
+  private LinkedList<Case> Parcours(Robot robot, Case arrivee){
     int lr = robot.getPosition().getLigne();
     int cr = robot.getPosition().getColonne();
     int l = arrivee.getLigne();
     int c = arrivee.getColonne();
-    // new Robot impossible car classe abstract !!!  //c'est normal 
+    // new Robot impossible car classe abstract !!!  //c'est normal
     // sauvegarder sa position et l y remettre a la fin !  // oui pourquoi pas
     Case init_pos = robot.getPosition();
-    //Robot robCopy = new Robot(robot); 
+    //Robot robCopy = new Robot(robot);
     boolean b_nord=false, b_sud=false, b_est=false, b_ouest=false;
-    List<Case> parcours = new ArrayList<Case>();
+    LinkedList<Case> parcours = new LinkedList<Case>();
     while((lr != l) && (cr != c)){
       // DEPLACEMENT HORIZONTAL
       if(lr<l && robot.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){

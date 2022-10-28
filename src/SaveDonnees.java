@@ -215,7 +215,7 @@ public class SaveDonnees {
                 System.out.print(vitesse);
             }
             verifieLigneTerminee();
-            System.out.println();
+            // System.out.println();
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
