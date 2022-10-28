@@ -26,6 +26,10 @@ au temps global que va mettre le robot pour effectuer son operation
 public class Amiral {
   private DonneesSimulation data;
   private LinkedList<Case> listeCaseEau;
+  private Graph graphDrone;
+  private Graph graphR_Chenille;
+  private Graph graphR_Pattes;
+  private Graph graphR_Roue;
 
   public Amiral(DonneesSimulation data){
     this.data = data;
@@ -37,10 +41,37 @@ public class Amiral {
             }
         }
     }
+    // Construction des graph
+    graphDrone = makeGraph(Drone);
+    graphR_Chenille = makeGraph(R_Chenille);
+    graphR_Pattes = makeGraph(R_Pattes);
+    graphR_Roue = makeGraph(R_Roue);
   }
 
   private LinkedList<Case> getListeCaseEau(){
     return this.listeCaseEau;
+  }
+
+  private Graph makeGraph(char* type){
+    Graph specialGraph = new Graph;
+    switch(type){
+      case "Drone" :
+
+        break;
+
+      case "R_Chenille" :
+
+        break;
+
+      case "R_Pattes" :
+
+        break;
+
+      case "R_Roue" :
+
+        break;
+    }
+    return specialGraph;
   }
 
   public void goEteindre(Incendie incendie, LinkedList<Evenement> listeEvenement, long dateSimulation){
@@ -72,14 +103,14 @@ public class Amiral {
   */
 
   public void goRemplir(Robot robot, LinkedList<Evenement> listeEvenement, long dateSimulation){
-    creeDeplacement(robot, plusProcheCase(robot), listeEvenement, dateSimulation);
+    creeDeplacement(robot, plusProcheCaseEau(robot), listeEvenement, dateSimulation);
   }
 
   public boolean estRempli(Robot robot){
     return robot.getCapActuelle() == robot.getCapMax();
   }
 
-  private Case plusProcheCase(Robot robot){
+  private Case plusProcheCaseEau(Robot robot){
     Case casePlusProche = getListeCaseEau().getFirst();
     for(Case c : getListeCaseEau()){
       if(dureeDeplacement(robot, Parcours(robot, c))<dureeDeplacement(robot, Parcours(robot, casePlusProche))){
@@ -89,7 +120,7 @@ public class Amiral {
     return casePlusProche;
   }
 
-  public long dureeDeplacement(Robot robot, List<Case> parcours){
+  public long dureeDeplacement(Robot robot, LinkedList<Case> parcours){
     int tailleCase = data.getCarte().getTailleCases();
     long compt_tps = 0;
 
@@ -102,8 +133,8 @@ public class Amiral {
   }
 
 //  changer le next par une parcours liste simple (2 case par 2 case )
-  private void creeDeplacement(Robot robot, Case c, LinkedList<Evenement> listeEvenement, long dateSimulation){
-    LinkedList<Case> parcours = Parcours(robot, c);
+  private void creeDeplacement(Robot robot, Case DestinationCase, LinkedList<Evenement> listeEvenement, long dateSimulation){
+    LinkedList<Case> parcours = Parcours(robot, DestinationCase);
     Case bufferCase, actuelleCase;
     for(int i=1; i<parcours.size(); i++){
       bufferCase = parcours.get(i-1);
@@ -145,7 +176,7 @@ public class Amiral {
     }
     */
    // robot.setTempsFin(dateSimulation + dureeDeplacement(robot, parcours));  // A DISCUTER !!!!!
-    robot.setTempsFin(dateSimulation + dureeDeplacement(robot, Parcours(robot, c)));
+    robot.setTempsFin(dateSimulation + dureeDeplacement(robot, Parcours(robot, DestinationCase)));
   }
 
   private boolean estLibre(Robot robot, long dateSimulation){
@@ -164,7 +195,8 @@ public class Amiral {
     //Robot robCopy = new Robot(robot);
     boolean b_nord=false, b_sud=false, b_est=false, b_ouest=false;
     LinkedList<Case> parcours = new LinkedList<Case>();
-    while((lr != l) && (cr != c)){
+    // while((lr != l) && (cr != c)){
+    for(int i=0; i<2; i++){
       // DEPLACEMENT HORIZONTAL
       if(lr<l && robot.verif_depl(Direction.SUD, data.getCarte().getCase(lr+1,cr))){
         lr++;

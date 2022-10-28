@@ -45,7 +45,7 @@ public class TestResolution {
           int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateur simulateur = new Simulateur(gui, data, factor);
-          simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
+          // simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
 
 
         } catch (FileNotFoundException e) {
@@ -110,7 +110,8 @@ class Simulateur implements Simulable {
 
     @Override
     public void next() {
-        incrementeDate();
+        System.out.println("["+dateSimulation+"] Appel de next : la liste d'evenement est : \n"+listeEvenement);
+        // incrementeDate();
         getChefPompier().ordonne(getListeEvenements(), getDateSimulation());
         // System.out.println("[next] la liste fait "+ this.listeEvenement.size()+"\n");
         if(simulationTerminee()){
@@ -127,6 +128,7 @@ class Simulateur implements Simulable {
             }
           }
       }
+      incrementeDate();
     }
 
 
