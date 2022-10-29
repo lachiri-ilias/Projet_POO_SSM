@@ -23,6 +23,10 @@ execute de la classe Evenement SAUF qu'a ce moment la on n'a plus acces
 au temps global que va mettre le robot pour effectuer son operation
 */
 
+/*
+Renommer verif_depl en verifCase !!! et mettre en parametre uniquement la case
+*/
+
 public class Amiral {
   private DonneesSimulation data;
   private LinkedList<Case> listeCaseEau;
@@ -42,35 +46,200 @@ public class Amiral {
         }
     }
     // Construction des graph
-    graphDrone = makeGraph(Drone);
-    graphR_Chenille = makeGraph(R_Chenille);
-    graphR_Pattes = makeGraph(R_Pattes);
-    graphR_Roue = makeGraph(R_Roue);
+    graphDrone = makeGraph("Drone");
+    graphR_Chenille = makeGraph("R_Chenille");
+    graphR_Pattes = makeGraph("R_Pattes");
+    graphR_Roue = makeGraph("R_Roue");
   }
 
   private LinkedList<Case> getListeCaseEau(){
     return this.listeCaseEau;
   }
 
-  private Graph makeGraph(char* type){
-    Graph specialGraph = new Graph;
-    switch(type){
-      case "Drone" :
+  private Graph makeGraph(String type){
+    Graph graphSpecial = new Graph();
+    Carte carte = data.getCarte();
+    int tailleCase = data.getCarte().getTailleCases();
+    Case caseij, voisin;
 
+    // On pourrait facilement compacter tout ca
+    // soucis : mettre type (de type String le convertir en ??? pour l'utiliser comme une classe)
+
+    /*
+    remplissage du graph :
+    Si la case est accessible par le robot -> ajout de la case
+    Verification pour chaque direction :
+      1) que la case existe
+      2) que cette case est accessible par notre robot
+      -> ajout de la connection entre notre robot et la case
+    */
+    switch(type){
+
+      case "Drone" :
+        for(int i=0; i<carte.getNbLignes();i++){
+          for(int j=0; j<carte.getNbColonnes();j++){
+            // pas de condition particuliere
+            caseij = carte.getCase(i,j);
+            graphSpecial.addVertex(caseij);
+            if(carte.voisinExiste(caseij, Direction.NORD) && Drone.verifCase(carte.getVoisin(Direction.NORD,caseij))){
+              voisin = carte.getCase(i-1,j);
+              tempsCaseDepart = tailleCase/((long) (Drone.getVitesseTerrain(caseij.getNature()) /3.6));
+              tempsCaseDestination = tailleCase/((long) (Drone.getVitesseTerrain(voisin.getNature()) /3.6));
+              graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+            }
+            if(carte.voisinExiste(caseij, Direction.SUD) && Drone.verifCase(carte.getVoisin(Direction.SUD,caseij))){
+              voisin = carte.getCase(i+1,j);
+              tempsCaseDepart = tailleCase/((long) (Drone.getVitesseTerrain(caseij.getNature()) /3.6));
+              tempsCaseDestination = tailleCase/((long) (Drone.getVitesseTerrain(voisin.getNature()) /3.6));
+              graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+            }
+            if(carte.voisinExiste(caseij, Direction.EST) && Drone.verifCase(carte.getVoisin(Direction.EST,caseij))){
+              voisin = carte.getCase(i,j+1);
+              tempsCaseDepart = tailleCase/((long) (Drone.getVitesseTerrain(caseij.getNature()) /3.6));
+              tempsCaseDestination = tailleCase/((long) (Drone.getVitesseTerrain(voisin.getNature()) /3.6));
+              graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+            }
+            if(carte.voisinExiste(caseij, Direction.OUEST) && Drone.verifCase(carte.getVoisin(Direction.OUEST,caseij))){
+              voisin = carte.getCase(i,j-1);
+              tempsCaseDepart = tailleCase/((long) (Drone.getVitesseTerrain(caseij.getNature()) /3.6));
+              tempsCaseDestination = tailleCase/((long) (Drone.getVitesseTerrain(voisin.getNature()) /3.6));
+              graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+            }
+          }
+        }
         break;
 
       case "R_Chenille" :
-
+        for(int i=0; i<carte.getNbLignes();i++){
+          for(int j=0; j<carte.getNbColonnes();j++){
+            // pas de condition particuliere
+            caseij = carte.getCase(i,j);
+            // si la ligne ci dessous ne marche pas mettre new R_chenille.(etc)
+            if(R_Chenille.verifCase(caseij){ // regarder le commentaire ligne 27
+              graphSpecial.addVertex(caseij);
+              if(carte.voisinExiste(caseij, Direction.NORD) && R_Chenille.verifCase(carte.getVoisin(Direction.NORD,caseij))){
+                voisin = carte.getCase(i-1,j);
+                tempsCaseDepart = tailleCase/((long) (R_Chenille.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Chenille.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.SUD) && R_Chenille.verifCase(carte.getVoisin(Direction.SUD,caseij))){
+                voisin = carte.getCase(i+1,j);
+                tempsCaseDepart = tailleCase/((long) (R_Chenille.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Chenille.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.EST) && R_Chenille.verifCase(carte.getVoisin(Direction.EST,caseij))){
+                voisin = carte.getCase(i,j+1);
+                tempsCaseDepart = tailleCase/((long) (R_Chenille.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Chenille.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.OUEST) && R_Chenille.verifCase(carte.getVoisin(Direction.OUEST,caseij))){
+                voisin = carte.getCase(i,j-1);
+                tempsCaseDepart = tailleCase/((long) (R_Chenille.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Chenille.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+            }
+          }
+        }
         break;
 
       case "R_Pattes" :
-
+        for(int i=0; i<carte.getNbLignes();i++){
+          for(int j=0; j<carte.getNbColonnes();j++){
+            // pas de condition particuliere
+            caseij = carte.getCase(i,j);
+            if(R_Pattes.verif_depl(Direction.NORD, caseij){ // regarder le commentaire ligne 27
+              graphSpecial.addVertex(caseij);
+              if(carte.voisinExiste(caseij, Direction.NORD) && R_Pattes.verifCase(carte.getVoisin(Direction.NORD,caseij))){
+                voisin = carte.getCase(i-1,j);
+                tempsCaseDepart = tailleCase/((long) (R_Pattes.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Pattes.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.SUD) && R_Pattes.verifCase(carte.getVoisin(Direction.SUD,caseij))){
+                voisin = carte.getCase(i+1,j);
+                tempsCaseDepart = tailleCase/((long) (R_Pattes.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Pattes.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.EST) && R_Pattes.verifCase(carte.getVoisin(Direction.EST,caseij))){
+                voisin = carte.getCase(i,j+1);
+                tempsCaseDepart = tailleCase/((long) (R_Pattes.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Pattes.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.OUEST) && R_Pattes.verifCase(carte.getVoisin(Direction.OUEST,caseij))){
+                voisin = carte.getCase(i,j-1);
+                tempsCaseDepart = tailleCase/((long) (R_Pattes.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Pattes.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+            }
+          }
+        }
         break;
 
       case "R_Roue" :
-
+        for(int i=0; i<carte.getNbLignes();i++){
+          for(int j=0; j<carte.getNbColonnes();j++){
+            // pas de condition particuliere
+            caseij = carte.getCase(i,j);
+            if(R_Roue.verif_depl(Direction.NORD, caseij){ // regarder le commentaire ligne 27
+              graphSpecial.addVertex(caseij);
+              if(carte.voisinExiste(caseij, Direction.NORD) && R_Roue.verifCase(carte.getVoisin(Direction.NORD,caseij)){
+                voisin = carte.getCase(i-1,j);
+                tempsCaseDepart = tailleCase/((long) (R_Roue.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Roue.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.SUD) && R_Roue.verifCase(carte.getVoisin(Direction.SUD,caseij)){
+                voisin = carte.getCase(i+1,j);
+                tempsCaseDepart = tailleCase/((long) (R_Roue.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Roue.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.EST) && R_Roue.verifCase(carte.getVoisin(Direction.EST,caseij)){
+                voisin = carte.getCase(i,j+1);
+                tempsCaseDepart = tailleCase/((long) (R_Roue.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Roue.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+              if(carte.voisinExiste(caseij, Direction.OUEST) && R_Roue.verifCase(carte.getVoisin(Direction.OUEST,caseij)){
+                voisin = carte.getCase(i,j-1);
+                tempsCaseDepart = tailleCase/((long) (R_Roue.getVitesseTerrain(caseij.getNature()) /3.6));
+                tempsCaseDestination = tailleCase/((long) (R_Roue.getVitesseTerrain(voisin.getNature()) /3.6));
+                graphSpecial.addEdge(caseij, voisin, tempsCaseDepart, tempsCaseDestination);
+              }
+            }
+          }
+        }
         break;
     }
+    /* // A ESSAYER (type mis a la place d'un switch/case)
+    for(int i=0; i<carte.getNbLignes();i++){
+      for(int j=0; j<carte.getNbColonnes();j++){
+        // pas de condition particuliere
+        Case caseij = carte.getCase(i,j);
+        if(type.verif_depl(Direction.NORD, caseij) // regarder le commentaire ligne 27
+          graphSpecial.addVertex(caseij);
+        if(carte.voisinExiste(caseij, Direction.NORD)){
+          graphSpecial.addEdge(caseij, carte.getCase(i-1,j));
+        }
+        if(carte.voisinExiste(caseij, Direction.SUD)){
+          graphSpecial.addEdge(caseij, carte.getCase(i+1,j));
+        }
+        if(carte.voisinExiste(caseij, Direction.EST)){
+          graphSpecial.addEdge(caseij, carte.getCase(i,j+1));
+        }
+        if(carte.voisinExiste(caseij, Direction.OUEST)){
+          adjVertices.addEdge(caseij, carte.getCase(i,j-1));
+        }
+      }
+    }
+    */
     return specialGraph;
   }
 

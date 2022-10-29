@@ -28,7 +28,7 @@ public  class R_Pattes extends Robot {
         else throw new IllegalArgumentException("R_Pattes ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
-    public boolean verif_depl(Direction d, Case voisin){
+    public boolean verifCase(Case voisin){
         return !(voisin.getNature()==NatureTerrain.EAU);
     }
 

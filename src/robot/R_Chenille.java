@@ -43,7 +43,7 @@ public class R_Chenille extends Robot {
       return false;
     }
 
-    public boolean verif_depl(Direction d, Case voisin){
+    public boolean verifCase(Case voisin){
         return !(voisin.getNature() == NatureTerrain.EAU
         || voisin.getNature() == NatureTerrain.ROCHE);
     }

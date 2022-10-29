@@ -36,7 +36,7 @@ public class R_Roue extends Robot {
       return false;
     }
 
-    public boolean verif_depl(Direction d, Case voisin){
+    public boolean verifCase(Case voisin){
         return (voisin.getNature()==NatureTerrain.TERRAIN_LIBRE
         || voisin.getNature()==NatureTerrain.HABITAT);
     }

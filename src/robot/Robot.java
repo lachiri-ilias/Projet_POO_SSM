@@ -73,7 +73,7 @@ public abstract class Robot {
         if(carte.voisinExiste(this.position, d)){
             Case voisin = carte.getVoisin(this.position, d);
             //System.out.println("VERIF DEPL : "+this.verif_depl(d, voisin)+"\n");
-            if(this.verif_depl(d, voisin)){
+            if(this.verifCase(voisin)){
                 //System.out.println("on se deplace :"+d+"\n");
                 // TODO : renvoyer une erreur lorsque la position est innateignable !
                 switch(d){
@@ -107,6 +107,6 @@ public abstract class Robot {
     public abstract void setVitesse(double v);
     public abstract void deverserEau(int vol);
     public abstract boolean remplirReservoir(Carte carte);
-    public abstract boolean verif_depl(Direction d, Case voisin);
+    public abstract boolean verifCase(Case voisin);
     public abstract String getType();
 }
