@@ -35,6 +35,11 @@ public class TestSaveDonnees {
             System.out.println("\n \t AJOUT D UN ROBOT (DRONE) \n");
             storage.ajouteRobot(new Drone(new Case(10, 10)));
             System.out.println("La nouvelle liste de robot est : "+storage.getListeRobot()+"\n");
+
+            System.out.println("LE graph est : \n");
+            Graph graph = new Graph(storage.getCarte(),storage.getListeRobot().get(0));
+            graph.dijkstra(graph,0);
+            System.out.println("SSUUIIIIII  \n");
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {

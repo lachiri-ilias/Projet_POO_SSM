@@ -66,7 +66,13 @@ public abstract class Robot {
     public long getTempsRemplissage(){
         return this.tps_remplissage;
     }
-
+    public boolean verif_depl(Direction d , Carte carte){
+        if(carte.voisinExiste(this.position, d))
+             if(this.verifCase(carte.getVoisin(this.position, d)))
+                        return true;
+        return false;       
+    }
+    /*TODO (easy) Ajouter la fct verif_depl a deplacer !!!!! */
     public void deplacer(Direction d, Carte carte){
         // System.out.println("[exe1] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
         // System.out.println("VOISIN EXISTE : "+carte.voisinExiste(this.position, d)+"\n");

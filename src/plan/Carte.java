@@ -43,7 +43,9 @@ public class Carte {
     public int getTailleCases(){
         return tailleCases;
     }
-
+    public int getNbCases(){
+        return this.nbColonnes * this.nbLignes;
+    }
     public Case getCase(int l, int c){
         return carte[l][c];
     }
@@ -68,6 +70,7 @@ public class Carte {
         return false;
     }
 
+
     public Case getVoisin(Case src, Direction dir){
         int c, l;
 
@@ -91,6 +94,26 @@ public class Carte {
         }
         else throw new IllegalArgumentException("No Voisin !");
         return getCase(0,0); // ......??????????????
+    }
+    public boolean isVoisin(Case src, Case arriv){
+        int c1, l1, c2,l2;
+        c1 = src.getColonne();
+        l1 = src.getLigne();
+        c2 = arriv.getColonne();
+        l2 = arriv.getLigne();
+        if(c1 == c2){
+            if( (l1 == l2+1) && (l2+1<this.getNbLignes()))
+                return true; 
+            if( (l1 == l2-1) && (l2-1>=0))
+                 return true; 
+        }
+        if(l1 == l2){
+            if( (c1 == c2+1) && (c2+1<this.getNbColonnes()))
+                return true; 
+            if( (c1 == c2-1) && (c2-1>=0))
+                return true; 
+        }
+        return false;
     }
 
     public boolean existeTypeVoisin(Case src, NatureTerrain nature){

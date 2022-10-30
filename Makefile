@@ -92,9 +92,10 @@ exeResolution:
 
 exeLecture:
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
+#java -classpath bin TestLecteurDonnees cartes/carteSujet.map
 
 exeSave:
-	java -classpath bin TestSaveDonnees cartes/carteSujet.map
+	java -classpath bin TestSaveDonnees cartes/carteSujet_test.map
 
 
 

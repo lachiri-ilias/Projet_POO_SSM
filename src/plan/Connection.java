@@ -18,11 +18,11 @@ PS : tout les connections d'une case auront le meme poids = temps
 */
 
 public class Connection {
-  private Case case; // case de destination
+  private Case c; // case de destination
   private long duree; // duree pour parcourir la case actuelle (pas la case destination)
 
-  public Connection(Case case, long duree){
-    this.case = case;
+  public Connection(Case c, long duree){
+    this.c = c;
     this.duree = duree;
   }
 }
