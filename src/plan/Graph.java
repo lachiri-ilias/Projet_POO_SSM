@@ -82,9 +82,11 @@ public class Graph{
   }
 
   public boolean check(Carte carte,Robot robot,Case i,Case j){
-        if(carte.isVoisin(i, j))
-            // if(robot.verifCase(carte.getCase(i,j)))
-                        return true;
+        if(carte.isVoisin(i, j)){
+         // System.out.println("verif : case "+j.getNature()+ " ROBOT : "+robot.getType()+" verif == "+ robot.verifCase(j));
+          if(robot.verifCase(j))
+                    return true;
+        }
         return false;       
     }
 
@@ -126,16 +128,16 @@ public class Graph{
     // Distance of self loop is zero
     distance[source] = 0;
     for (i = 0; i < taille; i++) {
-      System.out.println("i :+++++ : "+i);
+      //System.out.println("i :+++++ : "+i);
       // Update the distance between neighbouring vertex and source vertex
       u = findMinDistance(distance, sommetVisite);
       sommetVisite[u] = true;
 
       // Update all the neighbouring vertex distances
       for (v = 0; v < taille; v++) {
-        if (!sommetVisite[v] &&  getGraphVal(v) != 0 && (distance[u] + getGraphVal(v) < distance[v])) {
-          distance[v] = distance[u] +  getGraphVal(v);
-          System.out.println("v : "+v+"= diste : = " +distance[v]);
+        if (!sommetVisite[v] &&  getGraphVal(u,v) != 0 && (distance[u] + getGraphVal(u,v) < distance[v])) {
+          distance[v] = distance[u] +  getGraphVal(u,v);
+          //System.out.println("v : "+v+"= diste : = " +distance[v]);
         }
       }
     }
@@ -148,15 +150,15 @@ public class Graph{
   private  int findMinDistance(int[] distance, boolean[] sommetVisite) {
     int minDistance = 999; //Integer.MAX_VALUE;
     int minDistanceVertex = -1;
-    System.out.println("size diste : = " + distance.length);
+    //System.out.println("size diste : = " + distance.length);
     for (int i = 0; i < distance.length; i++) {
       if (!sommetVisite[i] && distance[i] < minDistance) { // !!!! probleme herree  !!
-         System.out.println("**** : "+i+" dist = "+distance[i]+"\n");
+         //System.out.println("**** : "+i+" dist = "+distance[i]+"\n");
         minDistance = distance[i];
         minDistanceVertex = i;
       }
     }
-    System.out.println("return : "+minDistanceVertex);
+    //System.out.println("return : "+minDistanceVertex);
     return minDistanceVertex;
   }
 

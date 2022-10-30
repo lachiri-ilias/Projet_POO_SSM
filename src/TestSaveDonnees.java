@@ -32,8 +32,8 @@ public class TestSaveDonnees {
             System.out.println("La liste de robot est : "+storage.getListeRobot()+"\n");
             System.out.println("La liste d incendies est : "+storage.getListeIncendie()+"\n");
 
-            System.out.println("\n \t AJOUT D UN ROBOT (DRONE) \n");
-            storage.ajouteRobot(new Drone(new Case(10, 10)));
+            System.out.println("\n \t AJOUT D UN ROBOT (CHENILLES) \n");
+            storage.ajouteRobot(new R_Chenille(new Case(1, 0)));
             System.out.println("La nouvelle liste de robot est : "+storage.getListeRobot()+"\n");
 
             System.out.println("LE graph est : \n");
