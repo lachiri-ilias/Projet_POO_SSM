@@ -10,12 +10,14 @@ public class Feux_Eteint extends Evenement{
     private Robot robot;
     private Carte carte;
     private LinkedList<Incendie> listeIncendie;
+    private Incendie incendie;
     private long dateEteintFeux = 1;
 
-    public Feux_Eteint(Robot robot,LinkedList<Incendie> listeIncendie,long date,Carte carte){ 
+    public Feux_Eteint(Robot robot,LinkedList<Incendie> listeIncendie,Incendie incendie,long date,Carte carte){ 
         super(date);
         this.robot =robot;
         this.listeIncendie = listeIncendie;
+        this.incendie = incendie;
         this.carte =carte;
     }
         
@@ -24,8 +26,7 @@ public class Feux_Eteint extends Evenement{
         //System.out.println("***feux eteint  entre****["+dateSimulation+" ] temps fin : "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
             robot.setTempsFin(dateSimulation);
-            /* TODO : trouver une methode pour enlever l'incedie de la liste (ici j'enleve juste le 1ere)*/
-            this.listeIncendie.remove(0);
+            this.listeIncendie.remove(this.incendie);
             if(dateSimulation==robot.getTempsFin() ){
                 robot.setTempsFin(dateSimulation+dateEteintFeux);
             }

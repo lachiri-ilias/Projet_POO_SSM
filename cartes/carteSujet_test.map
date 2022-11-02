@@ -19,8 +19,9 @@ TERRAIN_LIBRE
 
 # Incendies
 1
-1 1 8000
+1 2 8000
 	
 # Robots
 1
-1 0 CHENILLES 
+0 0 CHENILLES
+

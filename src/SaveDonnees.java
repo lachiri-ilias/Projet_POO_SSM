@@ -197,9 +197,9 @@ public class SaveDonnees {
             String type = scanner.next();
             System.out.print("\t type = " + type);
             switch(type){
-                case "DRONE" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
+                case "DRONES" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
                 case "ROUES" :  data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
-                case "CHENILLE" :  data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
+                case "CHENILLES" :  data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
                 case "PATTES" :  data.ajouteRobot(new R_Pattes(new Case(lig,col))); break;
             }
 

@@ -9,12 +9,12 @@ import gui.Simulable;
 import gui.Text;
 import gui.ImageElement;
 
-
+import manager.*;
 import robot.*;
 import plan.*;
 import io.*;
-import evenement.*;
 import donnees.*;
+import evenement.*;
 import incendie.*;
 
 import java.io.*;
@@ -22,16 +22,13 @@ import java.util.*;
 import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
-/*
-TODO :
-  - Comprendre pq on ne peut pas fermer les fenetres
-  - Dimensionner la fenetre en fonction du nb de lignes et colonnes de la carte
-  - Ajouter un titre a la fenetre
-  - Ajouter les robots et les Incendies
-  - Dimensionner factor en fonction de la taille de la carte (ie fenetre)
-*/
 
-public class TestSimulateur {
+/*  
+    Cette classe est une class de test qui permet de verifier le fonctionment de trouver le plus court chemin
+    + on donne juste le robot et la case d'arriver la fct s'encharge a trouver le chemin.
+
+*/
+public class Test2 {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -39,37 +36,38 @@ public class TestSimulateur {
         }
 
         try {
-          // crée la fenêtre graphique dans laquelle dessiner
-
-          // crée l'invader, en l'associant à la fenêtre graphique précédente
-          // Invader invader = new Invader(gui, Color.decode("#f2ff28"));
-          // TODO : ajouter les verifications (cf TestSaveDonnees)
           DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
           int factor = data.getCarte().getTailleCases();
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
+          int k = 1;
+        //   Direction d =  Direction.NORD ;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
-          // for(int i=0;i<2;i++){
-            /*  TODO  init variable tempsFin !!!  */
-            //data.getListeRobot().get(0).setTempsFin(1);
-            // simulation 1
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
-          // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
-            // simulation 2
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),2,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),3,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),6,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),8,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),9,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),10,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte(), 0));
+        
+         
+          
+          /* on a donner le rebot idem case de deppart : 0  et la case d'arriver : 5 qui est la case d'INcendie*/
+          Graph graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
+          graph.dijkstra2(graph,graph.getRobot().getPosition(),data.getListeIncendie().get(0).getCase());
+
+          Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
+         k++;
+
+         
+          for(Direction d : graph.getListeDiretion()){
+            Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
+            k++;
+          }
+           System.out.println("la liste d'eveneent est : "+Simulateurr.getListeEvenements());
+         /*   Le robot est sur la case d'Incendie on donne l'evenement d'etaindre */
+
+        // j'ai utiliser l'ancien event Feux_Eteint car je devais faire des modif test event simple + Eteindre feux Adiscuter avec Robin
+          Simulateurr.ajouteEvenement(new Feux_Eteint(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
 
 
+
+        /*  FIN DE SIMULATION DONNées */ 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -77,6 +75,8 @@ public class TestSimulateur {
         }
     }
 }
+
+
 
 class Simulateurr implements Simulable {
     private GUISimulator gui;
@@ -90,10 +90,6 @@ class Simulateurr implements Simulable {
     private int y_drone;
     private Iterator<Integer> xIterator;
     private Iterator<Integer> yIterator;
-    // private Iterator<Integer> xIterator;
-    // private Iterator<Integer> yIterator;
-
-
 
     public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
         this.factor = f;
@@ -118,7 +114,7 @@ class Simulateurr implements Simulable {
     private boolean simulationTerminee(){
       return this.listeEvenement.isEmpty();
     }
-    private LinkedList<Evenement> getListeEvenements(){
+    public LinkedList<Evenement> getListeEvenements(){
       return this.listeEvenement;
     }
 
@@ -182,6 +178,7 @@ class Simulateurr implements Simulable {
     //     this.x_drone = xMin;
     //     this.y_drone = yMin;
     // }
+
     @Override
     public void next() {
         incrementeDate();
@@ -300,14 +297,10 @@ class Simulateurr implements Simulable {
                   case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
               System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
+              String s = robots.getType() + " : capacite reservoire = "+ robots.getCapActuelle();
+              gui.addGraphicalElement(new Text(5*factor, 10, Color.decode("#FFFFFF"), s));
         }
-        /* Drone */
-        // gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(2*factor,3*factor,"image/r_pattes.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(6*factor,2*factor,"image/r_roue.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(7*factor,1*factor,"image/r_chenille.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(3*factor,2*factor,"image/r_roue2.png",factor,factor,gui));
-        // gui.addGraphicalElement(new ImageElement(0*factor,1*factor,"image/r_pattes2.png",factor,factor,gui));
+   
 
         System.out.println("\n FIN AFFICHAGE CARTE !\n");
 
