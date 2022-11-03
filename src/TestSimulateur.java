@@ -61,13 +61,13 @@ public class TestSimulateur {
           // Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),5,data.getCarte()));
             // simulation 2
           Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),1,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),2,data.getCarte()));
+          //Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),2,data.getCarte()));
           Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),3,data.getCarte()));
           Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),6,data.getCarte()));
           Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),8,data.getCarte()));
           Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),9,data.getCarte()));
           Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),10,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte(), 0));
+         // Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),16,data.getCarte(), 0));
 
 
         } catch (FileNotFoundException e) {

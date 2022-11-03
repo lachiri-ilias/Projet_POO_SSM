@@ -23,12 +23,11 @@ import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
 
-/*  
-    Cette classe est une class de test qui permet de verifier le fonctionment de trouver le plus court chemin
-    + on donne juste le robot et la case d'arriver la fct s'encharge a trouver le chemin.
+/**  
+   Cette Class a pour objetif de tester et simuler le deplacement des robots c-à-d pas de deplacement instantané mais deplacement selon la vitesse !!
 
 */
-public class Test2 {
+public class Test1 {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -45,32 +44,42 @@ public class Test2 {
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
         
+         Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),1,data.getCarte()));
+          //Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),2,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),3,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),4,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),5,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),7,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),10,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),11,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),12,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),13,data.getCarte()));
          
           
-          /* on a donner le rebot idem case de deppart : 0  et la case d'arriver : 5 qui est la case d'INcendie*/
-          Graph graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
-          graph.dijkstra2(graph,graph.getRobot().getPosition(),data.getListeIncendie().get(0).getCase());
+        //   /* on a donner le rebot idem case de deppart : 0  et la case d'arriver : 5 qui est la case d'INcendie*/
+        //   Graph graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
+        //   graph.dijkstra2(graph,graph.getRobot().getPosition(),data.getListeIncendie().get(0).getCase());
 
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
-          k++;
-          for(Direction d : graph.getListeDiretion()){
-            Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
-            k++;
-          }
-           System.out.println("la liste d'eveneent est : "+Simulateurr.getListeEvenements());
-         /*   Le robot est sur la case d'Incendie on donne l'evenement d'etaindre */
+        //   Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
+        //   k++;
+        //   for(Direction d : graph.getListeDiretion()){
+        //     Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
+        //     k++;
+        //   }
+        //    System.out.println("la liste d'eveneent est : "+Simulateurr.getListeEvenements());
+        //  /*   Le robot est sur la case d'Incendie on donne l'evenement d'etaindre */
 
-        // j'ai utiliser l'ancien event Feux_Eteint car je devais faire des modif test event simple + Eteindre feux Adiscuter avec Robin
-          Simulateurr.ajouteEvenement(new Feux_Eteint(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
+        // // j'ai utiliser l'ancien event Feux_Eteint car je devais faire des modif test event simple + Eteindre feux Adiscuter avec Robin
+        //   Simulateurr.ajouteEvenement(new Feux_Eteint(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
 
-        Graph graph_drone = new Graph(data.getCarte(),data.getListeRobot().get(1));
-        graph_drone.dijkstra2(graph_drone,graph_drone.getRobot().getPosition(),data.getListeIncendie().get(1).getCase());
-        for(Direction d : graph_drone.getListeDiretion()){
-            Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph_drone.getRobot(),z,data.getCarte()));
-            z++;
-          }
-           System.out.println("\nSSSUUUIIII  la liste d'eveneent est : "+Simulateurr.getListeEvenements());
-        Simulateurr.ajouteEvenement(new Feux_Eteint(graph_drone.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(1),z,data.getCarte()));
+        // Graph graph_drone = new Graph(data.getCarte(),data.getListeRobot().get(1));
+        // graph_drone.dijkstra2(graph_drone,graph_drone.getRobot().getPosition(),data.getListeIncendie().get(1).getCase());
+        // for(Direction d : graph_drone.getListeDiretion()){
+        //     Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph_drone.getRobot(),z,data.getCarte()));
+        //     z++;
+        //   }
+        //    System.out.println("\nSSSUUUIIII  la liste d'eveneent est : "+Simulateurr.getListeEvenements());
+        // Simulateurr.ajouteEvenement(new Feux_Eteint(graph_drone.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(1),z,data.getCarte()));
 
         /*  FIN DE SIMULATION DONNées */ 
         } catch (FileNotFoundException e) {

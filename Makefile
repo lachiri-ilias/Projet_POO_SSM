@@ -21,14 +21,17 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Connection Amiral ChefPompier Test2
-#TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees Test2
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Connection Amiral ChefPompier Test1
+# TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees Test2
 
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
 
 testSimulateur:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestSimulateur.java
+
+Test1:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test1.java
 
 Test2:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test2.java
@@ -102,9 +105,11 @@ exeLecture:
 exeSave:
 	java -classpath bin TestSaveDonnees cartes/carteSujet_test.map
 
+exeTest1:
+	java -classpath bin:bin/gui.jar Test1 cartes/carteSujet_test.map
+
 exeTest2:
 	java -classpath bin:bin/gui.jar Test2 cartes/carteSujet_test.map
-
 
 
 clean:

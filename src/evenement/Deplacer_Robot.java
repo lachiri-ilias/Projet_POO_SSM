@@ -9,7 +9,7 @@ public class Deplacer_Robot extends Evenement{
     private Direction direction;
     private Robot robot;
     private Carte carte;
-    private long dateDeplacerRobot = 1;
+    private long dateDeplacerRobot;
 
     public Deplacer_Robot(Direction direction,Robot robot,long date,Carte carte){
         super(date);
@@ -20,8 +20,8 @@ public class Deplacer_Robot extends Evenement{
 
     public void execute(long dateSimulation){
         /* TODO : Trouver comment gerer  */
-
-        System.out.println("**Deplacer le robot entree*****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
+        
+       // System.out.println("**Deplacer le robot entree*****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
             robot.setTempsFin(dateSimulation);
             robot.deplacer(direction,carte);
