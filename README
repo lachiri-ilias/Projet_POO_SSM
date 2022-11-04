@@ -1,6 +1,9 @@
 ILIAS : (TODO)
           **   ajouter une liste qui contient les case d'eau + utiliser l'ago dijisktra pour trouver l'eau le plus proche du robot
-          **   
+          **   remplir le reservoir check est ce que le robt est acoté de l'eau pour remplire le check TODO !
+          **   changer la fct remplir reservoir de tout les robot (voir robot chenilles c'est fait)
+
+          ** Drone quand il etain le feux est ce qu'il vide la totalite peux importe la quantité de feux ,,,,???? (a dicuter)
 
 
 PHELMA > Ensimag 2A POO - TP 2022/23

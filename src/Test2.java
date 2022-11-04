@@ -60,8 +60,8 @@ public class Test2 {
            System.out.println("la liste d'eveneent est : "+Simulateurr.getListeEvenements());
          /*   Le robot est sur la case d'Incendie on donne l'evenement d'etaindre */
 
-        // j'ai utiliser l'ancien event Feux_Eteint car je devais faire des modif test event simple + Eteindre feux Adiscuter avec Robin
-          Simulateurr.ajouteEvenement(new Feux_Eteint(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
+        // j'ai utiliser l'ancien event Eteindre_Incendie car je devais faire des modif test event simple + Eteindre feux Adiscuter avec Robin
+          Simulateurr.ajouteEvenement(new Eteindre_Incendie(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
 
         Graph graph_drone = new Graph(data.getCarte(),data.getListeRobot().get(1));
         graph_drone.dijkstra2(graph_drone,graph_drone.getRobot().getPosition(),data.getListeIncendie().get(1).getCase());
@@ -70,7 +70,7 @@ public class Test2 {
             z++;
           }
            System.out.println("\nSSSUUUIIII  la liste d'eveneent est : "+Simulateurr.getListeEvenements());
-        Simulateurr.ajouteEvenement(new Feux_Eteint(graph_drone.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(1),z,data.getCarte()));
+        Simulateurr.ajouteEvenement(new Eteindre_Incendie(graph_drone.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(1),z,data.getCarte()));
 
         /*  FIN DE SIMULATION DONNées */ 
         } catch (FileNotFoundException e) {

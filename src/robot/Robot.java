@@ -14,6 +14,7 @@ public abstract class Robot {
     protected int tps_deversage;
     protected int qte_deversage;
     protected long tps_fin_act=0;
+    protected int tmp = 100;
 
     public Robot(Case c, double v, double vm, int cm, int ca, int tr, int td, int qd){
         this.position = c;
@@ -36,6 +37,13 @@ public abstract class Robot {
       this.qte_deversage = robot.qte_deversage;
     }
 
+    public int getTempsDeversage(){
+        return this.tps_deversage;
+    }
+    public int getQteDeverssage(){
+          return this.qte_deversage;
+    }
+
     public Case getPosition(){
         return this.position;
     }
@@ -46,6 +54,9 @@ public abstract class Robot {
 
     public int getCapActuelle(){
         return this.cap_actuelle;
+    }
+    public void setCapActuelle(int cap_actuelle){
+       this.cap_actuelle=cap_actuelle;
     }
 
     public int getCapMax(){

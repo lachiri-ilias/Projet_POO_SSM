@@ -9,8 +9,8 @@ import plan.*;
 public class R_Chenille extends Robot {
 
     public R_Chenille(Case c){
-        super(c, 60, 60, 2000, 0, 5*60, 8, 100);
-    }
+        super(c, 60, 60, 2000, 0, 5*60, 8, 100);   // a modifier tmps de deverssage 8 (160) il faut faire le calcul instantané.
+    } 
 
     public double getVitesseTerrain(NatureTerrain nat){
       if(nat==NatureTerrain.FORET) return this.vitesse/2;
@@ -35,12 +35,14 @@ public class R_Chenille extends Robot {
 
     public boolean remplirReservoir(Carte carte){
       //if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
-       // int t=0;
-        //while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
-        this.cap_actuelle = this.cap_max;
-        return true;
-     // }
-      //return false;
+        if(this.cap_actuelle < this.cap_max){
+            this.cap_actuelle += 400;
+        } 
+        else{
+            this.cap_actuelle = this.cap_max;
+            return true;
+        }  
+        return false;
     }
 
     public boolean verifCase(Case voisin){

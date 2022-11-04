@@ -197,9 +197,9 @@ public class Graph{
       }
 		}
 		courtChemin2(source,arrive, shortestDistances, chemin,graph);
-    System.out.print("la liste chemin est : "+getListeChemin()+"\n");
+    //System.out.print("la liste chemin est : "+getListeChemin()+"\n");
     convertirListChemin(graph);
-    System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
+    //System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
 
 	}
 

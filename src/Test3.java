@@ -24,10 +24,10 @@ import java.util.zip.DataFormatException;
 
 
 /**  
-   Cette Class a pour objetif de tester et simuler le deplacement des robots c-à-d pas de deplacement instantané mais deplacement selon la vitesse !!
+   Cette classe test le deplacement du robot, etaindre feux + remplire l'eau de maniére semi automatique .....s
 
 */
-public class Test1 {
+public class Test3 {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -43,63 +43,32 @@ public class Test1 {
         //   Direction d =  Direction.NORD ;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
-       // for(k=1;k<10;k++){
-          
-        //}
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),1,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),2,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),3,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),5,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),7,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),8,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),9,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),data.getListeIncendie().get(0),10,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),14,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),15,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),16,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),17,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),18,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),19,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),20,data.getCarte()));
-         
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),21,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),22,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),23,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),24,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),25,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),27,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),28,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),29,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),30,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),31,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),data.getListeIncendie().get(1),33,data.getCarte()));
 
-          
-        //   /* on a donner le rebot idem case de deppart : 0  et la case d'arriver : 5 qui est la case d'INcendie*/
-        //   Graph graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
-        //   graph.dijkstra2(graph,graph.getRobot().getPosition(),data.getListeIncendie().get(0).getCase());
+          Graph graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
+          k++;
+          Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
+          graph.dijkstra2(graph,graph.getRobot().getPosition(),data.getListeIncendie().get(0).getCase());
+          for(Direction d : graph.getListeDiretion()){
+            Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
+            k++;
+          }
+          Simulateurr.ajouteEvenement(new Eteindre_Incendie(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
+          graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
+          graph.dijkstra2(graph,data.getListeIncendie().get(0).getCase(),data.getCarte().getCase(0,0)); // case de l'eau::!!!
+          for(Direction d : graph.getListeDiretion()){
+            Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
+            k++;
+          }
+          Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
+          graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
+          graph.dijkstra2(graph,data.getCarte().getCase(0,0),data.getListeIncendie().get(1).getCase()); // case de l'eau::!!!
+          for(Direction d : graph.getListeDiretion()){
+            Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
+            k++;
+          }
+          Simulateurr.ajouteEvenement(new Eteindre_Incendie(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(1),k,data.getCarte()));
 
-        //   Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
-        //   k++;
-        //   for(Direction d : graph.getListeDiretion()){
-        //     Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
-        //     k++;
-        //   }
-        //    System.out.println("la liste d'eveneent est : "+Simulateurr.getListeEvenements());
-        //  /*   Le robot est sur la case d'Incendie on donne l'evenement d'etaindre */
 
-        // // j'ai utiliser l'ancien event Eteindre_Incendie car je devais faire des modif test event simple + Eteindre feux Adiscuter avec Robin
-        //   Simulateurr.ajouteEvenement(new Eteindre_Incendie(graph.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(0),k,data.getCarte()));
-
-        // Graph graph_drone = new Graph(data.getCarte(),data.getListeRobot().get(1));
-        // graph_drone.dijkstra2(graph_drone,graph_drone.getRobot().getPosition(),data.getListeIncendie().get(1).getCase());
-        // for(Direction d : graph_drone.getListeDiretion()){
-        //     Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph_drone.getRobot(),z,data.getCarte()));
-        //     z++;
-        //   }
-        //    System.out.println("\nSSSUUUIIII  la liste d'eveneent est : "+Simulateurr.getListeEvenements());
-        // Simulateurr.ajouteEvenement(new Eteindre_Incendie(graph_drone.getRobot(),data.getListeIncendie(),data.getListeIncendie().get(1),z,data.getCarte()));
 
         /*  FIN DE SIMULATION DONNées */ 
         } catch (FileNotFoundException e) {
@@ -156,7 +125,7 @@ class Simulateurr implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-         System.out.println(" la liste est :  "+ this.listeEvenement+"\n");
+        // System.out.println(" la liste est :  "+ this.listeEvenement+"\n");
         if(simulationTerminee()){
           System.out.println("Pas d'event a lancer FFIIINNN \n");
         }
@@ -239,6 +208,7 @@ class Simulateurr implements Simulable {
     }
     private void draw() {
          gui.reset();	// clear the window
+         int t =1;
         for(int i=0; i<this.getCarte().getNbLignes();i++){
           for(int j=0; j<this.getCarte().getNbColonnes();j++){
             // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
@@ -273,9 +243,11 @@ class Simulateurr implements Simulable {
         for(Incendie incendies : getListeIncendie()){
             //gui.addGraphicalElement(new Rectangle(( incendies.getCase().getColonne())*factor+ (factor/2), ( incendies.getCase().getLigne())*factor+ (factor/2), Color.decode("#000000"), Color.decode("#00000000"),factor));
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
-
+              String s =  " Incendie X : intensité = "+ incendies.getLitresEau();
+              gui.addGraphicalElement(new Text(6*factor, 12*t, Color.decode("#FFFFFF"), s));
+              t ++;
         }
-        int t =1;
+        
         for(Robot robots : getListeRobot()){
             // if(robots.getTmp()<100) {
             //    System.out.println("heere \n");
@@ -289,7 +261,7 @@ class Simulateurr implements Simulable {
               }
             //  System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
               String s = robots.getType() + " : capacite reservoire = "+ robots.getCapActuelle();
-              gui.addGraphicalElement(new Text(5*factor, 10*t, Color.decode("#FFFFFF"), s));
+              gui.addGraphicalElement(new Text(6*factor, 12*t, Color.decode("#FFFFFF"), s));
               t ++;
         }
    

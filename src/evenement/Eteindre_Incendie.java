@@ -1,4 +1,5 @@
 package evenement;
+
 import io.Direction;
 import robot.*;
 import plan.*;
@@ -10,52 +11,50 @@ public class Eteindre_Incendie extends Evenement{
     private Robot robot;
     private Carte carte;
     private LinkedList<Incendie> listeIncendie;
-    private long dateEteintFeux = 1;
-    private int ind_incendie;
+    private Incendie incendie;
+    private long dateEteintFeux;
 
-    public Eteindre_Incendie(Robot robot,LinkedList<Incendie> listeIncendie,long date,Carte carte, int indice_incendie){
+    public Eteindre_Incendie(Robot robot,LinkedList<Incendie> listeIncendie,Incendie incendie,long date,Carte carte){ 
         super(date);
         this.robot =robot;
         this.listeIncendie = listeIncendie;
+        this.incendie = incendie;
         this.carte =carte;
-        this.ind_incendie = indice_incendie;
     }
-
+        
     public void execute(long dateSimulation){
         /* TODO : Trouver comment gerer  */
+            System.out.print("La date est  "+(dateSimulation) );
+
         //System.out.println("***feux eteint  entre****["+dateSimulation+" ] temps fin : "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
-            robot.setTempsFin(dateSimulation);
-            /* TODO : trouver une methode pour enlever l'incedie de la liste (ici j'enleve juste le 1ere)*/
-            // this.listeIncendie.remove(0);
-            if(this.robot.getCapActuelle()>=this.listeIncendie.get(this.ind_incendie).getLitresEau()){
-              this.listeIncendie.remove(this.ind_incendie);
+            dateEteintFeux =  this.robot.getTempsDeversage();
+            this.robot.setTempsFin(dateSimulation+dateEteintFeux);
+            if(this.robot.getCapActuelle() >= this.incendie.getLitresEau()){
+                    this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
+                    this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getQteDeverssage());
+                    if(this.incendie.getLitresEau() <= 0){
+                        this.listeIncendie.remove(this.incendie);
+                        super.setIsExe(true);
+                    }
+                    else{
+                        setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
+                        super.setIsExe(false);     
+                    }
             }
-            else{
-              this.listeIncendie.get(this.ind_incendie).setLitresEau(this.listeIncendie.get(this.ind_incendie).getLitresEau() - this.robot.getCapActuelle());
+            else{ 
+                this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getCapActuelle());
+                this.robot.setCapActuelle(0);
+                setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
+                super.setIsExe(false);
             }
-            if(dateSimulation==robot.getTempsFin() ){
-                robot.setTempsFin(dateSimulation+dateEteintFeux);
-            }
-
         }
         else{
+            System.out.print("LE temps a ajouter est : "+(super.getDate()+robot.getTempsFin()-dateSimulation) );
             setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
+            super.setIsExe(false);
+
         }
         //System.out.println("***feux eteint sortie****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
-
-        /* POUR LA SUITE
-        if(this.robot.getCapActuelle()>=this.listeIncendie.get(this.ind_incendie).getLitresEau()){
-          System.out.println("["+dateSimulation+"] Incendie "+this.ind_incendie+ " eteint !\n");
-          this.listeIncendie.remove(this.ind_incendie);
-        }
-        else{
-          System.out.println("["+dateSimulation+"] Incendie "+this.ind_incendie+ " en cours d'extinction !\n");
-          this.listeIncendie.get(this.ind_incendie).setLitresEau(this.listeIncendie.get(this.ind_incendie).getLitresEau - this.robot.getCapActuelle);
-        }
-        */
-
     }
-
-
 }
