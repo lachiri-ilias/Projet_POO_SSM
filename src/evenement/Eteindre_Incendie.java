@@ -23,11 +23,11 @@ public class Eteindre_Incendie extends Evenement{
     }
         
     public void execute(long dateSimulation){
-        /* TODO : Trouver comment gerer  */
-            System.out.print("La date est  "+(dateSimulation) );
+           // System.out.print("La date est  "+(dateSimulation) );
 
         //System.out.println("***feux eteint  entre****["+dateSimulation+" ] temps fin : "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
+            // robot.setIsLibre(false);
             dateEteintFeux =  this.robot.getTempsDeversage();
             this.robot.setTempsFin(dateSimulation+dateEteintFeux);
             if(this.robot.getCapActuelle() >= this.incendie.getLitresEau()){
@@ -37,20 +37,20 @@ public class Eteindre_Incendie extends Evenement{
                         this.listeIncendie.remove(this.incendie);
                         super.setIsExe(true);
                     }
-                    else{
-                        setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
-                        super.setIsExe(false);     
-                    }
+                    // else{
+                    //     setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
+                    //     super.setIsExe(false);     
+                    // }
             }
             else{ 
                 this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getCapActuelle());
                 this.robot.setCapActuelle(0);
                 setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
-                super.setIsExe(false);
+                super.setIsExe(true);
             }
         }
         else{
-            System.out.print("LE temps a ajouter est : "+(super.getDate()+robot.getTempsFin()-dateSimulation) );
+           // System.out.print("LE temps a ajouter est : "+(super.getDate()+robot.getTempsFin()-dateSimulation) );
             setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
             super.setIsExe(false);
 

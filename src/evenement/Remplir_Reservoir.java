@@ -17,9 +17,9 @@ public class Remplir_Reservoir extends Evenement{
 
 /* TODO regler le probleme de remplire du robot verif Carte ... avoir */
     public void execute(long dateSimulation){
-        /* TODO : Trouver comment gerer */
       //  System.out.println("***Remplir eau  entre****["+dateSimulation+" ] temps fin : "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=this.robot.getTempsFin()){
+          // robot.setIsLibre(false);
           // tempsRemplissage = this.robot.getTempsRemplissage()/;
            this.robot.setTempsFin(dateSimulation+1);
            if(this.robot.remplirReservoir(carte)){
@@ -36,11 +36,6 @@ public class Remplir_Reservoir extends Evenement{
 
         }
         //System.out.println("***Remplir eau  sortie****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
-        
-        // POUR LA SUITE
-        // if(robot.remplirReservoir(carte)) {
-        //   System.out.println("["+dateSimulation+"] Le robot "+robot+" a rempli son réservoir\n");
-        // }
       }
 
 }

@@ -53,6 +53,7 @@ public class Graph{
   private Carte carte;
   private LinkedList<Integer> listeChemin;
   private LinkedList<Direction> listeDirection;
+  private int courtDistance;
 
   /*
     la fct permet de creer le graphe a partir de la carte et du robot X avec le chemin possible de val 1 
@@ -82,25 +83,25 @@ public class Graph{
     for(i=0;i<carte.getNbCases();i++){
       for(j=0;j<carte.getNbCases();j++){
           if(check(carte,robot,tab[i],tab[j])){
-                 System.out.println("i : "+i+" j : "+j+" check = "+ check(carte,robot,tab[i],tab[j]));
+                // System.out.println("i : "+i+" j : "+j+" check = "+ check(carte,robot,tab[i],tab[j]));
                 addEdge(i,j);
           }            
       }
     }
     /* le print */ 
     // System.out.println("\n\nAFTEEEEER");
-     for(i=0;i<carte.getNbCases();i++){
-      for(j=0;j<carte.getNbCases();j++){
-          System.out.println("(i: "+i+", j: "+j+") = "+getGraphVal(i,j));
-      }
-     }
+    //  for(i=0;i<carte.getNbCases();i++){
+    //   for(j=0;j<carte.getNbCases();j++){
+    //       System.out.println("(i: "+i+", j: "+j+") = "+getGraphVal(i,j));
+    //   }
+    //  }
      
   }
  
   public boolean check(Carte carte,Robot robot,Case i,Case j){
        if(robot.verifCase(i)){
         if(carte.isVoisin(i, j)){
-         System.out.println("verif : case "+j.getNature()+ " ROBOT : "+robot.getType()+" verif == "+ robot.verifCase(j));
+         //System.out.println("verif : case "+j.getNature()+ " ROBOT : "+robot.getType()+" verif == "+ robot.verifCase(j));
           if(robot.verifCase(j))
                     return true;
         }
@@ -148,8 +149,9 @@ public class Graph{
     this.graph[ligne][colonne] = 0;
     this.graph[colonne][ligne] = 0;
   }
-
-
+  public int getCourtDistance(){
+      return this.courtDistance;
+  }
   public void dijkstra2(Graph graph, Case c_source,Case c_arrive)
 	{
     int arrive = c_arrive.getColonne() + c_arrive.getLigne() * graph.getCarte().getNbLignes() ;
@@ -197,6 +199,7 @@ public class Graph{
       }
 		}
 		courtChemin2(source,arrive, shortestDistances, chemin,graph);
+    this.courtDistance = shortestDistances[arrive];
     //System.out.print("la liste chemin est : "+getListeChemin()+"\n");
     convertirListChemin(graph);
     //System.out.print("la liste direction  est : "+getListeDiretion()+"\n");

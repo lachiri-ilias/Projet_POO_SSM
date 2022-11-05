@@ -61,7 +61,7 @@ public class Test3 {
           }
           Simulateurr.ajouteEvenement(new Remplir_Reservoir(graph.getRobot(),k,data.getCarte()));
           graph = new Graph(data.getCarte(),data.getListeRobot().get(0));
-          graph.dijkstra2(graph,data.getCarte().getCase(0,0),data.getListeIncendie().get(1).getCase()); // case de l'eau::!!!
+          graph.dijkstra2(graph,data.getCarte().getCase(0,0),data.getListeIncendie().get(1).getCase()); // dernier case du robots
           for(Direction d : graph.getListeDiretion()){
             Simulateurr.ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,data.getCarte()));
             k++;

@@ -21,8 +21,8 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Connection Amiral ChefPompier Test3
-# TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees  TEST 1 Test2 TEST 3
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Connection Amiral ChefPompier ChefCurry  Test4
+# TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees  TEST 1 Test2 TEST 3 Test4
 
 testInvader:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestInvader.java
@@ -38,6 +38,9 @@ Test2:
 
 Test3:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test3.java
+
+Test4:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test4.java
 
 testResolution:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestResolution.java
@@ -82,6 +85,9 @@ Amiral:
 ChefPompier:
 	javac -d bin -classpath bin/manager -sourcepath src src/manager/ChefPompier.java
 
+ChefCurry :
+	javac -d bin -classpath bin/manager -sourcepath src src/manager/ChefCurry.java
+
 
 
 # Execution:
@@ -115,7 +121,11 @@ exeTest2:
 	java -classpath bin:bin/gui.jar Test2 cartes/carteSujet_test.map
 
 exeTest3:
-	java -classpath bin:bin/gui.jar Test3 cartes/carteSujet_test.map
+	java -classpath bin:bin/gui.jar Test3 cartes/carteSujet_test3.map
+
+exeTest4:
+	java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
+#java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test.map
 
 
 clean:

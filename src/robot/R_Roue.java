@@ -27,14 +27,17 @@ public class R_Roue extends Robot {
     }
 
     public boolean remplirReservoir(Carte carte){
-      if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
-        int t=0;
-        while(t<this.tps_remplissage) t++; // Traduire dans le temps reel
-        this.cap_actuelle = this.cap_max;
-        return true;
-      }
-      return false;
+     // if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
+        if(this.cap_actuelle < this.cap_max){
+            this.cap_actuelle += 500;
+        } 
+        else{
+            this.cap_actuelle = this.cap_max;
+            return true;
+        }  
+        return false;
     }
+    
 
     public boolean verifCase(Case voisin){
         return (voisin.getNature()==NatureTerrain.TERRAIN_LIBRE

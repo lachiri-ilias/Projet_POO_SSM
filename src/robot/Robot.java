@@ -15,6 +15,7 @@ public abstract class Robot {
     protected int qte_deversage;
     protected long tps_fin_act=0;
     protected int tmp = 100;
+    protected boolean islibre;
 
     public Robot(Case c, double v, double vm, int cm, int ca, int tr, int td, int qd){
         this.position = c;
@@ -25,6 +26,7 @@ public abstract class Robot {
         this.tps_remplissage = tr;
         this.tps_deversage = td;
         this.qte_deversage = qd;
+        this.islibre = true;
     }
 
     public Robot(Robot robot){
@@ -35,8 +37,15 @@ public abstract class Robot {
       this.tps_remplissage = robot.tps_remplissage;
       this.tps_deversage = robot.tps_deversage;
       this.qte_deversage = robot.qte_deversage;
+      this.islibre = true;
     }
 
+    public void setIsLibre(boolean status){
+         this.islibre = status;
+    }
+    public boolean getIsLibre(){
+        return this.islibre;
+    }
     public int getTempsDeversage(){
         return this.tps_deversage;
     }
