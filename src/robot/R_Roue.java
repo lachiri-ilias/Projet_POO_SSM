@@ -7,7 +7,7 @@ import plan.*;
 public class R_Roue extends Robot {
 
     public R_Roue(Case c){
-        super(c, 80, (int)Double.POSITIVE_INFINITY, 5000, 0, 10*60, 5, 100);
+        super(c, 80, Integer.MAX_VALUE, 5000, 0, 10*60, 5, 100);
     }
 
 
