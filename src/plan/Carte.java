@@ -53,19 +53,17 @@ public class Carte {
         int c, l;
         c = src.getColonne();
         l = src.getLigne();
-
         switch(dir){
             case NORD:
-                return l>0; // l-1>=0
+                return l-1>0; 
 
             case SUD:
-                return l< this.getNbLignes();
-
+                return l+1 < this.getNbLignes();
             case EST:
-                return c< this.getNbColonnes();
+                return c+1 < this.getNbColonnes();
 
             case OUEST:
-                return c>0;
+                return c-1>0;
         }
         return false;
     }

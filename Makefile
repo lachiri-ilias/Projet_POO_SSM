@@ -124,8 +124,8 @@ exeTest3:
 	java -classpath bin:bin/gui.jar Test3 cartes/carteSujet_test3.map
 
 exeTest4:	
-#java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
-	java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test.map
+	java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
+#java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test.map
 #java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test4.map
 
 

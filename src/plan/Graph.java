@@ -101,7 +101,7 @@ public class Graph{
   public boolean check(Carte carte,Robot robot,Case i,Case j){
        if(robot.verifCase(i)){
         if(carte.isVoisin(i, j)){
-         //System.out.println("verif : case "+j.getNature()+ " ROBOT : "+robot.getType()+" verif == "+ robot.verifCase(j));
+         System.out.println("verif : case "+j.getNature()+ " ROBOT : "+robot.getType()+" verif == "+ robot.verifCase(j));
           if(robot.verifCase(j))
                     return true;
         }
@@ -200,9 +200,9 @@ public class Graph{
 		}
 		courtChemin2(source,arrive, shortestDistances, chemin,graph);
     this.courtDistance = shortestDistances[arrive];
-    //System.out.print("la liste chemin est : "+getListeChemin()+"\n");
+    System.out.print("la liste chemin est : "+getListeChemin()+"\n");
     convertirListChemin(graph);
-    //System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
+    System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
 
 	}
 

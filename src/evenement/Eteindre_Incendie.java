@@ -43,8 +43,8 @@ public class Eteindre_Incendie extends Evenement{
                     // }
             }
             else{ 
-                this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getCapActuelle());
-                this.robot.setCapActuelle(0);
+                this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getQteDeverssage());
+                this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
                 setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
                 super.setIsExe(true);
             }

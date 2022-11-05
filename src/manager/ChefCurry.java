@@ -27,8 +27,8 @@ public class ChefCurry {
     this.listeEvenement = new LinkedList<Evenement>();
     this.listeCaseEau = new LinkedList<Case>();
     this.listeCaseEauVosin = new LinkedList<Case>();
-    for (int lig = 0; lig < carte.getNbLignes(); lig++) {
-        for (int col = 0; col < carte.getNbColonnes(); col++) {
+    for (int lig = 0; lig < this.carte.getNbLignes(); lig++) {
+        for (int col = 0; col < this.carte.getNbColonnes(); col++) {
             if(carte.getCase(lig, col).getNature()==NatureTerrain.EAU){
                 listeCaseEau.add(carte.getCase(lig, col));
 
@@ -51,6 +51,7 @@ public class ChefCurry {
             }
         }
     }
+   // System.out.print("\n*******************\nListe  : "+listeCaseEauVosin);
   }
   /* EST CE QUE le ROBOT PEUT ALLER AU FEUX OU PAS ...???????  */ 
   public void Simulation(long date){
@@ -171,6 +172,7 @@ private Case plusProcheCaseEauVoisin(Robot robot){
     Graph graph ;
     for(Case c : getListeCaseEauVosin()){
       if(robot.verifCase(c)){
+         // System.out.print("\nl'erreur : "+c);
           graph = new Graph(this.carte,robot);
           graph.dijkstra2(graph,robot.getPosition(),c); 
           if( graph.getCourtDistance() < distancemin ){
