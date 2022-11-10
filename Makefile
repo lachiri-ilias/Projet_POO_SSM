@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Connection Amiral ChefPompier ChefCurry  Test4
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Connection Amiral ChefPompier ChefCurry  Test4 testResolution
 # TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees  TEST 1 Test2 TEST 3 Test4
 
 testInvader:
@@ -105,7 +105,7 @@ exeSimulateur:
 # java -classpath bin:bin/gui.jar TestSimulateur cartes/spiralOfMadness-50x50.map
 
 exeResolution:
-		java -classpath bin:bin/gui.jar TestResolution cartes/carteSujet.map
+		java -classpath bin:bin/gui.jar TestResolution cartes/mushroomOfHell-20x20.map
 
 exeLecture:
 	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
@@ -123,7 +123,7 @@ exeTest2:
 exeTest3:
 	java -classpath bin:bin/gui.jar Test3 cartes/carteSujet_test3.map
 
-exeTest4:	
+exeTest4:
 	java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
 #java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test.map
 #java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test4.map
