@@ -12,60 +12,62 @@ public class Dijkstra {
   public Dijkstra(){
     this.listeChemin = new LinkedList<Integer>();
     this.listeDirection = new LinkedList<Direction>();
+    this.courtDistance = Integer.MAX_VALUE;
   }
 
   public void dijkstra2(Graph graph, Case c_source,Case c_arrive){
-    int arrive = c_arrive.getColonne() + c_arrive.getLigne() * graph.getCarte().getNbLignes() ;
-    int source = c_source.getColonne() + c_source.getLigne() * graph.getCarte().getNbLignes() ;
-		int nVertices = graph.getGraphSize();
-    int[] shortestDistances = new int[nVertices];
-		boolean[] added = new boolean[nVertices];
-		for (int vertexIndex = 0; vertexIndex < nVertices;
-											vertexIndex++)
-		{
-			shortestDistances[vertexIndex] = Integer.MAX_VALUE;
-			added[vertexIndex] = false;
+    if(graph.getRobot().verifCase(c_arrive)){
+            int arrive = c_arrive.getColonne() + c_arrive.getLigne() * graph.getCarte().getNbLignes() ;
+            int source = c_source.getColonne() + c_source.getLigne() * graph.getCarte().getNbLignes() ;
+            int nVertices = graph.getGraphSize();
+            int[] shortestDistances = new int[nVertices];
+            boolean[] added = new boolean[nVertices];
+            for (int vertexIndex = 0; vertexIndex < nVertices;
+                              vertexIndex++)
+            {
+              shortestDistances[vertexIndex] = Integer.MAX_VALUE;
+              added[vertexIndex] = false;
+            }
+            shortestDistances[source] = 0;
+            int[] chemin = new int[nVertices];
+            chemin[source] = -1;
+            for (int i = 1; i < nVertices; i++)
+            {
+              if(graph.getRobot().verifCase(graph.getCase(i))){
+
+                    int nearestVertex = -1;
+                    int shortestDistance = Integer.MAX_VALUE;
+                    //System.out.print("Heeere : "+graph.getCase(i)+"\n");
+                    for (int vertexIndex = 0;vertexIndex < nVertices;vertexIndex++)
+                    {
+                      if (!added[vertexIndex] && shortestDistances[vertexIndex] < shortestDistance)
+                      {
+                        //System.out.print("SSuuuii  "+vertexIndex+"  iii \n");
+                        nearestVertex = vertexIndex;
+                        shortestDistance = shortestDistances[vertexIndex];
+                      }
+                    }
+
+                    added[nearestVertex] = true;
+                    for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++)
+                    {
+                      int edgeDistance = graph.getGraphVal(nearestVertex,vertexIndex);
+                      if (edgeDistance > 0
+                        && ((shortestDistance + edgeDistance) <
+                          shortestDistances[vertexIndex]))
+                      {
+                        chemin[vertexIndex] = nearestVertex;
+                        shortestDistances[vertexIndex] = shortestDistance + edgeDistance;
+                      }
+                    }
+              }
+            }
+            courtChemin2(source,arrive, shortestDistances, chemin,graph);
+            this.courtDistance = shortestDistances[arrive];
+            //System.out.print("la liste chemin est : "+getListeChemin()+"\n");
+            convertirListChemin(graph);
+            // System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
     }
-		shortestDistances[source] = 0;
-		int[] chemin = new int[nVertices];
-		chemin[source] = -1;
-		for (int i = 1; i < nVertices; i++)
-		{
-      if(graph.getRobot().verifCase(graph.getCase(i))){
-
-            int nearestVertex = -1;
-            int shortestDistance = Integer.MAX_VALUE;
-           // System.out.print("Heeere : "+graph.getCase(i)+"\n");
-            for (int vertexIndex = 0;vertexIndex < nVertices;vertexIndex++)
-            {
-              if (!added[vertexIndex] && shortestDistances[vertexIndex] < shortestDistance)
-              {
-                //System.out.print("SSuuuiiiii \n");
-                nearestVertex = vertexIndex;
-                shortestDistance = shortestDistances[vertexIndex];
-              }
-            }
-
-            added[nearestVertex] = true;
-            for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++)
-            {
-              int edgeDistance = graph.getGraphVal(nearestVertex,vertexIndex);
-              if (edgeDistance > 0
-                && ((shortestDistance + edgeDistance) <
-                  shortestDistances[vertexIndex]))
-              {
-                chemin[vertexIndex] = nearestVertex;
-                shortestDistances[vertexIndex] = shortestDistance + edgeDistance;
-              }
-            }
-      }
-		}
-		courtChemin2(source,arrive, shortestDistances, chemin,graph);
-    this.courtDistance = shortestDistances[arrive];
-    //System.out.print("la liste chemin est : "+getListeChemin()+"\n");
-    convertirListChemin(graph);
-    // System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
-
 	}
 
 
@@ -111,7 +113,7 @@ public class Dijkstra {
           Path2(arrive, chemin,graph);
         }
         else{
-           System.out.print("le robot ne peux pas acceede a la case : "+arrive+"\n");
+           System.out.print(graph.getRobot()+"le robot ne peux pas acceede a la case : "+arrive+"\n");
         }
 			}
 	}
