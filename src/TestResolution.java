@@ -44,7 +44,7 @@ public class TestResolution {
           //int factor = data.getCarte().getTailleCases()/data.getCarte().getNbColonnes();
           // int X = data.getCarte().getNbColonnes() * factor;
           // int Y = data.getCarte().getNbLignes() * factor;
-          GUISimulator gui = new GUISimulator(1024, 700, Color.BLACK);
+          GUISimulator gui = new GUISimulator(1400, 930, Color.BLACK);
           int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
           Simulateur simulateur = new Simulateur(gui, data, factor);
           // simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
@@ -81,7 +81,7 @@ class Simulateur implements Simulable {
         this.listeEvenement = new LinkedList<Evenement>();
         this.chefPompier = new ChefPompier(data);
         gui.setSimulable(this);				// association a la gui!
-        initDraw();
+        initDraw(2);
     }
 
     public void ajouteEvenement(Evenement e){
@@ -198,13 +198,14 @@ class Simulateur implements Simulable {
     }
 
 
-    private void initDraw(){
+    private void initDraw(int k){
       for(int i=0; i<this.getCarte().getNbLignes();i++){
         for(int j=0; j<this.getCarte().getNbColonnes();j++){
           this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
         }
       }
-      draw2();
+      if(k==1) draw();
+      else draw2();
     }
 
     // TODO : utiliser etat pour faire des foret d'arbres et de rochers et d'habitations
@@ -230,15 +231,75 @@ class Simulateur implements Simulable {
               case HABITAT :
                 // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3,"image/3D/habitat/tent_smallOpen_NW.png",f*factor,f*factor,gui));  break;
+                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3,"image/3D/habitat/tent_smallOpen_NW.png",f*factor,f*factor,gui));  break;
+
+                if(etat==0){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/habitat/tent_detailedClosed_SW.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==11001){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/habitat/tent_detailedClosed_NW.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==11100){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/habitat/tent_detailedClosed_NE.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==10110){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/habitat/tent_detailedOpen_SE.png", f*factor, f*factor, gui)); break;
+                }
+                else{
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/habitat/tent_detailedOpen_SW.png", f*factor, f*factor, gui)); break;
+                }
+
               case FORET :
                 // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2,"image/3D/foret/tree_blocks_dark_NE.png",f*factor,f*factor,gui));  break;
+                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2,"image/3D/foret/tree_blocks_dark_NE.png",f*factor,f*factor,gui));  break;
+
+                if(etat==0){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_tall_dark_SE.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==10110){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_SE.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==10011){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_SW.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==11001){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_NW.png", f*factor, f*factor, gui)); break;
+                }
+                else{
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_NE.png", f*factor, f*factor, gui)); break;
+                }
+
+
+
               case ROCHE :
                 // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
+                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
+
+                if(etat==0){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==11001){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallA_SE.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==11100){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallA_SW.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==10110){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NE.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==10011){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NW.png", f*factor, f*factor, gui)); break;
+                }
+                if(etat==11111){
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallG_SE.png", f*factor, f*factor, gui)); break;
+                }
+                else{
+                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NE.png", f*factor, f*factor, gui)); break;
+                }
+
+
 
                 // gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/3D/terrain_libre/ground_grass_NW.png",factor,factor,gui));  break;
               case EAU :
@@ -298,7 +359,7 @@ class Simulateur implements Simulable {
                 }
 
                 if(etat==11111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor,factor,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverOpen_NE.png",factor,factor,gui));  break;
                 }
 
                 // SPECIALS CASE
@@ -369,6 +430,7 @@ class Simulateur implements Simulable {
       if(carte.voisinExiste(caseActuelle, Direction.SUD) && memeNature(caseActuelle, carte.getCase(lig+1, col))) voisinSud = true;
       if(carte.voisinExiste(caseActuelle, Direction.OUEST) && memeNature(caseActuelle, carte.getCase(lig, col-1))) voisinOuest = true;
 
+      // TESTS centraux
       if(voisinNord){
         if(voisinEst){
           if(voisinSud){
@@ -448,8 +510,6 @@ class Simulateur implements Simulable {
       if(voisinOuest){
         return 10001;
       }
-
-
 
       return 0;
   }
