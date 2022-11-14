@@ -40,22 +40,22 @@ public class ChefCurry2{
                 }
                 if(carte.voisinExiste(carte.getCase(lig, col),Direction.SUD)){
                   if( (carte.getVoisin(carte.getCase(lig, col),Direction.SUD).getNature() !=NatureTerrain.EAU) && !(listeCaseEauVosin.contains(carte.getVoisin(carte.getCase(lig, col),Direction.SUD))))
-                    listeCaseEauVosin.add(carte.getVoisin(carte.getCase(lig, col),Direction.SUD));  
+                    listeCaseEauVosin.add(carte.getVoisin(carte.getCase(lig, col),Direction.SUD));
                 }
                 if(carte.voisinExiste(carte.getCase(lig, col),Direction.EST)){
                   if( (carte.getVoisin(carte.getCase(lig, col),Direction.EST).getNature() !=NatureTerrain.EAU) && !(listeCaseEauVosin.contains(carte.getVoisin(carte.getCase(lig, col),Direction.EST))))
-                    listeCaseEauVosin.add(carte.getVoisin(carte.getCase(lig, col),Direction.EST));  
+                    listeCaseEauVosin.add(carte.getVoisin(carte.getCase(lig, col),Direction.EST));
                 }
                 if(carte.voisinExiste(carte.getCase(lig, col),Direction.OUEST)){
                   if( (carte.getVoisin(carte.getCase(lig, col),Direction.OUEST).getNature() !=NatureTerrain.EAU) && !(listeCaseEauVosin.contains(carte.getVoisin(carte.getCase(lig, col),Direction.OUEST))))
-                    listeCaseEauVosin.add(carte.getVoisin(carte.getCase(lig, col),Direction.OUEST));  
+                    listeCaseEauVosin.add(carte.getVoisin(carte.getCase(lig, col),Direction.OUEST));
                 }
             }
         }
     }
    // System.out.print("\n*******************\nListe  : "+listeCaseEauVosin);
   }
-  /* EST CE QUE le ROBOT PEUT ALLER AU FEUX OU PAS ...???????  */ 
+  /* EST CE QUE le ROBOT PEUT ALLER AU FEUX OU PAS ...???????  */
   public void Simulation(long date){
     /* TODO optimiser : trouver comment dimunier les appele new graph (par exemple : reset val graph !) */
     long k = date +1;
@@ -78,15 +78,15 @@ public class ChefCurry2{
             if(!goEteindre(graphs,derniereposition,incendies,k)){  // verifier est ce que le robots peut accedes ou pas si oui il part etaindre  sinon rien.
                 graphs.getRobot().setIsLibre(true);
                 incendies.setIsTaken(false);
-             
+
             }
             else{
                  System.out.println("Robot : ["+ graphs.getRobot() +"] : go Etaindre \n");
                 break;
             }
-            
+
         }
-      } 
+      }
     }
  }
 
@@ -118,7 +118,7 @@ private Case plusProcheCaseEau(Graph graph ){
     int distancemin = Integer.MAX_VALUE;
     for(Case c : getListeCaseEau()){
       Dijkstra dijkstra = new Dijkstra();
-      dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),c); 
+      dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),c);
       if( dijkstra.getCourtDistance() < distancemin ){
         distancemin = dijkstra.getCourtDistance();
         casePlusProche = c;
@@ -134,7 +134,7 @@ private Case plusProcheCaseEauVoisin( Graph graph ){
       if(graph.getRobot().verifCase(c)){
          //System.out.print("\nl'erreur : "+c);
           Dijkstra dijkstra = new Dijkstra();
-          dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),c); 
+          dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),c);
           if( dijkstra.getCourtDistance() < distancemin ){
             distancemin = dijkstra.getCourtDistance();
             casePlusProche = c;
@@ -147,7 +147,7 @@ private Case plusProcheCaseEauVoisin( Graph graph ){
 
 private boolean goEteindre( Graph graph ,Case derniereposition,Incendie incendie,long k){
   Dijkstra dijkstra = new Dijkstra();
-  dijkstra.dijkstra2(graph,derniereposition,incendie.getCase()); 
+  dijkstra.dijkstra2(graph,derniereposition,incendie.getCase());
   System.out.print("la liste direction pour eteindre  est : "+dijkstra.getListeDiretion()+"\n");
 
   if(dijkstra.getCourtDistance()<Integer.MAX_VALUE){
@@ -172,7 +172,7 @@ private Case goRemplir( Graph graph , long k){
   if(graph.getRobot().getType()=="Drone"){
       plusprocheCaseEau = plusProcheCaseEau(graph);
       Dijkstra dijkstra = new Dijkstra();
-      dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau); 
+      dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau);
       System.out.print("la liste direction pour remplire  est : "+dijkstra.getListeDiretion()+"\n");
       for(Direction d : dijkstra.getListeDiretion()){
           ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,this.carte));
@@ -189,7 +189,7 @@ private Case goRemplir( Graph graph , long k){
   else{
     plusprocheCaseEau = plusProcheCaseEauVoisin(graph);
     Dijkstra dijkstra = new Dijkstra();
-    dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau); 
+    dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau);
     System.out.print("la liste direction pour remplire  est : "+dijkstra.getListeDiretion()+"\n");
     for(Direction d : dijkstra.getListeDiretion()){
         ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,this.carte));
