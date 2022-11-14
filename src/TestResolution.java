@@ -81,7 +81,7 @@ class Simulateur implements Simulable {
         this.listeEvenement = new LinkedList<Evenement>();
         this.chefPompier = new ChefPompier(data);
         gui.setSimulable(this);				// association a la gui!
-        draw2();
+        initDraw();
     }
 
     public void ajouteEvenement(Evenement e){
@@ -123,7 +123,7 @@ class Simulateur implements Simulable {
         }
         else{
           for(Evenement e : getListeEvenements()){
-            System.out.println("["+getDateSimulation()+"] l'evenement e est de date : "+e.getDate()+"\n");
+            System.out.println("["+getDateSimulation()+"] l'evenement "+ e +" est de date : "+e.getDate()+"\n");
             // System.out.println("liste devent ="+getListeEvenements());
             if(e.getDate()==getDateSimulation()){
               System.out.println("["+getDateSimulation()+"] l'evenement "+e+" s'execute !\n");
@@ -198,33 +198,47 @@ class Simulateur implements Simulable {
     }
 
 
+    private void initDraw(){
+      for(int i=0; i<this.getCarte().getNbLignes();i++){
+        for(int j=0; j<this.getCarte().getNbColonnes();j++){
+          this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
+        }
+      }
+      draw2();
+    }
+
+    // TODO : utiliser etat pour faire des foret d'arbres et de rochers et d'habitations
     private void draw2() {
-        gui.reset();	// clear the window
+        // gui.reset();	// clear the window
         int etat;
-        for(int i=0; i<this.getCarte().getNbLignes();i++){
-          for(int j=0; j<this.getCarte().getNbColonnes();j++){
+        // for(int i=0; i<this.getCarte().getNbLignes();i++){
+          // for(int j=0; j<this.getCarte().getNbColonnes();j++){
             // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
             // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
+          while(this.getCarte().getListToDraw().size()!=0){
+            Case caseToDraw = this.getCarte().getListToDraw().removeFirst();
+            int i = caseToDraw.getLigne();
+            int j = caseToDraw.getColonne();
             int f = 4;
             int dec = 2;
             // gui.addGraphicalElement(new ImageElement(0,0,"image/sol/grass.png",factor*this.getCarte().getNbColonnes(),factor*this.getCarte().getNbLignes(),gui));
             etat = situation(i,j);
             switch(this.getCarte().getCase(i,j).getNature()){
               case TERRAIN_LIBRE :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor)); break;
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor,factor,gui));  break;
+                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2fe6c4"),factor)); break;
+                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));  break;
               case HABITAT :
                 // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor,factor,gui));
-                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec,i*factor-f*factor/dec,"image/3D/habitat/tent_smallOpen_NW.png",f*factor,f*factor,gui));  break;
+                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
+                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3,"image/3D/habitat/tent_smallOpen_NW.png",f*factor,f*factor,gui));  break;
               case FORET :
                 // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor,factor,gui));
-                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec,i*factor-f*factor/dec,"image/3D/foret/tree_blocks_dark_NE.png",f*factor,f*factor,gui));  break;
+                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
+                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2,"image/3D/foret/tree_blocks_dark_NE.png",f*factor,f*factor,gui));  break;
               case ROCHE :
                 // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor,factor,gui));
-                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec, i*factor-f*factor/dec, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
+                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
+                gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
 
                 // gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/3D/terrain_libre/ground_grass_NW.png",factor,factor,gui));  break;
               case EAU :
@@ -321,7 +335,7 @@ class Simulateur implements Simulable {
 
               default : break;
             }
-          }
+        //  }
         }
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){

@@ -90,7 +90,7 @@ public abstract class Robot {
         if(carte.voisinExiste(this.position, d))
              if(this.verifCase(carte.getVoisin(this.position, d)))
                         return true;
-        return false;       
+        return false;
     }
     /*TODO (easy) Ajouter la fct verif_depl a deplacer !!!!! */
     public void deplacer(Direction d, Carte carte){
@@ -105,21 +105,25 @@ public abstract class Robot {
                 switch(d){
                     case NORD:
                        //System.out.println(this + " ira au NORD");
+                       carte.addListToDrawTwo(getPosition(),voisin);
                        getPosition().setLigne(getPosition().getLigne()-1);
                        break;
 
                     case SUD:
                         //System.out.println(this + " ira au SUD");
+                        carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setLigne(getPosition().getLigne()+1);
                         break;
 
                     case EST:
                         //System.out.println(this + " ira au EST");
+                        carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setColonne(getPosition().getColonne()+1);
                         break;
 
                     case OUEST:
                         //System.out.println(this + " ira au OUEST");
+                        carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setColonne(getPosition().getColonne()-1);
                         break;
                 }

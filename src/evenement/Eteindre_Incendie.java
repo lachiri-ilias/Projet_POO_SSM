@@ -14,14 +14,14 @@ public class Eteindre_Incendie extends Evenement{
     private Incendie incendie;
     private long dateEteintFeux;
 
-    public Eteindre_Incendie(Robot robot,LinkedList<Incendie> listeIncendie,Incendie incendie,long date,Carte carte){ 
+    public Eteindre_Incendie(Robot robot,LinkedList<Incendie> listeIncendie,Incendie incendie,long date,Carte carte){
         super(date);
         this.robot =robot;
         this.listeIncendie = listeIncendie;
         this.incendie = incendie;
         this.carte =carte;
     }
-        
+
     public void execute(long dateSimulation){
            // System.out.print("La date est  "+(dateSimulation) );
 
@@ -35,14 +35,15 @@ public class Eteindre_Incendie extends Evenement{
                     this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getQteDeverssage());
                     if(this.incendie.getLitresEau() <= 0){
                         this.listeIncendie.remove(this.incendie);
+                        this.carte.getListToDraw().add(this.incendie.getCase()); // Il faut draw le fait que l'incendie ne soit plus présent car il est éteint
                         super.setIsExe(true);
                     }
                     // else{
                     //     setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
-                    //     super.setIsExe(false);     
+                    //     super.setIsExe(false);
                     // }
             }
-            else{ 
+            else{
                 this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getQteDeverssage());
                 this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
                 setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
