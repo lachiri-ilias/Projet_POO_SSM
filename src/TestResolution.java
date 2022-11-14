@@ -67,7 +67,7 @@ class Simulateur implements Simulable {
     private int factor;
     private int factorAsset;
     private long dateSimulation;
-    private ChefPompier chefPompier;
+    private ChefCurry2 chefPompier;
 
 
 
@@ -79,7 +79,7 @@ class Simulateur implements Simulable {
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
-        this.chefPompier = new ChefPompier(data);
+        this.chefPompier = new ChefCurry2(data);
         gui.setSimulable(this);				// association a la gui!
         initDraw();
     }
@@ -90,7 +90,7 @@ class Simulateur implements Simulable {
     public long getDateSimulation(){
       return this.dateSimulation;
     }
-    public ChefPompier getChefPompier(){
+    public ChefCurry2 getChefPompier(){
       return this.chefPompier;
     }
     private void incrementeDate(){

@@ -35,7 +35,7 @@ public class Test4 {
         }
         try {
           DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
-          int factor = data.getCarte().getTailleCases()/3;
+          int factor = data.getCarte().getTailleCases()/2;
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
           //int k = 1,z=1;
@@ -55,7 +55,7 @@ public class Test4 {
 
 class Simulateurr implements Simulable {
     private GUISimulator gui;
-    private ChefCurry chef;
+    private ChefCurry2 chef;
     private int factor;
     private long dateSimulation;
     private int x_drone;
@@ -66,7 +66,7 @@ class Simulateurr implements Simulable {
     public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
         this.factor = f;
         this.gui = gui;
-        this.chef = new ChefCurry(data);
+        this.chef = new ChefCurry2(data);
         gui.setSimulable(this);				
         draw();
     }

@@ -16,6 +16,7 @@ public abstract class Robot {
     protected long tps_fin_act=0;
     protected int tmp = 100;
     protected boolean islibre;
+    protected boolean findeplacement;
 
     public Robot(Case c, double v, double vm, int cm, int ca, int tr, int td, int qd){
         this.position = c;
@@ -27,6 +28,7 @@ public abstract class Robot {
         this.tps_deversage = td;
         this.qte_deversage = qd;
         this.islibre = true;
+        this.findeplacement = false;
     }
 
     public Robot(Robot robot){
@@ -38,7 +40,16 @@ public abstract class Robot {
       this.tps_deversage = robot.tps_deversage;
       this.qte_deversage = robot.qte_deversage;
       this.islibre = true;
+      this.findeplacement = false;
     }
+
+
+    public void setFindeplacement(boolean status){
+        this.findeplacement =status;
+    } 
+     public boolean getFindeplacement(){
+        return this.findeplacement;
+    }  
 
     public void setIsLibre(boolean status){
          this.islibre = status;
@@ -104,7 +115,7 @@ public abstract class Robot {
                 // TODO : renvoyer une erreur lorsque la position est innateignable !
                 switch(d){
                     case NORD:
-                       //System.out.println(this + " ira au NORD");
+                    //    System.out.println(this + " ira au NORD");
                        carte.addListToDrawTwo(getPosition(),voisin);
                        getPosition().setLigne(getPosition().getLigne()-1);
                        break;
@@ -128,6 +139,8 @@ public abstract class Robot {
                         break;
                 }
             }
+            else        System.out.println(" HHHEEEERRREEEEE");
+
         }
         setVitesse(getVitesseMax());
          //System.out.println("[exe2] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
