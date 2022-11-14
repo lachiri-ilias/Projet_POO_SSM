@@ -40,10 +40,12 @@ public class TestResolution {
 
         try {
           DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
-          int factor = data.getCarte().getTailleCases();
-          int X = data.getCarte().getNbColonnes() * factor;
-          int Y = data.getCarte().getNbLignes() * factor;
-          GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
+
+          //int factor = data.getCarte().getTailleCases()/data.getCarte().getNbColonnes();
+          // int X = data.getCarte().getNbColonnes() * factor;
+          // int Y = data.getCarte().getNbLignes() * factor;
+          GUISimulator gui = new GUISimulator(1024, 700, Color.BLACK);
+          int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
           Simulateur simulateur = new Simulateur(gui, data, factor);
           // simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
 
@@ -324,7 +326,7 @@ class Simulateur implements Simulable {
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
             //gui.addGraphicalElement(new Rectangle(( incendies.getCase().getColonne())*factor+ (factor/2), ( incendies.getCase().getLigne())*factor+ (factor/2), Color.decode("#000000"), Color.decode("#00000000"),factor));
-              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
+              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor,"image/feux.gif",factor,factor,gui));
 
         }
         for(Robot robots : getListeRobot()){
