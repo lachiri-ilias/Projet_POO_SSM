@@ -46,8 +46,7 @@ public class R_Chenille extends Robot {
     }
 
     public boolean verifCase(Case voisin){
-        return !(voisin.getNature() == NatureTerrain.EAU
-        || voisin.getNature() == NatureTerrain.ROCHE);
+        return !(voisin.getNature() == NatureTerrain.EAU || voisin.getNature() == NatureTerrain.ROCHE);
     }
     public String getType(){
         return "R_Chenille";

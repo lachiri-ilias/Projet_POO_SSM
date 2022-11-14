@@ -66,7 +66,7 @@ public class Carte {
         l = src.getLigne();
         switch(dir){
             case NORD:
-                return l-1>=0;
+                return l-1 >= 0;
 
             case SUD:
                 return l+1 < this.getNbLignes();
@@ -74,7 +74,7 @@ public class Carte {
                 return c+1 < this.getNbColonnes();
 
             case OUEST:
-                return c-1>=0;
+                return c-1 >= 0;
         }
         return false;
     }

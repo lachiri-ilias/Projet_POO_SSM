@@ -48,15 +48,23 @@ public class SaveDonnees {
         throws FileNotFoundException, DataFormatException {
         System.out.println("\n == save du fichier" + fichierDonnees);
         SaveDonnees save = new SaveDonnees(fichierDonnees);
-
         save.saveCarte();
         save.saveIncendies();
         save.saveRobots();
+        // Ajouter sav de liste graphe !!!!
+        save.saveGraph();
+
         scanner.close();
         System.out.println("\n == sauvgarde terminee");
         return data;
-
     }
+
+    private void saveGraph(){
+        for(Robot robots : data.getListeRobot()){
+                data.ajouteGraph(new Graph(data.getCarte(),robots));
+        }
+    }
+
 
     // Tout le reste de la classe est prive!
 
@@ -188,14 +196,14 @@ public class SaveDonnees {
      */
     private void saveRobot(int i) throws DataFormatException {
         ignorerCommentaires();
-        System.out.print("Robot " + i + ": ");
+        //System.out.print("Robot " + i + ": ");
 
         try {
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
-            System.out.print("position = (" + lig + "," + col + ");");
+            //System.out.print("position = (" + lig + "," + col + ");");
             String type = scanner.next();
-            System.out.print("\t type = " + type);
+            //System.out.print("\t type = " + type);
             switch(type){
                 case "DRONES" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
                 case "ROUES" :  data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
@@ -208,14 +216,13 @@ public class SaveDonnees {
             String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
             if (s == null) {
-                System.out.print("valeur par defaut");
+                //System.out.print("valeur par defaut");
             } else {
                 int vitesse = Integer.parseInt(s);
                 data.getListeRobot().get(i).setVitesse(vitesse);
-                System.out.print(vitesse);
+                //System.out.print(vitesse);
             }
             verifieLigneTerminee();
-            // System.out.println();
 
         } catch (NoSuchElementException e) {
             throw new DataFormatException("format de robot invalide. "
