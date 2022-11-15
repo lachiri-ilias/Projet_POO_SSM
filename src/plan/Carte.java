@@ -57,9 +57,15 @@ public class Carte {
         return this.listToDraw;
     }
     public void addListToDrawTwo(Case origin, Case dest){
-      getListToDraw().add(origin);
-      getListToDraw().add(dest);
+      System.out.println("[carte] APPEL DE addListToDrawTwo !!!\n");
+      System.out.println("[carte] posactuelle ("+origin.getLigne()+","+origin.getColonne()+")\n");
+      System.out.println("[carte] posVoisin ("+dest.getLigne()+","+dest.getColonne()+")\n");
+      getListToDraw().addFirst(new Case(origin));
+      System.out.println("[carte] listToDraw : "+getListToDraw()+"\n");
+      getListToDraw().addLast(dest);
+      System.out.println("[carte] listToDraw : "+getListToDraw()+"\n");
     }
+
     public boolean voisinExiste(Case src, Direction dir){
         int c, l;
         c = src.getColonne();
