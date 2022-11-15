@@ -22,12 +22,10 @@ public class R_Roue extends Robot {
 
     public void deverserEau(int vol){
         if(this.cap_actuelle >= vol) this.cap_actuelle -= vol;
-        // Deverse t on quand même ce qui est disponible ?
         else throw new IllegalArgumentException("R_Roue ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
     public boolean remplirReservoir(Carte carte){
-     // if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
         if(this.cap_actuelle < this.cap_max){
             this.cap_actuelle += 500;
         } 
@@ -38,11 +36,11 @@ public class R_Roue extends Robot {
         return false;
     }
     
-
     public boolean verifCase(Case voisin){
         return (voisin.getNature()==NatureTerrain.TERRAIN_LIBRE || voisin.getNature()==NatureTerrain.HABITAT);
     }
-    public String getType(){
+
+    public String getRobotType(){
         return "R_Roue";
     }
 }

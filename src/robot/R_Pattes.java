@@ -17,15 +17,13 @@ public  class R_Pattes extends Robot {
     }
 
     public void setVitesse(double v){
-        // if(this.position.getNature()==NatureTerrain.ROCHE) this.vitesse = 10;
-        // else this.vitesse = v;
         this.vitesse = v;
     }
-
+    /**
+    We force the use of the argument because we already defined the function in the class Robot
+     */
     public void deverserEau(int vol){
-       // if(this.cap_actuelle >= vol) this.cap_actuelle -= vol;
-        // Deverse t on quand même ce qui est disponible ?
-        //else throw new IllegalArgumentException("R_Pattes ne peut pas deverser plus d'eau qu'il en contient !");
+        this.cap_actuelle = this.cap_max -vol + vol;
     }
 
     public boolean verifCase(Case voisin){
@@ -37,7 +35,7 @@ public  class R_Pattes extends Robot {
         return true;
     }
 
-    public String getType(){
+    public String getRobotType(){
         return "R_Pattes";
     }
 }

@@ -9,7 +9,7 @@ import plan.*;
 public class R_Chenille extends Robot {
 
     public R_Chenille(Case c){
-        super(c, 60, 60, 2000, 0, 5*60, 8, 100);   // a modifier tmps de deverssage 8 (160) il faut faire le calcul instantané.
+        super(c, 60, 60, 2000, 0, 5*60, 8, 100); 
     } 
 
     public double getVitesseTerrain(NatureTerrain nat){
@@ -17,11 +17,8 @@ public class R_Chenille extends Robot {
       return this.vitesse;
     }
 
-    // UTILISER getVitesseTerrain avant setVitesse
     public void setVitesse(double v){
         if(v<=getVitesseMax()){
-            // if(this.position.getNature()==NatureTerrain.FORET) this.vitesse = v/2;
-            // else this.vitesse = v;
             this.vitesse = v;
         }
         else  throw new IllegalArgumentException("Vitesse R_Chenille < 80 km/h !");
@@ -29,12 +26,10 @@ public class R_Chenille extends Robot {
 
     public void deverserEau(int vol){
         if(this.cap_actuelle >= vol) this.cap_actuelle -= vol;
-        // Deverse t on quand même ce qui est disponible ?
         else throw new IllegalArgumentException("R_Chenille ne peut pas deverser plus d'eau qu'il en contient !");
     }
 
     public boolean remplirReservoir(Carte carte){
-      //if(carte.existeTypeVoisin(this.getPosition(), NatureTerrain.EAU)){
         if(this.cap_actuelle < this.cap_max){
             this.cap_actuelle += 400;
         } 
@@ -48,7 +43,7 @@ public class R_Chenille extends Robot {
     public boolean verifCase(Case voisin){
         return !(voisin.getNature() == NatureTerrain.EAU || voisin.getNature() == NatureTerrain.ROCHE);
     }
-    public String getType(){
+    public String getRobotType(){
         return "R_Chenille";
     }
 }

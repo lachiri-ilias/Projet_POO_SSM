@@ -41,6 +41,7 @@ Test3:
 
 Test4:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test4.java
+
 Test5:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test5.java
 
@@ -98,7 +99,7 @@ ChefCurry2 :
 # ou bien lancer l'execution en passant par ce Makefile:
 #   > make exeInvader
 exeInvader:
-	java -classpath bin:bin/gui.jar TestInvader
+		java -classpath bin:bin/gui.jar TestInvader
 
 exeSimulateur:
 		java -classpath bin:bin/gui.jar TestSimulateur cartes/carteSujet_test.map

@@ -12,8 +12,8 @@ public class Graph{
   private Robot robot;
   private Carte carte;
   
-  /*
-    la fct permet de creer le graphe a partir de la carte et du robot X a
+  /**
+  Fills the graph on a specified robot taking into the consideration the fields that it can get to
    */
   public Graph(Carte carte,Robot robot) {
     int i,j,k=0;
@@ -22,21 +22,26 @@ public class Graph{
     this.tab = new Case[carte.getNbCases()]; 
     this.robot = robot;
     this.carte = carte;
+    // filling the tab which is basically the card but continious from 0 to Number of boxes
     for(i=0;i<carte.getNbLignes();i++){
       for(j=0;j<carte.getNbColonnes();j++){
         tab[k] = carte.getCase(i,j);
         k++; 
       }
     }
+    // checks and fills the graph
     for(i=0;i<carte.getNbCases();i++){
       for(j=0;j<carte.getNbCases();j++){
           if(check(carte,robot,tab[i],tab[j])){
-                addEdge(i,j);
+            addEdge(i,j);
           }            
       }
     }
   }
 
+  /**
+  Checks if the two boxes i,j are neighboors and if the specified robot can get to them
+  */
   public boolean check(Carte carte,Robot robot,Case i,Case j){
        if(robot.verifCase(i)){
         if(carte.isVoisin(i, j)){
@@ -45,7 +50,7 @@ public class Graph{
           }
        }
         return false;       
-    }
+  }
   public Case getCase(int i){
     return this.tab[i];
   }

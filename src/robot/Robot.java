@@ -18,15 +18,16 @@ public abstract class Robot {
     protected boolean islibre;
     protected boolean findeplacement;
 
-    public Robot(Case c, double v, double vm, int cm, int ca, int tr, int td, int qd){
-        this.position = c;
-        this.vitesse = v;
-        this.vitesse_max = vm;
-        this.cap_max = cm;
-        this.cap_actuelle = ca;
-        this.tps_remplissage = tr;
-        this.tps_deversage = td;
-        this.qte_deversage = qd;
+
+    public Robot(Case case, double vitesse, double vitesse_max, int cap_max, int cap_actuelle, int tps_remplissage, int tps_deversage, int qte_deversage){
+        this.position = case;
+        this.vitesse = vitesse;
+        this.vitesse_max = vitesse_max;
+        this.cap_max = cap_max;
+        this.cap_actuelle = cap_actuelle;
+        this.tps_remplissage = tps_remplissage;
+        this.tps_deversage = tps_deversage;
+        this.qte_deversage = qte_deversage;
         this.islibre = true;
         this.findeplacement = false;
     }
@@ -43,11 +44,11 @@ public abstract class Robot {
       this.findeplacement = false;
     }
 
-
-    public void setFindeplacement(boolean status){
-        this.findeplacement =status;
+    
+    public void setFinDeplacement(boolean status){
+        this.findeplacement = status;
     } 
-     public boolean getFindeplacement(){
+     public boolean getFinDeplacement(){
         return this.findeplacement;
     }  
 
@@ -97,59 +98,68 @@ public abstract class Robot {
     public long getTempsRemplissage(){
         return this.tps_remplissage;
     }
+
+    /**
+    Verifies if the box exists and if the robot can actually move to the box
+     */
     public boolean verif_depl(Direction d , Carte carte){
         if(carte.voisinExiste(this.position, d))
              if(this.verifCase(carte.getVoisin(this.position, d)))
                         return true;
         return false;
     }
-    /*TODO (easy) Ajouter la fct verif_depl a deplacer !!!!! */
+    /**
+    Moves the robot in the specified direction
+     */
     public void deplacer(Direction d, Carte carte){
-        // System.out.println("[exe1] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
-        // System.out.println("VOISIN EXISTE : "+carte.voisinExiste(this.position, d)+"\n");
         if(carte.voisinExiste(this.position, d)){
             Case voisin = carte.getVoisin(this.position, d);
-            //System.out.println("VERIF DEPL : "+this.verif_depl(d, voisin)+"\n");
             if(this.verifCase(voisin)){
-                //System.out.println("on se deplace :"+d+"\n");
-                // TODO : renvoyer une erreur lorsque la position est innateignable !
                 switch(d){
                     case NORD:
-                    //    System.out.println(this + " ira au NORD");
                        carte.addListToDrawTwo(getPosition(),voisin);
                        getPosition().setLigne(getPosition().getLigne()-1);
                        break;
 
                     case SUD:
-                        //System.out.println(this + " ira au SUD");
                         carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setLigne(getPosition().getLigne()+1);
                         break;
 
                     case EST:
-                        //System.out.println(this + " ira au EST");
                         carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setColonne(getPosition().getColonne()+1);
                         break;
 
                     case OUEST:
-                        //System.out.println(this + " ira au OUEST");
                         carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setColonne(getPosition().getColonne()-1);
                         break;
                 }
             }
-            else        System.out.println(" HHHEEEERRREEEEE");
 
         }
-        setVitesse(getVitesseMax());
-         //System.out.println("[exe2] colonne : "+getPosition().getColonne()+"\tligne : "+getPosition().getLigne());
     }
 
+    /**
+    returns the speed of the robot depending on the type of field
+    */
     public abstract double getVitesseTerrain(NatureTerrain nat);
-    public abstract void setVitesse(double v);
+
+    /**
+    Substracts the giving volume as an argument from the capacity of robot
+    */
     public abstract void deverserEau(int vol);
+
+    /**
+    fills the tank of the robot from a water field
+     */
     public abstract boolean remplirReservoir(Carte carte);
+    /**
+    verifies if the box exists
+     */
     public abstract boolean verifCase(Case voisin);
-    public abstract String getType();
+    
+    public abstract String getRobotType();
+    public abstract void setVitesse(double v);
 }
