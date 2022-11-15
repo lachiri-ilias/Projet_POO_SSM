@@ -22,21 +22,27 @@ public class Deplacer_Robot extends Evenement{
     public void execute(long dateSimulation){     
        // System.out.println("**Deplacer le robot entree*****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
         if(dateSimulation>=robot.getTempsFin()){
-        this.dateDeplacerRobot = (this.carte.getTailleCases()/2)* ( 1/robot.getVitesseTerrain(robot.getPosition().getNature()) + 1/this.robot.getVitesseTerrain( this.carte.getVoisin(robot.getPosition(),this.direction).getNature()));
-            System.out.println("*** "+robot.getFindeplacement());
-            if(robot.getFindeplacement()==false){
+            Case case_voisin;
+            if(carte.voisinExiste(robot.getPosition(),this.direction)){
+                case_voisin = this.carte.getVoisin( robot.getPosition(),this.direction);
+            }
+            else case_voisin = robot.getPosition();
+
+            this.dateDeplacerRobot = (this.carte.getTailleCases()/2)* ( 1/robot.getVitesseTerrain(robot.getPosition().getNature()) + 1/this.robot.getVitesseTerrain(case_voisin.getNature()));
+            //System.out.println("*** "+robot.getFindDeplacement());
+            if(robot.getFinDeplacement()==false){
                 System.out.println("*LA vitesse est : "+ (int)(this.dateDeplacerRobot*10+1)  +"\n");
                 //robot.setTempsFin(dateSimulation+(int)(this.dateDeplacerRobot*10)+1);
-                robot.setTempsFin(dateSimulation+5);
+                robot.setTempsFin(dateSimulation+( (int)(this.dateDeplacerRobot*10+1) ));
                 setDate(robot.getTempsFin());
                 super.setIsExe(false);
-                robot.setFindeplacement(true);
+                robot.setFinDeplacement(true);
             }
             else{
                 robot.setTempsFin(dateSimulation);
                 robot.deplacer(direction,carte);
                 super.setIsExe(true);
-                robot.setFindeplacement(false);
+                robot.setFinDeplacement(false);
             }
             
         }

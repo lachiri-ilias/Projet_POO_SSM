@@ -19,8 +19,8 @@ public abstract class Robot {
     protected boolean findeplacement;
 
 
-    public Robot(Case case, double vitesse, double vitesse_max, int cap_max, int cap_actuelle, int tps_remplissage, int tps_deversage, int qte_deversage){
-        this.position = case;
+    public Robot(Case position, double vitesse, double vitesse_max, int cap_max, int cap_actuelle, int tps_remplissage, int tps_deversage, int qte_deversage){
+        this.position = position;
         this.vitesse = vitesse;
         this.vitesse_max = vitesse_max;
         this.cap_max = cap_max;
