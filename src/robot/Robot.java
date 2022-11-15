@@ -44,13 +44,13 @@ public abstract class Robot {
       this.findeplacement = false;
     }
 
-    
+
     public void setFinDeplacement(boolean status){
         this.findeplacement = status;
-    } 
+    }
      public boolean getFinDeplacement(){
         return this.findeplacement;
-    }  
+    }
 
     public void setIsLibre(boolean status){
          this.islibre = status;
@@ -122,6 +122,8 @@ public abstract class Robot {
                        break;
 
                     case SUD:
+                        System.out.println("[deplacer] posactuelle ("+getPosition().getLigne()+","+getPosition().getColonne()+")\n");
+                        System.out.println("[deplacer] posVoisin ("+voisin.getLigne()+","+voisin.getColonne()+")\n");
                         carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setLigne(getPosition().getLigne()+1);
                         break;
@@ -159,7 +161,7 @@ public abstract class Robot {
     verifies if the box exists
      */
     public abstract boolean verifCase(Case voisin);
-    
+
     public abstract String getRobotType();
     public abstract void setVitesse(double v);
 }

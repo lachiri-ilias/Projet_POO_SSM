@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
 
-/**  
+/**
    Cette classe test le fct automatique des pompier .....
 
 */
@@ -34,15 +34,13 @@ public  class Test5 {
             System.exit(1);
         }
         try {
-          DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
-          int factor = data.getCarte().getTailleCases()/2;
-          int X = data.getCarte().getNbColonnes() * factor;
-          int Y = data.getCarte().getNbLignes() * factor;
-          //int k = 1,z=1;
-          GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
-          Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
+          String fichier = args[0];
+          DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
+          GUISimulator gui = new GUISimulator(1400, 930, Color.BLACK);
+          int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
+          Simulateur simulateur = new Simulateur(gui, data, factor, fichier);
 
-        /*  FIN DE SIMULATION DONNées */ 
+        /*  FIN DE SIMULATION DONNées */
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -53,28 +51,36 @@ public  class Test5 {
 
 
 
-class Simulateurr implements Simulable {
+class Simulateur implements Simulable {
     private GUISimulator gui;
     private ChefCurry2 chef;
     private int factor;
     private long dateSimulation;
     private int x_drone;
     private int y_drone;
+    private String fichier;
     private Carte carte;
+    private LinkedList<Robot> listeRobot;
+    private LinkedList<Incendie> listeIncendie;
+    private LinkedList<Evenement> listeEvenement;
     private Iterator<Integer> xIterator;
     private Iterator<Integer> yIterator;
 
-    public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
+    public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
         this.factor = f;
         this.gui = gui;
+        this.fichier = fichier;
         this.chef = new ChefCurry2(data);
+        this.listeRobot = chef.getListeRobot();
+        this.listeIncendie = chef.getListeIncendie();
+        this.listeEvenement = chef.getListeEvenements();
         this.carte = chef.getCarte();
-        gui.setSimulable(this);				
-        initDraw(2);
+        gui.setSimulable(this);
+        initDraw();
 
     }
 
-    
+
     public long getDateSimulation(){
       return this.dateSimulation;
     }
@@ -84,7 +90,9 @@ class Simulateurr implements Simulable {
     private boolean simulationTerminee(){
       return this.chef.getListeEvenements().isEmpty() && this.chef.getListeIncendie().isEmpty();
     }
-
+    public void setCarte(Carte resetCarte){
+      this.carte = resetCarte;
+    }
 
     @Override
     public void next() {
@@ -104,19 +112,45 @@ class Simulateurr implements Simulable {
                   size_liste --;
                   k--;
                 }
-                
+
               }
           }
-           //System.out.println("\n*********\n"); 
+           //System.out.println("\n*********\n");
           draw2();
       }
     }
 
     @Override
     public void restart() {
-        //draw();
-    }
+      System.out.println("\n\nAPPEL DE RESTRAT!!!\n\n");
+      gui.reset();
 
+      try {
+        System.out.println("[restart] fichier : "+fichier+"\n");
+        DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
+        // setCarte(data.getCarte());
+        this.listeRobot = dataNew.getListeRobot();
+        this.listeIncendie = dataNew.getListeIncendie();
+        this.listeEvenement = new LinkedList<Evenement>();
+        this.chef = new ChefCurry2(dataNew);
+      } catch (FileNotFoundException e) {
+          System.out.println("fichier " + fichier + " inconnu ou illisible");
+      } catch (DataFormatException e) {
+          System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
+      }
+
+      /*
+      // setCarte(dataZero.getCarte()); // normalement inutile car la carte ne change pas
+      dateSimulation = 0;
+      System.out.println("[data] listeRobot : " + getListeRobot()+"\n");
+      System.out.println("[data] listeIncendie : " + getListeIncendie()+"\n");
+      System.out.println("[dataZero] listeRobot : " + dataZero.getListeRobot()+"\n");
+      System.out.println("[dataZero] listeIncendie : " + dataZero.getListeIncendie()+"\n");
+      setlisteRobot(dataZero.getListeRobot());
+      setListeIncendie(dataZero.getListeIncendie());
+      */
+      initDraw();
+    }
 
 
     public Carte getCarte(){
@@ -130,16 +164,15 @@ class Simulateurr implements Simulable {
     }
 
 
-    private void initDraw(int k){
+    private void initDraw(){
       for(int i=0; i<this.getCarte().getNbLignes();i++){
         for(int j=0; j<this.getCarte().getNbColonnes();j++){
           this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
         }
       }
-     // if(k==1) draw();
-      //else
-       draw2();
+      draw2();
     }
+
     private void draw2() {
         // gui.reset();	// clear the window
         int etat;
@@ -147,10 +180,13 @@ class Simulateurr implements Simulable {
           // for(int j=0; j<this.getCarte().getNbColonnes();j++){
             // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
             // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
+          System.out.println("[draw2] listToDraw : "+this.getCarte().getListToDraw()+"\n");
           while(this.getCarte().getListToDraw().size()!=0){
+
             Case caseToDraw = this.getCarte().getListToDraw().removeFirst();
             int i = caseToDraw.getLigne();
             int j = caseToDraw.getColonne();
+            System.out.println("[draw2] Dessine la case ("+i+","+j+")\n");
             int f = 4;
             int dec = 2;
             // gui.addGraphicalElement(new ImageElement(0,0,"image/sol/grass.png",factor*this.getCarte().getNbColonnes(),factor*this.getCarte().getNbLignes(),gui));
@@ -331,21 +367,19 @@ class Simulateurr implements Simulable {
         }
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
-            //gui.addGraphicalElement(new Rectangle(( incendies.getCase().getColonne())*factor+ (factor/2), ( incendies.getCase().getLigne())*factor+ (factor/2), Color.decode("#000000"), Color.decode("#00000000"),factor));
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-10,"image/feux.gif",factor,factor,gui));
-
         }
         for(Robot robots : getListeRobot()){
-              switch(robots.getType()){
-                  case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
-                  case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
-                  case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
-                  case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
+              switch(robots.getRobotType()){
+                  case "Drone" :      gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
+                  case "R_Pattes" :   gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
+                  case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
+                  case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
+              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
         }
 
-        System.out.println("\n FIN AFFICHAGE CARTE !\n");
+        System.out.println("\n\t\t FIN AFFICHAGE CARTE !\n\n");
 
     }
 
