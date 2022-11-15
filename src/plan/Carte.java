@@ -103,6 +103,7 @@ public class Carte {
             }
         }
         else throw new IllegalArgumentException("No Voisin !");
+        return getCase(0,0);
     }
 
     
