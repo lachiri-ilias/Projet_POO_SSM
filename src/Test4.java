@@ -93,6 +93,7 @@ class Simulateurr implements Simulable {
         else{
           int size_liste = this.chef.getListeEvenements().size();
           for(int k=0;k<size_liste;k++){
+            //System.out.println("liste d'event: "+this.chef.getListeEvenements().get(k).getDate() );
              if(this.chef.getListeEvenements().get(k).getDate()==getDateSimulation()){
                 this.chef.getListeEvenements().get(k).execute(getDateSimulation());
                 if(this.chef.getListeEvenements().get(k).getIsExe()){
@@ -103,6 +104,7 @@ class Simulateurr implements Simulable {
                 
               }
           }
+           //System.out.println("\n*********\n"); 
           draw();
       }
     }

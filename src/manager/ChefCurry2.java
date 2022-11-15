@@ -64,11 +64,11 @@ public class ChefCurry2{
     // System.out.print("Liste Evenement : "+listeEvenement);
     for(Incendie incendies : listeIncendie){
       for(Graph graphs : listeGraph){
-        if(graphs.getRobot().getIsLibre() && !(incendies.getIsTaken()) ){
+        if(graphs.getRobot().getIsLibre() && !(incendies.getIsTaken()) && graphs.getRobot().verifCase(incendies.getCase()) ){
               // System.out.print("   in \n");
             incendies.setIsTaken(true);
             if(graphs.getRobot().getCapActuelle() == 0){
-              System.out.println("Robot : ["+ graphs.getRobot() +"] : go Remplire \n");
+              //System.out.println("Robot : ["+ graphs.getRobot() +"] : go Remplire \n");
               derniereposition = goRemplir(graphs,k);
             }
             else{
@@ -81,7 +81,7 @@ public class ChefCurry2{
 
             }
             else{
-                 System.out.println("Robot : ["+ graphs.getRobot() +"] : go Etaindre \n");
+                // System.out.println("Robot : ["+ graphs.getRobot() +"] : go Etaindre \n");
                 break;
             }
 
@@ -132,7 +132,7 @@ private Case plusProcheCaseEauVoisin( Graph graph ){
     int distancemin = Integer.MAX_VALUE;
     for(Case c : getListeCaseEauVosin()){
       if(graph.getRobot().verifCase(c)){
-         //System.out.print("\nl'erreur : "+c);
+          //System.out.print("\nl'erreur : "+c);
           Dijkstra dijkstra = new Dijkstra();
           dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),c);
           if( dijkstra.getCourtDistance() < distancemin ){
@@ -147,8 +147,8 @@ private Case plusProcheCaseEauVoisin( Graph graph ){
 
 private boolean goEteindre( Graph graph ,Case derniereposition,Incendie incendie,long k){
   Dijkstra dijkstra = new Dijkstra();
-  dijkstra.dijkstra2(graph,derniereposition,incendie.getCase());
-  System.out.print("la liste direction pour eteindre  est : "+dijkstra.getListeDiretion()+"\n");
+  dijkstra.dijkstra2(graph,derniereposition,incendie.getCase()); 
+  //System.out.print("la liste direction pour eteindre  est : "+dijkstra.getListeDiretion()+"\n");
 
   if(dijkstra.getCourtDistance()<Integer.MAX_VALUE){
       for(Direction d : dijkstra.getListeDiretion()){
@@ -172,8 +172,8 @@ private Case goRemplir( Graph graph , long k){
   if(graph.getRobot().getType()=="Drone"){
       plusprocheCaseEau = plusProcheCaseEau(graph);
       Dijkstra dijkstra = new Dijkstra();
-      dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau);
-      System.out.print("la liste direction pour remplire  est : "+dijkstra.getListeDiretion()+"\n");
+      dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau); 
+      //System.out.print("la liste direction pour remplire  est : "+dijkstra.getListeDiretion()+"\n");
       for(Direction d : dijkstra.getListeDiretion()){
           ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,this.carte));
           k++;
@@ -189,8 +189,8 @@ private Case goRemplir( Graph graph , long k){
   else{
     plusprocheCaseEau = plusProcheCaseEauVoisin(graph);
     Dijkstra dijkstra = new Dijkstra();
-    dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau);
-    System.out.print("la liste direction pour remplire  est : "+dijkstra.getListeDiretion()+"\n");
+    dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),plusprocheCaseEau); 
+    //System.out.print("la liste direction pour remplire  est : "+dijkstra.getListeDiretion()+"\n");
     for(Direction d : dijkstra.getListeDiretion()){
         ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,this.carte));
         k++;

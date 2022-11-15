@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra Amiral ChefPompier ChefCurry2  Test4  #testResolution
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra Amiral ChefPompier ChefCurry2  Test4 Test5  #testResolution
 # TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees  TEST 1 Test2 TEST 3 Test4
 
 testInvader:
@@ -41,6 +41,8 @@ Test3:
 
 Test4:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test4.java
+Test5:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test5.java
 
 testResolution:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/TestResolution.java
@@ -124,10 +126,14 @@ exeTest3:
 	java -classpath bin:bin/gui.jar Test3 cartes/carteSujet_test3.map
 
 exeTest4:
+#java -classpath bin:bin/gui.jar Test4 cartes/spiralOfMadness-50x50.map
 	java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
 #java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test.map
 #java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test4.map
 
+exeTest5:
+#java -classpath bin:bin/gui.jar Test5 cartes/spiralOfMadness-50x50.map
+	java -classpath bin:bin/gui.jar Test5 cartes/mushroomOfHell-20x20.map
 
 clean:
 	rm -rf bin/*.class
