@@ -145,7 +145,7 @@ class Simulateur implements Simulable {
             // System.out.println("liste devent ="+getListeEvenements());
             if(e.getDate()==getDateSimulation()){
               System.out.println("["+getDateSimulation()+"] l'evenement "+e+" s'execute !\n");
-              e.execute(getDateSimulation());
+              e.execute(getDateSimulation(), gui);
               draw2();
             }
           }
@@ -245,15 +245,13 @@ class Simulateur implements Simulable {
 
 
     private void initDraw(int k){
-      if(k==0){
 
-      }
-      else {
+
         for(int i=0; i<this.getCarte().getNbLignes();i++){
           for(int j=0; j<this.getCarte().getNbColonnes();j++){
             this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
           }
-        }
+
         if(k==1) draw();
         else draw2();
       }
