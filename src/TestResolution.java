@@ -39,14 +39,16 @@ public class TestResolution {
         }
 
         try {
-          DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
+          String fichier = args[0];
+          DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
+          // DonneesSimulation dataZero = new SaveDonnees().getDataZero();
 
           //int factor = data.getCarte().getTailleCases()/data.getCarte().getNbColonnes();
           // int X = data.getCarte().getNbColonnes() * factor;
           // int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(1400, 930, Color.BLACK);
           int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
-          Simulateur simulateur = new Simulateur(gui, data, factor);
+          Simulateur simulateur = new Simulateur(gui, data, factor, fichier);
           // simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
 
 
@@ -65,13 +67,17 @@ class Simulateur implements Simulable {
     private LinkedList<Incendie> listeIncendie;
     private LinkedList<Evenement> listeEvenement;
     private int factor;
+    private DonneesSimulation dataZero;
     private int factorAsset;
     private long dateSimulation;
     private ChefCurry2 chefPompier;
+    private String fichier;
 
 
 
-    public Simulateur(GUISimulator gui, DonneesSimulation data, int f) {
+    public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
+        // this.dataZero = dataZero;
+        this.fichier = fichier;
         this.factor = f;
         this.factorAsset = f*2;
         this.gui = gui;
@@ -102,6 +108,17 @@ class Simulateur implements Simulable {
     public Carte getCarte(){
        return this.carte;
     }
+
+    public void setCarte(Carte resetCarte){
+      this.carte = resetCarte;
+    }
+    public void setlisteRobot(LinkedList<Robot> resetListeRobot){
+      this.listeRobot = resetListeRobot;
+    }
+    public void setListeIncendie(LinkedList<Incendie> resetListeIncendie){
+      this.listeIncendie = resetListeIncendie;
+    }
+
     public LinkedList<Evenement> getListeEvenements(){
       return this.listeEvenement;
     }
@@ -139,7 +156,35 @@ class Simulateur implements Simulable {
 
     @Override
     public void restart() {
-        //parcourt_simple();
+        System.out.println("\n\nAPPEL DE RESET!!!\n\n");
+        gui.reset();
+
+
+        try {
+          DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
+          setCarte(data.getCarte());
+          this.listeRobot = data.getListeRobot();
+          this.listeIncendie = data.getListeIncendie();
+          this.listeEvenement = new LinkedList<Evenement>();
+          this.chefPompier = new ChefCurry2(data);
+        } catch (FileNotFoundException e) {
+            System.out.println("fichier " + fichier + " inconnu ou illisible");
+        } catch (DataFormatException e) {
+            System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
+        }
+
+        // DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
+
+        /*
+        // setCarte(dataZero.getCarte()); // normalement inutile car la carte ne change pas
+        dateSimulation = 0;
+        System.out.println("[data] listeRobot : " + getListeRobot()+"\n");
+        System.out.println("[data] listeIncendie : " + getListeIncendie()+"\n");
+        System.out.println("[dataZero] listeRobot : " + dataZero.getListeRobot()+"\n");
+        System.out.println("[dataZero] listeIncendie : " + dataZero.getListeIncendie()+"\n");
+        setlisteRobot(dataZero.getListeRobot());
+        setListeIncendie(dataZero.getListeIncendie());
+        */
         draw2();
     }
 
@@ -200,13 +245,20 @@ class Simulateur implements Simulable {
 
 
     private void initDraw(int k){
-      for(int i=0; i<this.getCarte().getNbLignes();i++){
-        for(int j=0; j<this.getCarte().getNbColonnes();j++){
-          this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
-        }
+      if(k==0){
+
       }
-      if(k==1) draw();
-      else draw2();
+      else {
+        for(int i=0; i<this.getCarte().getNbLignes();i++){
+          for(int j=0; j<this.getCarte().getNbColonnes();j++){
+            this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
+          }
+        }
+        if(k==1) draw();
+        else draw2();
+      }
+
+
     }
 
     // TODO : utiliser etat pour faire des foret d'arbres et de rochers et d'habitations
