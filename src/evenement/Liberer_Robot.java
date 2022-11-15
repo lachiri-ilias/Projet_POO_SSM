@@ -16,14 +16,16 @@ public class Liberer_Robot extends Evenement{
     }
 
     public void execute(long dateSimulation){
+        // if the robot is free to do the order in the date given 
         if(dateSimulation>=this.robot.getTempsFin()){
            this.robot.setTempsFin(dateSimulation);
            robot.setIsLibre(true);
-           super.setIsExe(true);
+           super.setisExecuted(true);
         }
+        // if the robot is not free for now it pushes the event to the date where the robot finishes its actual order
         else{
-            setDate(super.getDate()+this.robot.getTempsFin()-dateSimulation);
-            super.setIsExe(false);
+            setDate(this.robot.getTempsFin());
+            super.setisExecuted(false);
 
         }
       }

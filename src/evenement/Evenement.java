@@ -4,11 +4,11 @@ import robot.*;
 
 public abstract class Evenement {
         private long date;
-        private boolean is_exe;
+        private boolean isExecuted;
 
         public Evenement(long date){
                 this.date = date;
-                this.is_exe = false;
+                this.isExecuted = false;
         }
 
         public long getDate(){
@@ -17,11 +17,11 @@ public abstract class Evenement {
         public void setDate(long d){
             this.date = d;
         }
-        public boolean getIsExe(){
-            return this.is_exe;
+        public boolean getisExecuted(){
+            return this.isExecuted;
         }
-        public void setIsExe(boolean t){
-            this.is_exe = t;
+        public void setisExecuted(boolean t){
+            this.isExecuted = t;
         }
 
         public abstract void execute(long date);

@@ -296,14 +296,14 @@ class Simulateurr implements Simulable {
         }
         int t =1;
         for(Robot robots : getListeRobot()){
-              switch(robots.getType()){
+              switch(robots.getRobotType()){
                   case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
                   case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
               System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
-              String s = robots.getType() + " : capacite reservoire = "+ robots.getCapActuelle();
+              String s = robots.getRobotType() + " : capacite reservoire = "+ robots.getCapActuelle();
               gui.addGraphicalElement(new Text(5*factor, 10*t, Color.decode("#FFFFFF"), s));
               t ++;
         }

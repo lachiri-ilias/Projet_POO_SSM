@@ -53,7 +53,7 @@ public  class Test5 {
 
 class Simulateur implements Simulable {
     private GUISimulator gui;
-    private ChefCurry2 chef;
+    private ChefPompier chef;
     private int factor;
     private long dateSimulation;
     private int x_drone;
@@ -70,7 +70,7 @@ class Simulateur implements Simulable {
         this.factor = f;
         this.gui = gui;
         this.fichier = fichier;
-        this.chef = new ChefCurry2(data);
+        this.chef = new ChefPompier(data);
         this.listeRobot = chef.getListeRobot();
         this.listeIncendie = chef.getListeIncendie();
         this.listeEvenement = chef.getListeEvenements();
@@ -107,7 +107,7 @@ class Simulateur implements Simulable {
             //System.out.println("liste d'event: "+this.chef.getListeEvenements().get(k).getDate() );
              if(this.chef.getListeEvenements().get(k).getDate()==getDateSimulation()){
                 this.chef.getListeEvenements().get(k).execute(getDateSimulation());
-                if(this.chef.getListeEvenements().get(k).getIsExe()){
+                if(this.chef.getListeEvenements().get(k).getisExecuted()){
                   this.chef.getListeEvenements().remove(this.chef.getListeEvenements().get(k));
                   size_liste --;
                   k--;
@@ -132,7 +132,7 @@ class Simulateur implements Simulable {
         this.listeRobot = dataNew.getListeRobot();
         this.listeIncendie = dataNew.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
-        this.chef = new ChefCurry2(dataNew);
+        this.chef = new ChefPompier(dataNew);
       } catch (FileNotFoundException e) {
           System.out.println("fichier " + fichier + " inconnu ou illisible");
       } catch (DataFormatException e) {

@@ -7,7 +7,6 @@ import plan.*;
 public class Remplir_Reservoir extends Evenement{
     private Robot robot;
     private Carte carte;
-    //private long tempsRemplissage ; pas besoin car chaque rebot a sont temps 
 
     public Remplir_Reservoir(Robot robot,long date,Carte carte){
         super(date);
@@ -15,27 +14,25 @@ public class Remplir_Reservoir extends Evenement{
         this.carte =carte;
     }
 
-/* TODO regler le probleme de remplire du robot verif Carte ... avoir */
     public void execute(long dateSimulation){
-      //  System.out.println("***Remplir eau  entre****["+dateSimulation+" ] temps fin : "+ robot.getTempsFin()+"\n");
+        // if the robot is free to do the order in the date given 
         if(dateSimulation>=this.robot.getTempsFin()){
-          // robot.setIsLibre(false);
-          // tempsRemplissage = this.robot.getTempsRemplissage()/;
+           // we are showen the evolution of the capacity of every robot each date
            this.robot.setTempsFin(dateSimulation+1);
            if(this.robot.remplirReservoir(carte)){
-                 super.setIsExe(true);
+                 super.setisExecuted(true);
            }
            else{
-                setDate(super.getDate()+this.robot.getTempsFin()-dateSimulation);
-                super.setIsExe(false);
+                setDate(this.robot.getTempsFin());
+                super.setisExecuted(false);
            }
         }
+        // if the robot is not free for now it pushes the event to the date where the robot finishes its actual order
         else{
-            setDate(super.getDate()+this.robot.getTempsFin()-dateSimulation);
-            super.setIsExe(false);
+            setDate(this.robot.getTempsFin());
+            super.setisExecuted(false);
 
         }
-        //System.out.println("***Remplir eau  sortie****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
       }
 
 }

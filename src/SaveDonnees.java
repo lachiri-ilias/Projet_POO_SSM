@@ -31,7 +31,6 @@ import java.util.zip.DataFormatException;
  * DonneesSimulation.
  */
 public class SaveDonnees {
-    //private DonneesSimulation data;
      public static DonneesSimulation data;
 
      public SaveDonnees(){
@@ -51,9 +50,7 @@ public class SaveDonnees {
         save.saveCarte();
         save.saveIncendies();
         save.saveRobots();
-        // Ajouter sav de liste graphe !!!!
         save.saveGraph();
-
         scanner.close();
         System.out.println("\n == sauvgarde terminee");
         return data;
@@ -64,9 +61,6 @@ public class SaveDonnees {
                 data.ajouteGraph(new Graph(data.getCarte(),robots));
         }
     }
-
-
-    // Tout le reste de la classe est prive!
 
     private static Scanner scanner;
 

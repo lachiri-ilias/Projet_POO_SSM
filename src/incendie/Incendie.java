@@ -8,9 +8,9 @@ public class Incendie {
     protected boolean isTaken;
     
 
-    public Incendie(int nbl, Case pos){
-        this.nbLitresEau = nbl;
-        this.position = pos;
+    public Incendie(int nbLitresEau, Case position){
+        this.nbLitresEau = nbLitresEau;
+        this.position = position;
         this.isTaken = false;
     }
 

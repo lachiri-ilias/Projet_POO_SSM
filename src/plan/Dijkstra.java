@@ -15,6 +15,10 @@ public class Dijkstra {
     this.courtDistance = Integer.MAX_VALUE;
   }
 
+  /**
+  Fills the linked list of integers with the shortest path. (example 0->5->9->11->13->14)
+  Then fills the linked list of the directions according to the previous list of integers
+  */
   public void dijkstra2(Graph graph, Case c_source,Case c_arrive){
     if(graph.getRobot().verifCase(c_arrive)){
             int arrive = c_arrive.getColonne() + c_arrive.getLigne() * graph.getCarte().getNbLignes() ;
@@ -22,51 +26,38 @@ public class Dijkstra {
             int nVertices = graph.getGraphSize();
             int[] shortestDistances = new int[nVertices];
             boolean[] added = new boolean[nVertices];
-            for (int vertexIndex = 0; vertexIndex < nVertices;
-                              vertexIndex++)
-            {
-              shortestDistances[vertexIndex] = Integer.MAX_VALUE;
-              added[vertexIndex] = false;
+            for (int indice = 0; indice < nVertices; indice++) {
+              shortestDistances[indice] = Integer.MAX_VALUE;
+              added[indice] = false;
             }
             shortestDistances[source] = 0;
             int[] chemin = new int[nVertices];
             chemin[source] = -1;
-            for (int i = 1; i < nVertices; i++)
-            {
+            for (int i = 1; i < nVertices; i++) {
               if(graph.getRobot().verifCase(graph.getCase(i))){
 
-                    int nearestVertex = -1;
-                    int shortestDistance = Integer.MAX_VALUE;
-                    //System.out.print("Heeere : "+graph.getCase(i)+"\n");
-                    for (int vertexIndex = 0;vertexIndex < nVertices;vertexIndex++)
-                    {
-                      if (!added[vertexIndex] && shortestDistances[vertexIndex] < shortestDistance)
-                      {
-                        //System.out.print("SSuuuii  "+vertexIndex+"  iii \n");
-                        nearestVertex = vertexIndex;
-                        shortestDistance = shortestDistances[vertexIndex];
-                      }
-                    }
-
-                    added[nearestVertex] = true;
-                    for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++)
-                    {
-                      int edgeDistance = graph.getGraphVal(nearestVertex,vertexIndex);
-                      if (edgeDistance > 0
-                        && ((shortestDistance + edgeDistance) <
-                          shortestDistances[vertexIndex]))
-                      {
-                        chemin[vertexIndex] = nearestVertex;
-                        shortestDistances[vertexIndex] = shortestDistance + edgeDistance;
-                      }
-                    }
+                int sommetProche = -1;
+                int shortestDistance = Integer.MAX_VALUE;
+                for (int indice = 0;indice < nVertices;indice++) {
+                  if (!added[indice] && shortestDistances[indice] < shortestDistance) {
+                    sommetProche = indice;
+                    shortestDistance = shortestDistances[indice];
+                  }
+                }
+                added[sommetProche] = true;
+                for (int indice = 0; indice < nVertices; indice++)
+                {
+                  int edgeDistance = graph.getGraphVal(sommetProche,indice);
+                  if (edgeDistance > 0 && ((shortestDistance + edgeDistance) < shortestDistances[indice])) {
+                    chemin[indice] = sommetProche;
+                    shortestDistances[indice] = shortestDistance + edgeDistance;
+                  }
+                }
               }
             }
-            courtChemin2(source,arrive, shortestDistances, chemin,graph);
+            courtChemin(source,arrive, shortestDistances, chemin,graph);
             this.courtDistance = shortestDistances[arrive];
-            //System.out.print("la liste chemin est : "+getListeChemin()+"\n");
-            convertirListChemin(graph);
-            // System.out.print("la liste direction  est : "+getListeDiretion()+"\n");
+            convertirListCheminlistDirection(graph);
     }
 	}
 
@@ -86,7 +77,11 @@ public class Dijkstra {
   public int getCourtDistance(){
       return this.courtDistance;
   }
-   private void convertirListChemin(Graph graph)
+
+  /**
+  From the list of path we fill the list of direction
+  */
+   private void convertirListCheminlistDirection(Graph graph)
    {
       Case c0;
       Case c1;
@@ -105,28 +100,25 @@ public class Dijkstra {
     }
 
 
-
-  private void courtChemin2(int source,int arrive,int[] distances,int[] chemin,Graph graph)
+  private void courtChemin(int source,int arrive,int[] distances,int[] chemin,Graph graph)
   { 
 			if (arrive != source)
 			{ if(distances[arrive] < Integer.MAX_VALUE){
-          Path2(arrive, chemin,graph);
+          path(arrive, chemin,graph);
         }
         else{
-           System.out.print(graph.getRobot()+"le robot ne peux pas acceede a la case : "+arrive+"\n");
         }
 			}
 	}
-	public void Path2(int currentVertex,int[] chemin,Graph graph)
+  
+	public void path(int current,int[] chemin,Graph graph)
 	{
-		if (currentVertex == -1)
+		if (current == -1)
 		{
 			return ;
 		}
-    // System.out.print("\n ********************* TESST : "+currentVertex+" case :     "+graph.getCase(currentVertex)+" \n");
-    // System.out.print("befoure : "+currentVertex+" case :     "+graph.getCase(currentVertex)+" \n");
-    this.ajouteChemin(currentVertex);
-		Path2(chemin[currentVertex], chemin,graph);
+    this.ajouteChemin(current);
+		path(chemin[current], chemin,graph);
 	}
   
 

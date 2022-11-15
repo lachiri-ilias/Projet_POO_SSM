@@ -166,7 +166,7 @@ class Simulateurr implements Simulable {
              if(getListeEvenements().get(k).getDate()==getDateSimulation()){
                 System.out.println("Execution\n");
                 getListeEvenements().get(k).execute(getDateSimulation());
-                if(getListeEvenements().get(k).getIsExe()){
+                if(getListeEvenements().get(k).getisExecuted()){
                   getListeEvenements().remove(getListeEvenements().get(k));
                   size_liste --;
                   k--;
@@ -281,14 +281,14 @@ class Simulateurr implements Simulable {
             //    System.out.println("heere \n");
             //   robots.setTmp(robots.getTmp() + 10);
             // }
-              switch(robots.getType()){
+              switch(robots.getRobotType()){
                   case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
                   case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
             //  System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
-              String s = robots.getType() + " : capacite reservoire = "+ robots.getCapActuelle();
+              String s = robots.getRobotType() + " : capacite reservoire = "+ robots.getCapActuelle();
               gui.addGraphicalElement(new Text(5*factor, 10*t, Color.decode("#FFFFFF"), s));
               t ++;
         }

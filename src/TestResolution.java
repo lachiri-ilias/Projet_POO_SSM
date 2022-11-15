@@ -70,7 +70,7 @@ class Simulateur implements Simulable {
     private DonneesSimulation dataZero;
     private int factorAsset;
     private long dateSimulation;
-    private ChefCurry2 chefPompier;
+    private ChefPompier chefPompier;
     private String fichier;
 
 
@@ -85,7 +85,7 @@ class Simulateur implements Simulable {
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
-        this.chefPompier = new ChefCurry2(data);
+        this.chefPompier = new ChefPompier(data);
         gui.setSimulable(this);				// association a la gui!
         initDraw(2);
     }
@@ -96,7 +96,7 @@ class Simulateur implements Simulable {
     public long getDateSimulation(){
       return this.dateSimulation;
     }
-    public ChefCurry2 getChefPompier(){
+    public ChefPompier getChefPompier(){
       return this.chefPompier;
     }
     private void incrementeDate(){
@@ -166,7 +166,7 @@ class Simulateur implements Simulable {
           this.listeRobot = data.getListeRobot();
           this.listeIncendie = data.getListeIncendie();
           this.listeEvenement = new LinkedList<Evenement>();
-          this.chefPompier = new ChefCurry2(data);
+          this.chefPompier = new ChefPompier(data);
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + fichier + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -230,7 +230,7 @@ class Simulateur implements Simulable {
 
         }
         for(Robot robots : getListeRobot()){
-              switch(robots.getType()){
+              switch(robots.getRobotType()){
                   case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
                   case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
@@ -456,7 +456,7 @@ class Simulateur implements Simulable {
 
         }
         for(Robot robots : getListeRobot()){
-              switch(robots.getType()){
+              switch(robots.getRobotType()){
                   case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
                   case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;

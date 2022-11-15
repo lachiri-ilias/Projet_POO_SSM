@@ -6,7 +6,9 @@ import plan.*;
 import incendie.*;
 import java.util.List;
 import java.util.LinkedList;
-
+/**
+In case a robot is working putting off a fire we considered it impossible for another robot to join him so we're adding if a fire is taken or not
+ */
 public class Liberer_Incendie_Si extends Evenement{
     private Robot robot;
     private Incendie incendie;
@@ -20,15 +22,16 @@ public class Liberer_Incendie_Si extends Evenement{
     }
 
     public void execute(long dateSimulation){
+        // if the robot is free to do the order in the date given 
         if(dateSimulation>=this.robot.getTempsFin()){
            this.robot.setTempsFin(dateSimulation);
-           //if(listeIncendie.contains(incendie))
            incendie.setIsTaken(false);
-           super.setIsExe(true);
+           super.setisExecuted(true);
         }
+        // if the robot is not free for now it pushes the event to the date where the robot finishes its actual order
         else{
             setDate(super.getDate()+this.robot.getTempsFin()-dateSimulation);
-            super.setIsExe(false);
+            super.setisExecuted(false);
         }
       }
 }

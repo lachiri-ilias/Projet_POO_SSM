@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra Amiral ChefPompier ChefCurry2  Test4 Test5  #testResolution
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier  Test4 # Test5  #testResolution
 # TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees  TEST 1 Test2 TEST 3 Test4
 
 testInvader:
@@ -82,14 +82,8 @@ Graph:
 Dijkstra:
 	javac -d bin -classpath bin/plan  -sourcepath src src/plan/Dijkstra.java
 
-Amiral:
-	javac -d bin -classpath bin/manager -sourcepath src src/manager/Amiral.java
-
 ChefPompier:
 	javac -d bin -classpath bin/manager -sourcepath src src/manager/ChefPompier.java
-
-ChefCurry2 :
-	javac -d bin -classpath bin/manager -sourcepath src src/manager/ChefCurry2.java
 
 
 

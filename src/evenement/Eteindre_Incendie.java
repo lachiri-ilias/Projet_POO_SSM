@@ -23,39 +23,38 @@ public class Eteindre_Incendie extends Evenement{
     }
 
     public void execute(long dateSimulation){
-           // System.out.print("La date est  "+(dateSimulation) );
-
-        //System.out.println("***feux eteint  entre****["+dateSimulation+" ] temps fin : "+ robot.getTempsFin()+"\n");
+        // if the robot is free to do the order in the date given 
         if(dateSimulation>=robot.getTempsFin()){
-            // robot.setIsLibre(false);
             dateEteintFeux =  this.robot.getTempsDeversage();
             this.robot.setTempsFin(dateSimulation+dateEteintFeux);
             if(this.robot.getCapActuelle() >= this.incendie.getLitresEau()){
-                    this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
+                    if(this.robot.getRobotType()!="R_Pattes")
+                        this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
                     this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getQteDeverssage());
                     if(this.incendie.getLitresEau() <= 0){
                         this.listeIncendie.remove(this.incendie);
-                        this.carte.getListToDraw().add(this.incendie.getCase()); // Il faut draw le fait que l'incendie ne soit plus présent car il est éteint
-                        super.setIsExe(true);
+                        // we have to draw to show that there is no longer fire
+                        this.carte.getListToDraw().add(this.incendie.getCase()); 
+                        super.setisExecuted(true);
                     }
-                    // else{
-                    //     setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
-                    //     super.setIsExe(false);
-                    // }
+                    else{
+                        setDate(robot.getTempsFin());
+                        super.setisExecuted(false);
+                    }
             }
             else{
                 this.incendie.setLitresEau(this.incendie.getLitresEau()-this.robot.getQteDeverssage());
-                this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
-                setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
-                super.setIsExe(true);
+                if(this.robot.getRobotType()!="R_Pattes")
+                    this.robot.setCapActuelle( this.robot.getCapActuelle()-this.robot.getQteDeverssage());
+                setDate(robot.getTempsFin());
+                super.setisExecuted(true);
             }
         }
+        // if the robot is not free for now it pushes the event to the date where the robot finishes its actual order
         else{
-           // System.out.print("LE temps a ajouter est : "+(super.getDate()+robot.getTempsFin()-dateSimulation) );
-            setDate(super.getDate()+robot.getTempsFin()-dateSimulation);
-            super.setIsExe(false);
+            setDate(robot.getTempsFin());
+            super.setisExecuted(false);
 
         }
-        //System.out.println("***feux eteint sortie****["+dateSimulation+" ] temps fin :  "+ robot.getTempsFin()+"\n");
     }
 }

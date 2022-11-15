@@ -7,7 +7,7 @@ import plan.*;
 public class Drone extends Robot {
 
     public Drone(Case c){
-         super(c, 100, 150, 10000, 0, 30*60, 30, 334); 
+         super(c, 100, 150, 10000, 0, 30*60, 30, 10000); 
     }
 
     public void setPosition(Case c){
@@ -30,7 +30,7 @@ public class Drone extends Robot {
 
     public boolean remplirReservoir(Carte carte){
         if(this.cap_actuelle < this.cap_max){
-            this.cap_actuelle += 334;
+            this.cap_actuelle += (int)(super.cap_max / super.tps_remplissage);
         } 
         else{
             this.cap_actuelle = this.cap_max;

@@ -31,7 +31,7 @@ public class R_Chenille extends Robot {
 
     public boolean remplirReservoir(Carte carte){
         if(this.cap_actuelle < this.cap_max){
-            this.cap_actuelle += 400;
+            this.cap_actuelle += (int)(super.cap_max / super.tps_remplissage);
         } 
         else{
             this.cap_actuelle = this.cap_max;

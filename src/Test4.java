@@ -38,7 +38,6 @@ public class Test4 {
           int factor = data.getCarte().getTailleCases()/2;
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
-          //int k = 1,z=1;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
 
@@ -55,7 +54,7 @@ public class Test4 {
 
 class Simulateurr implements Simulable {
     private GUISimulator gui;
-    private ChefCurry2 chef;
+    private ChefPompier chef;
     private int factor;
     private long dateSimulation;
     private int x_drone;
@@ -66,7 +65,7 @@ class Simulateurr implements Simulable {
     public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
         this.factor = f;
         this.gui = gui;
-        this.chef = new ChefCurry2(data);
+        this.chef = new ChefPompier(data);
         gui.setSimulable(this);				
         draw();
     }
@@ -96,7 +95,7 @@ class Simulateurr implements Simulable {
             //System.out.println("liste d'event: "+this.chef.getListeEvenements().get(k).getDate() );
              if(this.chef.getListeEvenements().get(k).getDate()==getDateSimulation()){
                 this.chef.getListeEvenements().get(k).execute(getDateSimulation());
-                if(this.chef.getListeEvenements().get(k).getIsExe()){
+                if(this.chef.getListeEvenements().get(k).getisExecuted()){
                   this.chef.getListeEvenements().remove(this.chef.getListeEvenements().get(k));
                   size_liste --;
                   k--;
@@ -113,8 +112,6 @@ class Simulateurr implements Simulable {
     public void restart() {
         draw();
     }
-
-
 
     public Carte getCarte(){
        return this.chef.getCarte();
@@ -150,19 +147,19 @@ class Simulateurr implements Simulable {
         for(Incendie incendies : getListeIncendie()){
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
               String s =  " Incendie X : intensité = "+ incendies.getLitresEau();
-              gui.addGraphicalElement(new Text(900, 12*t, Color.decode("#FFFFFF"), s));
+              gui.addGraphicalElement(new Text(1500, 15*t, Color.decode("#FFFFFF"), s));
               t ++;
         }
         
         for(Robot robots : getListeRobot()){
-              switch(robots.getType()){
+              switch(robots.getRobotType()){
                   case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
                   case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              String s = robots.getType() + " : capacite reservoire = "+ robots.getCapActuelle();
-              gui.addGraphicalElement(new Text(900, 12*t, Color.decode("#FFFFFF"), s));
+              String s = robots.getRobotType() + " : capacite reservoire = "+ robots.getCapActuelle();
+              gui.addGraphicalElement(new Text(1500, 15*t, Color.decode("#FFFFFF"), s));
               t ++;
         }
     }
