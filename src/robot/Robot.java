@@ -122,8 +122,6 @@ public abstract class Robot {
                        break;
 
                     case SUD:
-                        System.out.println("[deplacer] posactuelle ("+getPosition().getLigne()+","+getPosition().getColonne()+")\n");
-                        System.out.println("[deplacer] posVoisin ("+voisin.getLigne()+","+voisin.getColonne()+")\n");
                         carte.addListToDrawTwo(getPosition(),voisin);
                         getPosition().setLigne(getPosition().getLigne()+1);
                         break;

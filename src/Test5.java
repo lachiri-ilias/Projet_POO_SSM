@@ -65,6 +65,8 @@ class Simulateur implements Simulable {
     private LinkedList<Evenement> listeEvenement;
     private Iterator<Integer> xIterator;
     private Iterator<Integer> yIterator;
+    private Rectangle box;
+    private int height_lign;
 
     public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
         this.factor = f;
@@ -75,6 +77,7 @@ class Simulateur implements Simulable {
         this.listeIncendie = chef.getListeIncendie();
         this.listeEvenement = chef.getListeEvenements();
         this.carte = chef.getCarte();
+        this.height_lign = 20;
         gui.setSimulable(this);
         initDraw();
 
@@ -165,17 +168,23 @@ class Simulateur implements Simulable {
 
 
     private void initDraw(){
+
+      int decalage_x=150, decalage_y=400;
+      int box_width=200, box_height=(getListeRobot().size()+getListeIncendie().size())*height_lign;
       for(int i=0; i<this.getCarte().getNbLignes();i++){
         for(int j=0; j<this.getCarte().getNbColonnes();j++){
           this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
         }
       }
+      box = new Rectangle(gui.getPanelWidth()-decalage_x, decalage_y,Color.decode("#FFFFFF"), Color.decode("#000000"), box_width, box_height);
+      gui.addGraphicalElement(box);
       draw2();
     }
 
     private void draw2() {
         // gui.reset();	// clear the window
-        int etat;
+        int etat, t=1, f=4, dec=2;
+        int dec_text_x=10, dec_text_y=10;
         // for(int i=0; i<this.getCarte().getNbLignes();i++){
           // for(int j=0; j<this.getCarte().getNbColonnes();j++){
             // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
@@ -187,8 +196,6 @@ class Simulateur implements Simulable {
             int i = caseToDraw.getLigne();
             int j = caseToDraw.getColonne();
             System.out.println("[draw2] Dessine la case ("+i+","+j+")\n");
-            int f = 4;
-            int dec = 2;
             // gui.addGraphicalElement(new ImageElement(0,0,"image/sol/grass.png",factor*this.getCarte().getNbColonnes(),factor*this.getCarte().getNbLignes(),gui));
             etat = situation(i,j);
             switch(this.getCarte().getCase(i,j).getNature()){
@@ -368,6 +375,9 @@ class Simulateur implements Simulable {
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-10,"image/feux.gif",factor,factor,gui));
+              String s =  " Incendie X : intensité = "+ incendies.getLitresEau();
+              gui.addGraphicalElement(new Text(box.getX()+dec_text_x, dec_text_y + t*height_lign, Color.decode("#FFFFFF"), s));
+              t ++;
         }
         for(Robot robots : getListeRobot()){
               switch(robots.getRobotType()){
@@ -376,7 +386,10 @@ class Simulateur implements Simulable {
                   case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
+              String s = robots.getRobotType() + " : capacite reservoir = "+ robots.getCapActuelle();
+              gui.addGraphicalElement(new Text(gui.getPanelWidth()+100, 15*t, Color.decode("#FFFFFF"), s));
+              t ++;
+              // System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
         }
 
         System.out.println("\n\t\t FIN AFFICHAGE CARTE !\n\n");
