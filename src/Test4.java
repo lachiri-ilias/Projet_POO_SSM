@@ -85,9 +85,14 @@ class Simulateurr implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        this.chef.Simulation(getDateSimulation());
+        this.chef.SimulationV04(getDateSimulation());
+        //this.chef.SimulationV01(getDateSimulation());
+        //this.chef.SimulationV02(getDateSimulation());
         if(simulationTerminee()){
-          System.out.println("Pas d'event a lancer FFIIINNN \n");
+          System.out.println("DATE FIN : [ "+this.dateSimulation +" ]Pas d'event a lancer FFIIINNN \n");
+          String s = " SSSSSIIIIUUUUUUUUUUUUUUUU ";
+          gui.addGraphicalElement(new Text(500, 100, Color.decode("#FFFFFF"), s));
+          this.dateSimulation  --;
         }
         else{
           int size_liste = this.chef.getListeEvenements().size();
@@ -103,7 +108,6 @@ class Simulateurr implements Simulable {
                 
               }
           }
-           //System.out.println("\n*********\n"); 
           draw();
       }
     }

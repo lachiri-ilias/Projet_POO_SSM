@@ -97,7 +97,7 @@ class Simulateur implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        this.chef.Simulation(getDateSimulation());
+        this.chef.SimulationV01(getDateSimulation());
         if(simulationTerminee()){
           System.out.println("Pas d'event a lancer FFIIINNN \n");
         }

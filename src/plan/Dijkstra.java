@@ -44,7 +44,8 @@ public class Dijkstra {
                     shortestDistance = shortestDistances[indice];
                   }
                 }
-                added[sommetProche] = true;
+               if(sommetProche != -1){  //!!! eroor heeerrreee
+                  added[sommetProche] = true;
                 for (int indice = 0; indice < nVertices; indice++)
                 {
                   int edgeDistance = graph.getGraphVal(sommetProche,indice);
@@ -53,6 +54,7 @@ public class Dijkstra {
                     shortestDistances[indice] = shortestDistance + edgeDistance;
                   }
                 }
+               }
               }
             }
             courtChemin(source,arrive, shortestDistances, chemin,graph);
