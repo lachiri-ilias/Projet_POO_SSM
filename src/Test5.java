@@ -180,13 +180,13 @@ class Simulateur implements Simulable {
           // for(int j=0; j<this.getCarte().getNbColonnes();j++){
             // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
             // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
-          System.out.println("[draw2] listToDraw : "+this.getCarte().getListToDraw()+"\n");
+         // System.out.println("[draw2] listToDraw : "+this.getCarte().getListToDraw()+"\n");
           while(this.getCarte().getListToDraw().size()!=0){
 
             Case caseToDraw = this.getCarte().getListToDraw().removeFirst();
             int i = caseToDraw.getLigne();
             int j = caseToDraw.getColonne();
-            System.out.println("[draw2] Dessine la case ("+i+","+j+")\n");
+            //System.out.println("[draw2] Dessine la case ("+i+","+j+")\n");
             int f = 4;
             int dec = 2;
             // gui.addGraphicalElement(new ImageElement(0,0,"image/sol/grass.png",factor*this.getCarte().getNbColonnes(),factor*this.getCarte().getNbLignes(),gui));
@@ -376,10 +376,10 @@ class Simulateur implements Simulable {
                   case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
+             // System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
         }
 
-        System.out.println("\n\t\t FIN AFFICHAGE CARTE !\n\n");
+       // System.out.println("\n\t\t FIN AFFICHAGE CARTE !\n\n");
 
     }
 
