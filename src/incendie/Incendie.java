@@ -4,12 +4,14 @@ import plan.*;
 
 public class Incendie {
     private int nbLitresEau;
+    private int nbLitresEauInit;
     private Case position;
     protected boolean isTaken;
-    
+
 
     public Incendie(int nbLitresEau, Case position){
         this.nbLitresEau = nbLitresEau;
+        this.nbLitresEauInit = nbLitresEau;
         this.position = position;
         this.isTaken = false;
     }
@@ -22,6 +24,9 @@ public class Incendie {
     }
     public int getLitresEau(){
         return this.nbLitresEau;
+    }
+    public int getLitresEauInit(){
+        return this.nbLitresEauInit;
     }
 
     public Case getCase(){
