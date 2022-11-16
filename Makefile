@@ -21,7 +21,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier  Test4 # Test5  #testResolution
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier  Test4  Test5  #testResolution
 # TestSaveDonnees   testInvader testSimulateur testResolution testLecture TestLecteurDonnees  TEST 1 Test2 TEST 3 Test4
 
 testInvader:
@@ -122,21 +122,15 @@ exeTest3:
 
 exeTest4:
 #java -classpath bin:bin/gui.jar Test4 cartes/spiralOfMadness-50x50.map
-	java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
+#java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
+	java -classpath bin:bin/gui.jar Test4 cartes/desertOfDeath-20x20.map
 #java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test.map
-#java -classpath bin:bin/gui.jar Test4 cartes/carteSujet_test4.map
 
 exeTest5:
 #java -classpath bin:bin/gui.jar Test5 cartes/spiralOfMadness-50x50.map
-	java -classpath bin:bin/gui.jar Test5 cartes/mushroomOfHell-20x20.map
+	java -classpath bin:bin/gui.jar Test5 cartes/desertOfDeath-20x20.map
 
 clean:
+	rm -rf bin/*/*.class
 	rm -rf bin/*.class
-	rm -rf bin/io/*.class
-	rm -rf bin/plan/*.class
-	rm -rf bin/robot/*.class
-	rm -rf bin/manager/*.class
-	rm -rf bin/evenement/*.class
-	rm -rf bin/incendie/*.class
-	rm -rf bin/manager/*.class
-	rm -rf bin/donnees/*.class
+

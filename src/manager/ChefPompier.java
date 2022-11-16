@@ -65,45 +65,51 @@ Fills all the linked lists given as attributes
         }
     }
   }
-
-
-/**
-Called every date to fill the given events
-Version optimised 
- */
-public void Simulationv02(long date){
+//******       VERSION §!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+public void SimulationV04(long date){
     long k = date +1;
     Case derniereposition; 
+    LinkedList<Direction> listeDirection=null;
+    int courtDistance = Integer.MAX_VALUE;
+    Incendie procheIncendie=null;
+    boolean isDispo;
+
     for(Graph graphs : listeGraph){
+        isDispo = false;
         if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() == 0){
             goRemplir(graphs,k);
         }
-    }
-    for(Incendie incendies : listeIncendie){
-
-
-     
-      for(Graph graphs : listeGraph){
-        if(graphs.getRobot().getIsLibre() && !(incendies.getIsTaken()) && graphs.getRobot().verifCase(incendies.getCase())
-        &&   graphs.getRobot().getCapActuelle() > 0 ){
-            
-
-
-
-            incendies.setIsTaken(true);
-            k++;
-            if(!goEteindre(graphs,graphs.getRobot().getPosition(),incendies,k)){
-                graphs.getRobot().setIsLibre(true);
-                incendies.setIsTaken(false);
+        else if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() != 0){
+            for(Incendie incendies : listeIncendie){
+              if( (graphs.getRobot().getRobotType()=="Drone" && incendies.getLitresEau()>graphs.getRobot().getCapActuelle()) 
+                || (graphs.getRobot().getRobotType()!="Drone")  
+                ){
+                    if(graphs.getRobot().verifCase(incendies.getCase())){
+                        Dijkstra dijkstra = new Dijkstra();
+                        dijkstra.dijkstra2(graphs,graphs.getRobot().getPosition(),incendies.getCase()); 
+                          if(dijkstra.getCourtDistance() < courtDistance){
+                            courtDistance = dijkstra.getCourtDistance();
+                            listeDirection = dijkstra.getListeDiretion(); 
+                            procheIncendie = incendies;
+                            isDispo = true;
+                        }
+                    }
+                }
             }
-            else{
-                break;
-            }
-
         }
-      }
+      if(isDispo){
+         k++;
+         for(Direction d : listeDirection){
+            ajouteEvenement(new Deplacer_Robot(d,graphs.getRobot(),k,this.carte));
+            k++;
+          }
+          ajouteEvenement(new Eteindre_Incendie(graphs.getRobot(),this.listeIncendie,procheIncendie,k,this.carte));
+          k++;
+          ajouteEvenement(new Liberer_Robot(graphs.getRobot(),k));
+          k++;
+          graphs.getRobot().setIsLibre(false);
+      }          
     }
-    
 }
 
 
@@ -111,9 +117,108 @@ public void Simulationv02(long date){
 
 /**
 Called every date to fill the given events
+Version optimised 
+ */
+public void SimulationV02(long date){
+    long k = date +1;
+    Case derniereposition; 
+    LinkedList<Direction> listeDirection=null;
+    int courtDistance = Integer.MAX_VALUE;
+    Graph procheGraph;
+    boolean isDispo;
+
+    for(Graph graphs : listeGraph){
+        if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() == 0){
+            goRemplir(graphs,k);
+        }
+    }
+    for(Incendie incendies : listeIncendie){
+      isDispo = false;
+      procheGraph = listeGraph.get(0);
+      for(Graph graphs : listeGraph){
+        if(graphs.getRobot().getIsLibre() && !(incendies.getIsTaken())  && graphs.getRobot().verifCase(incendies.getCase())
+          && graphs.getRobot().getCapActuelle() > 0 ) {
+          Dijkstra dijkstra = new Dijkstra();
+          dijkstra.dijkstra2(graphs,graphs.getRobot().getPosition(),incendies.getCase()); 
+          if(dijkstra.getCourtDistance() < courtDistance){
+            courtDistance = dijkstra.getCourtDistance();
+            listeDirection = dijkstra.getListeDiretion(); 
+            procheGraph = graphs;
+            isDispo = true;
+          }
+        }
+      }
+      if(isDispo){
+         incendies.setIsTaken(true);
+         k++;
+         for(Direction d : listeDirection){
+            ajouteEvenement(new Deplacer_Robot(d,procheGraph.getRobot(),k,this.carte));
+            k++;
+          }
+          ajouteEvenement(new Eteindre_Incendie(procheGraph.getRobot(),this.listeIncendie,incendies,k,this.carte));
+          k++;
+          ajouteEvenement(new Liberer_Robot(procheGraph.getRobot(),k));
+          k++;
+          ajouteEvenement(new Liberer_Incendie_Si(procheGraph.getRobot(),incendies,listeIncendie,k));
+          procheGraph.getRobot().setIsLibre(false);
+      }          
+    }
+  }
+/**
+Called every date to fill the given events
+Version optimised 
+ */
+public void SimulationV03(long date){
+    long k = date +1;
+    Case derniereposition; 
+    LinkedList<Direction> listeDirection=null;
+    int courtDistance = Integer.MAX_VALUE;
+    Incendie procheIncendie=null;
+    boolean isDispo;
+
+    for(Graph graphs : listeGraph){
+        isDispo = false;
+        if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() == 0){
+            goRemplir(graphs,k);
+        }
+        else if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() != 0){
+            for(Incendie incendies : listeIncendie){
+              if(graphs.getRobot().verifCase(incendies.getCase())){
+                   Dijkstra dijkstra = new Dijkstra();
+                   dijkstra.dijkstra2(graphs,graphs.getRobot().getPosition(),incendies.getCase()); 
+                    if(dijkstra.getCourtDistance() < courtDistance){
+                      courtDistance = dijkstra.getCourtDistance();
+                      listeDirection = dijkstra.getListeDiretion(); 
+                      procheIncendie = incendies;
+                      isDispo = true;
+                  }
+              }
+            }
+        }
+      if(isDispo){
+         k++;
+         for(Direction d : listeDirection){
+            ajouteEvenement(new Deplacer_Robot(d,graphs.getRobot(),k,this.carte));
+            k++;
+          }
+          ajouteEvenement(new Eteindre_Incendie(graphs.getRobot(),this.listeIncendie,procheIncendie,k,this.carte));
+          k++;
+          ajouteEvenement(new Liberer_Robot(graphs.getRobot(),k));
+          k++;
+          graphs.getRobot().setIsLibre(false);
+      }          
+    }
+}
+//  ajouter une methode qui suprime les evenement du robot avenire c-a-a a chaque event verifie est ce que le 
+// le feux est non etait si non il change de direction .
+
+
+
+/**
+Called every date to fill the given events
 Version not yet optimised V01
  */
-  public void Simulation(long date){
+  public void SimulationV01(long date){
     long k = date +1;
     Case derniereposition;
     for(Graph graphs : listeGraph){
@@ -143,7 +248,7 @@ Version not yet optimised V01
 Called every date to fill the given events
 Version not yet optimised V00
  */
-  public void Simulation_v00(long date){
+  public void Simulation_V00(long date){
     long k = date +1;
     Case derniereposition; 
     for(Incendie incendies : listeIncendie){
@@ -215,8 +320,10 @@ For all robots except Drone
 private Case plusProcheCaseEauVoisin( Graph graph ){
     Case casePlusProche=getListeCaseEauVosin().get(0) ; // just initialising
     int distancemin = Integer.MAX_VALUE;
+    int i =0;
     for(Case c : getListeCaseEauVosin()){
-      if(graph.getRobot().verifCase(c)){
+      i++;
+      if(graph.getRobot().verifCase(c) && i>4){
           Dijkstra dijkstra = new Dijkstra();
           dijkstra.dijkstra2(graph,graph.getRobot().getPosition(),c);
           if( dijkstra.getCourtDistance() < distancemin ){
@@ -290,6 +397,29 @@ private Case goRemplir( Graph graph , long k){
 }
 
 
+
+
+private boolean Eteindre( Graph graph ,Case derniereposition,Incendie incendie,long k){
+  Dijkstra dijkstra = new Dijkstra();
+  dijkstra.dijkstra2(graph,derniereposition,incendie.getCase()); 
+  graph.getRobot().setIsLibre(false);
+  if(dijkstra.getCourtDistance()<Integer.MAX_VALUE){
+      for(Direction d : dijkstra.getListeDiretion()){
+          ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,this.carte));
+          k++;
+      }
+      ajouteEvenement(new Eteindre_Incendie(graph.getRobot(),this.listeIncendie,incendie,k,this.carte));
+      k++;
+      ajouteEvenement(new Liberer_Robot(graph.getRobot(),k));
+      k++;
+      ajouteEvenement(new Liberer_Incendie_Si(graph.getRobot(),incendie,listeIncendie,k));
+      graph.getRobot().setIsLibre(false);
+      return true;
+  }
+  else{
+    return false;
+  }
+}
 
 
 // private void etaindre_temps(LinkedList<Graph> graplisteGraphh ,Case derniereposition,Incendie incendie,long k){
