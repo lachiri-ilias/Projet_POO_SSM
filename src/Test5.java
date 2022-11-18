@@ -117,7 +117,6 @@ class Simulateur implements Simulable {
         else{
           int size_liste = this.chef.getListeEvenements().size();
           for(int k=0;k<size_liste;k++){
-            //System.out.println("liste d'event: "+this.chef.getListeEvenements().get(k).getDate() );
              if(this.chef.getListeEvenements().get(k).getDate()==getDateSimulation()){
                 this.chef.getListeEvenements().get(k).execute(getDateSimulation());
                 if(this.chef.getListeEvenements().get(k).getisExecuted()){
@@ -128,7 +127,6 @@ class Simulateur implements Simulable {
 
               }
           }
-           //System.out.println("\n*********\n");
           draw2();
       }
     }
@@ -141,7 +139,6 @@ class Simulateur implements Simulable {
       try {
         System.out.println("[restart] fichier : "+fichier+"\n");
         DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
-        // setCarte(data.getCarte());
         this.listeRobot = dataNew.getListeRobot();
         this.listeIncendie = dataNew.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
@@ -151,7 +148,6 @@ class Simulateur implements Simulable {
       } catch (DataFormatException e) {
           System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
       }
-
       initDraw();
     }
 
@@ -180,44 +176,29 @@ class Simulateur implements Simulable {
           this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
         }
       }
-
-
-
-
       draw2();
     }
 
     private void draw2() {
-        // gui.reset();	// clear the window
         t=2;
         int etat, f=4, dec=2;
         box = new Rectangle(gui.getPanelWidth()-decalage_box_x,gui.getPanelHeight()/2-decalage_box_y,Color.decode("#FFFFFF"), Color.decode("#000000"), box_width, box_height);
         gui.addGraphicalElement(box);
         gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y , Color.decode("#FFFFFF"), "Incendies :"));
         gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y+(getListeIncendie().size()+3)*height_lign , Color.decode("#FFFFFF"), "Robots :"));
-
-
-        // for(int i=0; i<this.getCarte().getNbLignes();i++){
-          // for(int j=0; j<this.getCarte().getNbColonnes();j++){
-            // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
-            // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
-          // System.out.println("[draw2] listToDraw : "+this.getCarte().getListToDraw()+"\n");
-          while(this.getCarte().getListToDraw().size()!=0){
+        while(this.getCarte().getListToDraw().size()!=0){
 
             Case caseToDraw = this.getCarte().getListToDraw().removeFirst();
             int i = caseToDraw.getLigne();
             int j = caseToDraw.getColonne();
-            // System.out.println("[draw2] Dessine la case ("+i+","+j+")\n");
-            // gui.addGraphicalElement(new ImageElement(0,0,"image/sol/grass.png",factor*this.getCarte().getNbColonnes(),factor*this.getCarte().getNbLignes(),gui));
             etat = situation(i,j);
             switch(this.getCarte().getCase(i,j).getNature()){
               case TERRAIN_LIBRE :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2fe6c4"),factor)); break;
+
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));  break;
               case HABITAT :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
+
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3,"image/3D/habitat/tent_smallOpen_NW.png",f*factor,f*factor,gui));  break;
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3-2, "image/3D/habitat/tent_detailedClosed_SW.png", f*factor, f*factor, gui)); break;
@@ -236,9 +217,7 @@ class Simulateur implements Simulable {
                 }
 
               case FORET :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2,"image/3D/foret/tree_blocks_dark_NE.png",f*factor,f*factor,gui));  break;
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_tall_dark_SE.png", f*factor, f*factor, gui)); break;
@@ -259,9 +238,8 @@ class Simulateur implements Simulable {
 
 
               case ROCHE :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
+
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
@@ -285,13 +263,7 @@ class Simulateur implements Simulable {
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NE.png", f*factor, f*factor, gui)); break;
                 }
 
-
-
-                // gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/3D/terrain_libre/ground_grass_NW.png",factor,factor,gui));  break;
               case EAU :
-                //gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2e86c1"),factor)); break;
-                // gui.addGraphicalElement(new ImageElement(j*factor, i*factor, "image/3D/bordu.png", factor, factor, gui)); break;
-
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverTile_NE.png",factor-1,factor-1,gui));  break;
@@ -382,15 +354,12 @@ class Simulateur implements Simulable {
 
               default : break;
             }
-        //  }
         }
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-5,"image/feux.gif",factor,factor,gui));
               float prctge = ((float)incendies.getLitresEau())/((float)incendies.getLitresEauInit());
               int int_prctge = (int)(prctge*100);
-              // System.out.println("[test5] incendie % = " +int_prctge+" en , = "+prctge+"\n");
-              // System.out.println("[test5] (lié au dessus) LitresEau() = " +incendies.getLitresEau()+" LitresEauInit = "+incendies.getLitresEauInit()+"\n\n");
               int num = getListeIncendie().size()-t+2;
               String s =  "n°"+num+" -- "+ int_prctge+" %";
               int x = box.getX()-dec_text_x;
@@ -412,7 +381,6 @@ class Simulateur implements Simulable {
                   case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));type="Rou";break;
                   case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));type="Che";break;
               }
-              // String s = robots.getRobotType() + " : capacite reservoir = "+ robots.getCapActuelle();
               float prctge = ((float)robots.getCapActuelle())/((float)robots.getCapMax());
               int int_prctge = (int)(prctge*100);
               String s =  "  "+type+" -- "+ int_prctge +" %";
@@ -423,11 +391,7 @@ class Simulateur implements Simulable {
               int jauge_width = (int)(jauge_width_max*prctge);
               gui.addGraphicalElement(new Rectangle(text.getX()+dec_jauge_x,text.getY(),Color.decode("#FFFFFF"), Color.decode("#1151D9"), jauge_width, jauge_height));
               t ++;
-              // System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
         }
-
-        // System.out.println("\n\t\t FIN AFFICHAGE CARTE !\n\n");
-
     }
 
     public boolean memeNature(Case a, Case b){
@@ -526,3 +490,51 @@ class Simulateur implements Simulable {
       return 0;
   }
 }
+
+/*
+Explication de la fonction situation : return | nombre de voisins de memenature | position des voisins
+1er chiffre -> inutile mais obligatoire (ne peut pas commencer par 0)
+2e chiffre : NORD -> 1 = OUI / 0 = NON
+3e chiffre : EST
+4e chiffe : SUD
+5e chiffre : OUEST
+0 | 0 | ø
+11000 | 1 | NORD
+10100 | 1 | EST
+10010 | 1 | SUD
+10001 | 1 | OUEST
+
+11100 | 2 | NORD, EST
+11010 | 2 | NORD, SUD
+11001 | 2 | NORD, OUEST
+
+10110 | 2 | EST, SUD
+10101 | 2 | EST, OUEST
+
+10011 | 2 | SUD, OUEST
+
+11110 | 3 | NORD, EST, SUD
+11101 | 3 | NORD, EST, OUEST
+11011 | 3 | NORD, SUD, OUEST
+
+10111 | 3 | EST, SUD, OUEST
+
+11111 | 4 | NORD, EST, SUD, OUEST
+
+
+SPECIALS
+
+21111 | 4 | NORD, EST, SUD, OUEST
+
+21001 | 2 | NORD, OUEST
+21100 | 2 | NORD, EST
+20110 | 2 | EST, SUD
+20011 | 2 | SUD, OUEST
+
+31111 | 4 | NORD, EST, SUD, OUEST haut gauche
+41111 | 4 | NORD, EST, SUD, OUEST bas droit
+51111 | 4 | NORD, EST, SUD, OUEST haut droit
+61111 | 4 | NORD, EST, SUD, OUEST bas gauche
+
+
+*/

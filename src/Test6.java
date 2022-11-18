@@ -22,36 +22,25 @@ import java.util.*;
 import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
-/*
-TODO :
-  - Comprendre pq on ne peut pas fermer les fenetres
-  - Dimensionner la fenetre en fonction du nb de lignes et colonnes de la carte
-  - Ajouter un titre a la fenetre
-  - Ajouter les robots et les Incendies
-  - Dimensionner factor en fonction de la taille de la carte (ie fenetre)
-*/
 
-public class TestResolution {
+/**
+   Cette classe test le fct automatique des pompiers .....
+
+*/
+public  class Test6 {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
             System.exit(1);
         }
-
         try {
           String fichier = args[0];
           DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
-          // DonneesSimulation dataZero = new SaveDonnees().getDataZero();
-
-          //int factor = data.getCarte().getTailleCases()/data.getCarte().getNbColonnes();
-          // int X = data.getCarte().getNbColonnes() * factor;
-          // int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(1400, 930, Color.BLACK);
           int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
           Simulateur simulateur = new Simulateur(gui, data, factor, fichier);
-          // simulateur.getChefPompier().ordonne(simulateur.getListeEvenements(), simulateur.getDateSimulation());
 
-
+        /*  FIN DE SIMULATION DONNées */
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -60,230 +49,130 @@ public class TestResolution {
     }
 }
 
+
+
 class Simulateur implements Simulable {
     private GUISimulator gui;
+    private ChefPompier chef;
+    private int factor;
+    private long dateSimulation;
+    private int x_drone;
+    private int y_drone;
+    private String fichier;
     private Carte carte;
     private LinkedList<Robot> listeRobot;
     private LinkedList<Incendie> listeIncendie;
     private LinkedList<Evenement> listeEvenement;
-    private int factor;
-    private DonneesSimulation dataZero;
-    private int factorAsset;
-    private long dateSimulation;
-    private ChefPompier chefPompier;
-    private String fichier;
-
-
+    private Iterator<Integer> xIterator;
+    private Iterator<Integer> yIterator;
 
     public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
-        // this.dataZero = dataZero;
-        this.fichier = fichier;
         this.factor = f;
-        this.factorAsset = f*2;
         this.gui = gui;
-        this.carte = data.getCarte();
-        this.listeRobot = data.getListeRobot();
-        this.listeIncendie = data.getListeIncendie();
-        this.listeEvenement = new LinkedList<Evenement>();
-        this.chefPompier = new ChefPompier(data);
-        gui.setSimulable(this);				// association a la gui!
-        initDraw(2);
+        this.fichier = fichier;
+        this.chef = new ChefPompier(data);
+        this.listeRobot = chef.getListeRobot();
+        this.listeIncendie = chef.getListeIncendie();
+        this.listeEvenement = chef.getListeEvenements();
+        this.carte = chef.getCarte();
+        gui.setSimulable(this);
+        initDraw();
+
     }
 
-    public void ajouteEvenement(Evenement e){
-      this.listeEvenement.add(e);
-    }
+
     public long getDateSimulation(){
       return this.dateSimulation;
-    }
-    public ChefPompier getChefPompier(){
-      return this.chefPompier;
     }
     private void incrementeDate(){
       this.dateSimulation ++;
     }
     private boolean simulationTerminee(){
-      return this.listeEvenement.isEmpty();
+      return this.chef.getListeEvenements().isEmpty() && this.chef.getListeIncendie().isEmpty();
     }
-    public Carte getCarte(){
-       return this.carte;
-    }
-
     public void setCarte(Carte resetCarte){
       this.carte = resetCarte;
-    }
-    public void setlisteRobot(LinkedList<Robot> resetListeRobot){
-      this.listeRobot = resetListeRobot;
-    }
-    public void setListeIncendie(LinkedList<Incendie> resetListeIncendie){
-      this.listeIncendie = resetListeIncendie;
-    }
-
-    public LinkedList<Evenement> getListeEvenements(){
-      return this.listeEvenement;
-    }
-    public LinkedList<Incendie> getListeIncendie(){
-      return this.listeIncendie;
-    }
-    public LinkedList<Robot> getListeRobot(){
-      return this.listeRobot;
     }
 
     @Override
     public void next() {
-        System.out.println("["+dateSimulation+"] Appel de next : la liste d'evenement est : \n"+listeEvenement);
-        // incrementeDate();
-        // getChefPompier().ordonne(getListeEvenements(), getDateSimulation());
-        getChefPompier().Simulation(getDateSimulation());
-        // System.out.println("[next] la liste fait "+ this.listeEvenement.size()+"\n");
+        incrementeDate();
+        // c'est la version la plus optimise
+        this.chef.SimulationV04(getDateSimulation());
         if(simulationTerminee()){
-          System.out.println("Plus d'event a lancer FFIIINNN \n");
+             System.out.println("Pas d'event a lancer FFIIINNN \n");
         }
         else{
-          for(Evenement e : getListeEvenements()){
-            System.out.println("["+getDateSimulation()+"] l'evenement "+ e +" est de date : "+e.getDate()+"\n");
-            // System.out.println("liste devent ="+getListeEvenements());
-            if(e.getDate()==getDateSimulation()){
-              System.out.println("["+getDateSimulation()+"] l'evenement "+e+" s'execute !\n");
-              e.execute(getDateSimulation(), gui);
-              draw2();
-            }
-          }
-      }
-      incrementeDate();
-    }
+          int size_liste = this.chef.getListeEvenements().size();
+          for(int k=0;k<size_liste;k++){
+             if(this.chef.getListeEvenements().get(k).getDate()==getDateSimulation()){
+                this.chef.getListeEvenements().get(k).execute(getDateSimulation());
+                if(this.chef.getListeEvenements().get(k).getisExecuted()){
+                  this.chef.getListeEvenements().remove(this.chef.getListeEvenements().get(k));
+                  size_liste --;
+                  k--;
+                }
 
+              }
+          }
+          draw2();
+      }
+    }
 
     @Override
     public void restart() {
-        System.out.println("\n\nAPPEL DE RESET!!!\n\n");
-        gui.reset();
+       gui.reset();
 
-
-        try {
-          DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
-          setCarte(data.getCarte());
-          this.listeRobot = data.getListeRobot();
-          this.listeIncendie = data.getListeIncendie();
-          this.listeEvenement = new LinkedList<Evenement>();
-          this.chefPompier = new ChefPompier(data);
-        } catch (FileNotFoundException e) {
-            System.out.println("fichier " + fichier + " inconnu ou illisible");
-        } catch (DataFormatException e) {
-            System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
-        }
-
-        // DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
-
-        /*
-        // setCarte(dataZero.getCarte()); // normalement inutile car la carte ne change pas
-        dateSimulation = 0;
-        System.out.println("[data] listeRobot : " + getListeRobot()+"\n");
-        System.out.println("[data] listeIncendie : " + getListeIncendie()+"\n");
-        System.out.println("[dataZero] listeRobot : " + dataZero.getListeRobot()+"\n");
-        System.out.println("[dataZero] listeIncendie : " + dataZero.getListeIncendie()+"\n");
-        setlisteRobot(dataZero.getListeRobot());
-        setListeIncendie(dataZero.getListeIncendie());
-        */
-        draw2();
-    }
-
-
-    private void draw() {
-         gui.reset();	// clear the window
-
-        for(int i=0; i<this.getCarte().getNbLignes();i++){
-          for(int j=0; j<this.getCarte().getNbColonnes();j++){
-            // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
-            // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
-            switch(this.getCarte().getCase(i,j).getNature()){
-              case TERRAIN_LIBRE :
-                 // System.out.println("libre ");
-                // gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/terrain_libre.png",50,50,gui));  break;
-                gui.addGraphicalElement(new Rectangle(j*factor + (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#af601a"),factor)); break;
-              case EAU :
-               // System.out.println("eau ");
-               //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/eau.png",50,50,gui));  break;
-                gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2e86c1"),factor)); break;
-              case HABITAT :
-              // System.out.println("habitat ");
-             // break;
-               //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/maison.png",45,45,gui));  break;
-                gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#884ea0"),factor)); break;
-              case FORET :
-              // System.out.println("foret ");
-                //gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/foret.png",50,50,gui));  break;
-                gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor)); break;
-              case ROCHE :
-              // System.out.println("roche ");
-              // gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/roche.png",factor,factor,gui));  break;
-              // gui.addGraphicalElement(new ImageElement(i*factor,j*factor,"image/3D/roche/stone_largeF_NE.png",50,50,gui));  break;
-              gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#717d7e"),factor)); break;
-              default : break;
-            }
-          }
-        }
-        /*  Incendie  */
-        for(Incendie incendies : getListeIncendie()){
-            //gui.addGraphicalElement(new Rectangle(( incendies.getCase().getColonne())*factor+ (factor/2), ( incendies.getCase().getLigne())*factor+ (factor/2), Color.decode("#000000"), Color.decode("#00000000"),factor));
-              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
-
-        }
-        for(Robot robots : getListeRobot()){
-              switch(robots.getRobotType()){
-                  case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
-                  case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
-                  case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
-                  case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
-              }
-              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
-        }
-
-        System.out.println("\n FIN AFFICHAGE CARTE !\n");
-
-    }
-
-
-    private void initDraw(int k){
-
-
-        for(int i=0; i<this.getCarte().getNbLignes();i++){
-          for(int j=0; j<this.getCarte().getNbColonnes();j++){
-            this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
-          }
-
-        if(k==1) draw();
-        else draw2();
+      try {
+        System.out.println("[restart] fichier : "+fichier+"\n");
+        DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
+        this.listeRobot = dataNew.getListeRobot();
+        this.listeIncendie = dataNew.getListeIncendie();
+        this.listeEvenement = new LinkedList<Evenement>();
+        this.chef = new ChefPompier(dataNew);
+      } catch (FileNotFoundException e) {
+          System.out.println("fichier " + fichier + " inconnu ou illisible");
+      } catch (DataFormatException e) {
+          System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
       }
-
-
+      initDraw();
     }
 
-    // TODO : utiliser etat pour faire des foret d'arbres et de rochers et d'habitations
+
+    public Carte getCarte(){
+       return this.chef.getCarte();
+    }
+    public LinkedList<Robot> getListeRobot(){
+      return this.chef.getListeRobot();
+    }
+    public LinkedList<Incendie> getListeIncendie(){
+      return this.chef.getListeIncendie();
+    }
+
+
+    private void initDraw(){
+      for(int i=0; i<this.getCarte().getNbLignes();i++){
+        for(int j=0; j<this.getCarte().getNbColonnes();j++){
+          this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
+        }
+      }
+      draw2();
+    }
+
     private void draw2() {
-        // gui.reset();	// clear the window
         int etat;
-        // for(int i=0; i<this.getCarte().getNbLignes();i++){
-          // for(int j=0; j<this.getCarte().getNbColonnes();j++){
-            // System.out.println("Case affichee : ligne ="+i+" colonne ="+j);
-            // System.out.println("Nature de la Case : "+ this.getCarte().getCase(i,j).getNature());
           while(this.getCarte().getListToDraw().size()!=0){
             Case caseToDraw = this.getCarte().getListToDraw().removeFirst();
             int i = caseToDraw.getLigne();
             int j = caseToDraw.getColonne();
             int f = 4;
             int dec = 2;
-            // gui.addGraphicalElement(new ImageElement(0,0,"image/sol/grass.png",factor*this.getCarte().getNbColonnes(),factor*this.getCarte().getNbLignes(),gui));
             etat = situation(i,j);
             switch(this.getCarte().getCase(i,j).getNature()){
               case TERRAIN_LIBRE :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2fe6c4"),factor)); break;
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));  break;
               case HABITAT :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3,"image/3D/habitat/tent_smallOpen_NW.png",f*factor,f*factor,gui));  break;
-
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/habitat/tent_detailedClosed_SW.png", f*factor, f*factor, gui)); break;
                 }
@@ -301,9 +190,7 @@ class Simulateur implements Simulable {
                 }
 
               case FORET :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2,"image/3D/foret/tree_blocks_dark_NE.png",f*factor,f*factor,gui));  break;
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_tall_dark_SE.png", f*factor, f*factor, gui)); break;
@@ -324,9 +211,7 @@ class Simulateur implements Simulable {
 
 
               case ROCHE :
-                // gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#229954"),factor));
                 gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
-                // gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
@@ -352,11 +237,7 @@ class Simulateur implements Simulable {
 
 
 
-                // gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/3D/terrain_libre/ground_grass_NW.png",factor,factor,gui));  break;
               case EAU :
-                //gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2e86c1"),factor)); break;
-                // gui.addGraphicalElement(new ImageElement(j*factor, i*factor, "image/3D/bordu.png", factor, factor, gui)); break;
-
 
                 if(etat==0){
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverTile_NE.png",factor-1,factor-1,gui));  break;
@@ -447,25 +328,22 @@ class Simulateur implements Simulable {
 
               default : break;
             }
-        //  }
         }
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
-            //gui.addGraphicalElement(new Rectangle(( incendies.getCase().getColonne())*factor+ (factor/2), ( incendies.getCase().getLigne())*factor+ (factor/2), Color.decode("#000000"), Color.decode("#00000000"),factor));
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-10,"image/feux.gif",factor,factor,gui));
-
         }
         for(Robot robots : getListeRobot()){
               switch(robots.getRobotType()){
-                  case "Drone" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
-                  case "R_Pattes" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
-                  case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
-                  case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
+                  case "Drone" :      gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));break;
+                  case "R_Pattes" :   gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));break;
+                  case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
+                  case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne());
+              System.out.println("colonne : "+robots.getPosition().getColonne()+"\tligne : "+robots.getPosition().getLigne()+"\n");
         }
 
-        System.out.println("\n FIN AFFICHAGE CARTE !\n");
+        System.out.println("\n\t\t FIN AFFICHAGE CARTE !\n\n");
 
     }
 
@@ -561,11 +439,9 @@ class Simulateur implements Simulable {
       if(voisinOuest){
         return 10001;
       }
-
       return 0;
   }
 }
-
 
 /*
 Explication de la fonction situation : return | nombre de voisins de memenature | position des voisins

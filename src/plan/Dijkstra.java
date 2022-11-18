@@ -44,7 +44,7 @@ public class Dijkstra {
                     shortestDistance = shortestDistances[indice];
                   }
                 }
-               if(sommetProche != -1){  //!!! eroor heeerrreee
+               if(sommetProche != -1){
                   added[sommetProche] = true;
                 for (int indice = 0; indice < nVertices; indice++)
                 {
@@ -122,7 +122,5 @@ public class Dijkstra {
     this.ajouteChemin(current);
 		path(chemin[current], chemin,graph);
 	}
-  
-
 
 }

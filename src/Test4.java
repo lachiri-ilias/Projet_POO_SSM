@@ -35,7 +35,7 @@ public class Test4 {
         }
         try {
           DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
-          int factor = data.getCarte().getTailleCases()/2;
+          int factor = data.getCarte().getTailleCases()/6;
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
@@ -85,19 +85,14 @@ class Simulateurr implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-        this.chef.SimulationV04(getDateSimulation());
-        //this.chef.SimulationV01(getDateSimulation());
-        //this.chef.SimulationV02(getDateSimulation());
+        // c'est la version la plus optimise
+        this.chef.SimulationV04(getDateSimulation()); 
         if(simulationTerminee()){
-          System.out.println("DATE FIN : [ "+this.dateSimulation +" ]Pas d'event a lancer FFIIINNN \n");
-          String s = " SSSSSIIIIUUUUUUUUUUUUUUUU ";
-          gui.addGraphicalElement(new Text(500, 100, Color.decode("#FFFFFF"), s));
-          this.dateSimulation  --;
+          System.out.println("Pas d'event a lancer FFIIINNN \n");
         }
         else{
           int size_liste = this.chef.getListeEvenements().size();
           for(int k=0;k<size_liste;k++){
-            //System.out.println("liste d'event: "+this.chef.getListeEvenements().get(k).getDate() );
              if(this.chef.getListeEvenements().get(k).getDate()==getDateSimulation()){
                 this.chef.getListeEvenements().get(k).execute(getDateSimulation());
                 if(this.chef.getListeEvenements().get(k).getisExecuted()){
@@ -127,7 +122,6 @@ class Simulateurr implements Simulable {
       return this.chef.getListeIncendie();
     }
     private void draw() {
-        //System.out.println("heere \n");
          gui.reset();
          int t =1;
         for(int i=0; i<this.getCarte().getNbLignes();i++){
@@ -147,7 +141,6 @@ class Simulateurr implements Simulable {
             }
           }
         }
-        /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
               gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, ( incendies.getCase().getLigne())*factor,"image/feux.gif",factor,factor,gui));
               String s =  " Incendie X : intensité = "+ incendies.getLitresEau();

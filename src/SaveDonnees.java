@@ -11,24 +11,9 @@ import java.util.zip.DataFormatException;
 
 
 /**
- * Lecteur de cartes au format spectifié dans le sujet.
+ * Sauvgardeur de cartes au format spectifié dans le sujet.
  * Les données sur les cases, robots puis incendies sont lues dans le fichier,
- * puis simplement affichées.
- * A noter: pas de vérification sémantique sur les valeurs numériques lues.
- *
- * IMPORTANT:
- *
- * Cette classe ne fait que LIRE les infos et les afficher.
- * A vous de modifier ou d'ajouter des méthodes, inspirées de celles présentes
- * (ou non), qui CREENT les objets au moment adéquat pour construire une
- * instance de la classe DonneesSimulation à partir d'un fichier.
- *
- * Vous pouvez par exemple ajouter une méthode qui crée et retourne un objet
- * contenant toutes les données lues:
- *    public static DonneesSimulation creeDonnees(String fichierDonnees);
- * Et faire des méthode creeCase(), creeRobot(), ... qui lisent les données,
- * créent les objets adéquats et les ajoutent ds l'instance de
- * DonneesSimulation.
+ * puis enregistrer dans la Class SaveDonnees.
  */
 public class SaveDonnees {
      public static DonneesSimulation data;
@@ -37,11 +22,10 @@ public class SaveDonnees {
       this.data = new DonneesSimulation();
      }
     /**
-     * Lit et affiche le contenu d'un fichier de donnees (cases,
+     * Lit et enregistre le contenu d'un fichier de donnees (cases,
      * robots et incendies).
      * Ceci est méthode de classe; utilisation:
-     * LecteurDonnees.lire(fichierDonnees)
-     * @param fichierDonnees nom du fichier à lire
+  .  * @param fichierDonnees nom du fichier à lire
      */
     public static DonneesSimulation creeDonnees(String fichierDonnees)
         throws FileNotFoundException, DataFormatException {
@@ -75,7 +59,7 @@ public class SaveDonnees {
     }
 
     /**
-     * Lit et affiche les donnees de la carte.
+     * Lit et enregistre les donnees de la carte.
      * @throws ExceptionFormatDonnees
      */
     private void saveCarte() throws DataFormatException {
@@ -101,15 +85,13 @@ public class SaveDonnees {
     }
 
     /**
-     * Lit et affiche les donnees d'une case.
+     * Lit et enregistre les donnees d'une case.
      */
     private void saveCase(int lig, int col) throws DataFormatException {
         ignorerCommentaires();
         try {
             String chaineNature = new String();
             chaineNature = scanner.next();
-            // si NatureTerrain est un Enum, vous pouvez recuperer la valeur
-            // de l'enum a partir d'une String avec:
             NatureTerrain nature = NatureTerrain.valueOf(chaineNature);
             verifieLigneTerminee();
             data.getCarte().getCase(lig,col).setNature(nature);
@@ -122,7 +104,7 @@ public class SaveDonnees {
 
 
     /**
-     * Lit et affiche les donnees des incendies.
+     * Lit et enregistre les donnees des incendies.
      */
     private void saveIncendies() throws DataFormatException {
         ignorerCommentaires();
@@ -140,7 +122,7 @@ public class SaveDonnees {
     }
 
     /**
-     * Lit et affiche les donnees du i-eme incendie.
+     * Lit et enregistre les donnees du i-eme incendie.
      * @param i
      */
     private void saveIncendie(int i) throws DataFormatException {
@@ -166,7 +148,7 @@ public class SaveDonnees {
 
 
     /**
-     * Lit et affiche les donnees des robots.
+     * Lit et enregistre les donnees des robots.
      */
     private void saveRobots() throws DataFormatException {
         ignorerCommentaires();
@@ -185,21 +167,17 @@ public class SaveDonnees {
 
 
     /**
-     * Lit et affiche les donnees du i-eme robot.
+     * Lit et enregistre les donnees du i-eme robot.
      * @param i
      */
     private void saveRobot(int i) throws DataFormatException {
         ignorerCommentaires();
-        //System.out.print("Robot " + i + ": ");
-
         try {
             int lig = scanner.nextInt();
             int col = scanner.nextInt();
-            //System.out.print("position = (" + lig + "," + col + ");");
             String type = scanner.next();
-            //System.out.print("\t type = " + type);
             switch(type){
-                case "DRONES" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
+                case "DRONE" :  data.ajouteRobot(new Drone(new Case(lig,col))); break;
                 case "ROUES" :  data.ajouteRobot(new R_Roue(new Case(lig,col))); break;
                 case "CHENILLES" :  data.ajouteRobot(new R_Chenille(new Case(lig,col))); break;
                 case "PATTES" :  data.ajouteRobot(new R_Pattes(new Case(lig,col))); break;
@@ -207,14 +185,12 @@ public class SaveDonnees {
 
             // lecture eventuelle d'une vitesse du robot (entier)
             System.out.print("; \t vitesse = ");
-            String s = scanner.findInLine("(\\d+)");	// 1 or more digit(s) ?
+            String s = scanner.findInLine("(\\d+)");	
             // pour lire un flottant:    ("(\\d+(\\.\\d+)?)");
             if (s == null) {
-                //System.out.print("valeur par defaut");
             } else {
                 int vitesse = Integer.parseInt(s);
                 data.getListeRobot().get(i).setVitesse(vitesse);
-                //System.out.print(vitesse);
             }
             verifieLigneTerminee();
 

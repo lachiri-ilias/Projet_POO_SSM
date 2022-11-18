@@ -8,7 +8,7 @@ public abstract class Robot {
     protected Case position;
     protected double vitesse;
     protected double vitesse_max;
-    protected int cap_max; // CHANGER
+    protected int cap_max; 
     protected int cap_actuelle;
     protected long tps_remplissage;
     protected int tps_deversage;

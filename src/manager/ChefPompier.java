@@ -81,7 +81,7 @@ public void SimulationV04(long date){
         }
         else if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() != 0){
             for(Incendie incendies : listeIncendie){
-              if( (graphs.getRobot().getRobotType()=="Drone" && incendies.getLitresEau()>graphs.getRobot().getCapActuelle()) 
+              if( (graphs.getRobot().getRobotType()=="Drone" && incendies.getLitresEau()>= graphs.getRobot().getCapActuelle()) 
                 || (graphs.getRobot().getRobotType()!="Drone")  
                 ){
                     if(graphs.getRobot().verifCase(incendies.getCase())){
@@ -175,7 +175,6 @@ public void SimulationV03(long date){
     int courtDistance = Integer.MAX_VALUE;
     Incendie procheIncendie=null;
     boolean isDispo;
-
     for(Graph graphs : listeGraph){
         isDispo = false;
         if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() == 0){
@@ -209,10 +208,6 @@ public void SimulationV03(long date){
       }          
     }
 }
-//  ajouter une methode qui suprime les evenement du robot avenire c-a-a a chaque event verifie est ce que le 
-// le feux est non etait si non il change de direction .
-
-
 
 /**
 Called every date to fill the given events
@@ -270,7 +265,6 @@ Version not yet optimised V00
             else{
                 break;
             }
-
         }
       }
     }
@@ -420,33 +414,5 @@ private boolean Eteindre( Graph graph ,Case derniereposition,Incendie incendie,l
     return false;
   }
 }
-
-
-// private void etaindre_temps(LinkedList<Graph> graplisteGraphh ,Case derniereposition,Incendie incendie,long k){
-//   public listechemin ;
-//   public listetemps ;
-//   for(Grapg graphs : listeGraph){
-
-//   }
-//   Dijkstra dijkstra = new Dijkstra();
-//   dijkstra.dijkstra2(graph,derniereposition,incendie.getCase()); 
-//   graph.getRobot().setIsLibre(false);
-//   if(dijkstra.getCourtDistance()<Integer.MAX_VALUE){
-//       for(Direction d : dijkstra.getListeDiretion()){
-//           ajouteEvenement(new Deplacer_Robot(d,graph.getRobot(),k,this.carte));
-//           k++;
-//       }
-//       ajouteEvenement(new Eteindre_Incendie(graph.getRobot(),this.listeIncendie,incendie,k,this.carte));
-//       k++;
-//       ajouteEvenement(new Liberer_Robot(graph.getRobot(),k));
-//       k++;
-//       ajouteEvenement(new Liberer_Incendie_Si(graph.getRobot(),incendie,listeIncendie,k));
-//       graph.getRobot().setIsLibre(false);
-//       return true;
-//   }
-//   else{
-//     return false;
-//   }
-// }
 
 }

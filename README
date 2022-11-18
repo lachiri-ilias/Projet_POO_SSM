@@ -1,22 +1,40 @@
-ILIAS : (TODO)
-          **   remplir le reservoir, check est ce que le robt est acoté de l'eau pour remplire le check TODO !
+Merciiii pour le temps que vous allez consacrer à corriger mon projet. :) :) :) :)
+============================
+PHELMA & Ensimag 2A POO - TP 2022/23
+============================
+Pour compiler : 
+  Au terminal => 
+              root@root : cd projet_poo_g25    (repertoire du Makefile)
+              root@root : make                 (pour compiler)
+              root@root : make exeSimul       (pour lancer la simulattion avec tout les optimisation & 
+                                                affichage graphique avancé)
 
-          ** Drone quand il etain le feux est ce qu'il vide la totalite peux importe la quantité de feux ,,,,???? (a discuter)
+
+              root@root : make exeSimulg        (pour lancer la simulation avec affichage graphique optimisé & 
+                                                strategie    elementaire)
+              root@root : make exeSimulV01      (pour lancer la simulation avec affichage graphique optimisé & 
+                                                strategie    elementaire)
+              root@root : make exeSimulBasic    (pour lancer la simulattion avec tout les optimisation & affichage basique)
+              root@root : make exeSimulBasicV01 (pour lancer la simulation avec affichage basique & strategie elementaire)
+              root@root : make exeTest1         (pour simuler le premier senario -voir rapport-)
+              root@root : make exeTest2         (pour simuler le deuxieme senario -voir rapport-)
 
 
-PHELMA > Ensimag 2A POO - TP 2022/23
+              root@root : make clean            (pour enlever les fichier .bin de compilation)
+
+
 ============================
 
-- src: contient les classes fournies par les enseignants
-  -> LecteurDonnees.java         : lit tous les elements d'un fichier de description de donnees (cases, incendies et robots) et les affiche.
-                                   A vous de MODIFIER cette classe (ou en ecrire une nouvelle) pour creer les objets correspondants à vos propres classes
-  -> TestLecteurDonnees.java     : lit un fichier de donnees et affiche son contenu
-  -> TestInvader                 : cree un simulateur "mini Invaders" dans une fenetre graphique
+- src: contient les classes 
 
-- cartes: quelques exemples de fichiers de donnees
+- cartes: quelques exemples de fichiers de donnees.
 
-- bin/gui.jar: archive Java contenant les classes de l'interface graphique. Voir un exemple d'utilisation dans TestInvader.java
+- image: contient les differents images utiliser pour l'interface graphe.
+
+- bin/gui.jar: archive Java contenant les classes de l'interface graphique. 
 
 - doc: la documentation (API) des classes de l'interface graphique contenues dans gui.jar. Point d'entrée: index.html
 
 - Makefile: quelques explications sur la compilation en ligne, notamment la notion de classpath et l'utilisation de gui.jar
+
+============================
