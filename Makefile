@@ -15,7 +15,7 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-map ?= carteSujet.map
+map ?= cartes/carteSujet.map
 
 all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier testInvader testLecture TestLecteurDonnees Test1 Test2  SimulBas  Simul 
 
@@ -82,10 +82,10 @@ exeInvader:
 		java -classpath bin:bin/gui.jar TestInvader
 
 exeLecture:
-	java -classpath bin TestLecteurDonnees cartes/$(map)
+	java -classpath bin TestLecteurDonnees $(map)
 
 exeSave:
-	java -classpath bin TestSaveDonnees cartes/$(map)
+	java -classpath bin TestSaveDonnees $(map)
 
 exeTest1:
 	java -classpath bin:bin/gui.jar Test1 cartes/carteSujet.map
@@ -94,10 +94,10 @@ exeTest2:
 	java -classpath bin:bin/gui.jar Test2 cartes/carteSujet.map
 
 exeSimulBasic:
-	java -classpath bin:bin/gui.jar SimulBas cartes/$(map)
+	java -classpath bin:bin/gui.jar SimulBas $(map)
 
 exeSimul:
-	java -classpath bin:bin/gui.jar Simul cartes/$(map)
+	java -classpath bin:bin/gui.jar Simul $(map)
 
 
 

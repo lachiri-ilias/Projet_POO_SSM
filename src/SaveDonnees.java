@@ -36,7 +36,7 @@ public class SaveDonnees {
         save.saveRobots();
         save.saveGraph();
         scanner.close();
-        System.out.println("\n == sauvgarde terminee");
+        System.out.println("\n == sauvegarde terminee");
         return data;
     }
 

@@ -18,16 +18,16 @@ Pour compiler :
               root@root : make clean            (pour enlever les fichier .bin de compilation)
 
 
-Rq : Pour par defaut c'est la carte Test qui est lancé, pour tester les autres carte il suffit de d'ajouter à la commande make => map=nom_de_la_carte.map 
+Rq : Pour par defaut c'est la carte Test qui est lancé, pour tester les autres carte il suffit de d'ajouter à la commande make => map=cartes/nom_de_la_carte.map 
 
-Par exemple :  make exeSimul map=mushroomOfHell-20x20.map
+Par exemple :  make exeSimul map=cartes/mushroomOfHell-20x20.map
 
 Rq : 
   Pour lancer la simulation en mode non optimiséé il faut modifer les deux fonctions de test : 
 
-  Simul.java : ligne(112-119) commenter ou decommenter selon votre choix
+  Simul.java : ligne(112-119) commenter ou decommenter selon votre choix        | VERSION OPTIMISEE
 
-  SimulBas.java : ligne(81-88) commenter ou decommenter selon votre choix
+  SimulBas.java : ligne(81-88) commenter ou decommenter selon votre choix       | VERSION BASIQUE
 
 ============================
 

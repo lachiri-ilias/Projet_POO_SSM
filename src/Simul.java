@@ -363,7 +363,7 @@ class Simulateur implements Simulable {
         }
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
-              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-5,"image/feux.gif",factor,factor,gui));
+              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-5,"image/feu.png",factor,factor,gui));
               float prctge = ((float)incendies.getLitresEau())/((float)incendies.getLitresEauInit());
               int int_prctge = (int)(prctge*100);
               int num = getListeIncendie().size()-t+2;
