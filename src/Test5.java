@@ -1,7 +1,5 @@
 import java.awt.Color;
 
-import java.lang.Object;
-import java.awt.Component;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
@@ -38,7 +36,6 @@ public  class Test5 {
           int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
           Simulateur simulateur = new Simulateur(gui, data, factor, fichier);
 
-        /*  FIN DE SIMULATION DONNées */
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
         } catch (DataFormatException e) {
@@ -94,7 +91,6 @@ class Simulateur implements Simulable {
 
     }
 
-
     public long getDateSimulation(){
       return this.dateSimulation;
     }
@@ -110,12 +106,12 @@ class Simulateur implements Simulable {
 
     @Override
     public void next() {
-      //System.out.println("\n\nAPPEL DE NEXT!!!\n\n");
 
         incrementeDate();
         this.chef.SimulationV04(getDateSimulation());
         if(simulationTerminee()){
-          System.out.println("Pas d'event a lancer FFIIINNN \n");
+          gui.addGraphicalElement(new Text(box.getX(), box.getY()-box_height/2- dec_text_y , Color.decode("#FFFFFF"), "FIN SIMULATION EN : "+getDateSimulation()+" pas !"));
+          this.dateSimulation --;
         }
         else{
           int size_liste = this.chef.getListeEvenements().size();
@@ -136,11 +132,9 @@ class Simulateur implements Simulable {
 
     @Override
     public void restart() {
-      System.out.println("\n\nAPPEL DE RESTART!!!\n\n");
       gui.reset();
 
       try {
-        System.out.println("[restart] fichier : "+fichier+"\n");
         DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
         this.chef = new ChefPompier(dataNew);
         this.chef.setListeRobot(dataNew.getListeRobot());
@@ -164,8 +158,10 @@ class Simulateur implements Simulable {
     }
 
 
+    /**
+     * Draw the white box and the titles of the elements that we diplayed here
+     */
     private void initDraw(){
-      System.out.println("\n\n\n\n[initDraw] compt_draw = "+compt_draw+"\n\n\n\n");
       compt_draw = 0;
       gui.reset();
       gui.addGraphicalElement(box);
@@ -180,13 +176,14 @@ class Simulateur implements Simulable {
       draw2();
     }
 
+    /**
+     * Core function that draws the GraphicalElements on the gui screen
+     */
     private void draw2() {
-        System.out.println("[draw2] ----compt_draw = "+compt_draw+"\n\n");
         if(compt_draw>=nb_occ_before_redraw) initDraw();
         t=2;
         int etat, f=4, dec=2;        
         while(this.getCarte().getListToDraw().size()!=0){
-            // System.out.println("[draw2] il reste "+this.getCarte().getListToDraw().size()+" cases a dessiner !\n");
             this.gui.repaint(box.getX(), box.getY(), box_width, box_height);
             gui.addGraphicalElement(box);
             gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y , Color.decode("#FFFFFF"), "Incendies :"));
@@ -323,12 +320,11 @@ class Simulateur implements Simulable {
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverOpen_NE.png",factor-1,factor-1,gui));  break;
                 }
 
-                // SPECIALS CASE
+                // SPECIAL CASE
 
                 if(etat==21111){
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCrossroads.png",factor-1,factor-1,gui));  break;
                 }
-
                 if(etat==21001){
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverBend_NS.png",factor-1,factor-1,gui));  break;
                 }
@@ -341,7 +337,6 @@ class Simulateur implements Simulable {
                 if(etat==20011){
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverBend_NE.png",factor-1,factor-1,gui));  break;
                 }
-
                 if(etat==31111){
                   gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCornerSmall_NW.png",factor-1,factor-1,gui));  break;
                 }
@@ -374,13 +369,7 @@ class Simulateur implements Simulable {
               int widthActualize = (s.length()*height_lign+dec_jauge_x+jauge_width_max)/2;
               int xCenter = text.getX()+ dec_jauge_x/2;// + s.length()*height_lign/2 + dec_jauge_x/2;
               Rectangle cache = new Rectangle(xCenter, text.getY(), Color.BLACK, Color.BLACK, widthActualize, height_lign);
-              
-              
-              // gui.remove(jauge);
-              // gui.remove(incendies.getTextElement());
-              // gui.remove(incendies.getJaugeElement());
-              // incendies.setTextElement(text);
-              // incendies.setJaugeElement(jauge);
+
               this.gui.addGraphicalElement(cache);
               gui.addGraphicalElement(text);
               gui.addGraphicalElement(jauge);
@@ -409,7 +398,7 @@ class Simulateur implements Simulable {
               
               Rectangle jauge = new Rectangle(text.getX()+dec_jauge_x,text.getY(),Color.decode("#FFFFFF"), Color.decode("#0000FF"), jauge_width, jauge_height);
               int widthActualize = (s.length()*height_lign+dec_jauge_x+jauge_width_max)/2;
-              int xCenter = text.getX()+ dec_jauge_x/2;// + s.length()*height_lign/2 + dec_jauge_x/2;
+              int xCenter = text.getX()+ dec_jauge_x/2;
               Rectangle cache = new Rectangle(xCenter, text.getY(), Color.BLACK, Color.BLACK, widthActualize, height_lign);
               
               this.gui.addGraphicalElement(cache);
@@ -426,6 +415,11 @@ class Simulateur implements Simulable {
       return a.getNature() == b.getNature();
     }
 
+    /**
+     * @param lig lign of the 'Case' which situation we want to know
+     * @param col column of the 'Case' which situation we want to know
+     * @return
+     */
     public int situation(int lig, int col){
       Case caseActuelle = carte.getCase(lig, col);
       boolean voisinNord=false, voisinEst=false, voisinSud=false, voisinOuest=false;
@@ -434,7 +428,6 @@ class Simulateur implements Simulable {
       if(carte.voisinExiste(caseActuelle, Direction.SUD) && memeNature(caseActuelle, carte.getCase(lig+1, col))) voisinSud = true;
       if(carte.voisinExiste(caseActuelle, Direction.OUEST) && memeNature(caseActuelle, carte.getCase(lig, col-1))) voisinOuest = true;
 
-      // TESTS centraux
       if(voisinNord){
         if(voisinEst){
           if(voisinSud){
@@ -519,13 +512,16 @@ class Simulateur implements Simulable {
   }
 }
 
-/*
-Explication de la fonction situation : return | nombre de voisins de memenature | position des voisins
-1er chiffre -> inutile mais obligatoire (ne peut pas commencer par 0)
+/**
+Explication de la fonction situation : 
+
+valeur de return | nombre de voisins de memenature | position des voisins
+1er chiffre -> 1 : cas simple / 2 ou + : cas spéciaux
 2e chiffre : NORD -> 1 = OUI / 0 = NON
 3e chiffre : EST
 4e chiffe : SUD
 5e chiffre : OUEST
+
 0 | 0 | ø
 11000 | 1 | NORD
 10100 | 1 | EST
