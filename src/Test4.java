@@ -1,7 +1,4 @@
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import gui.GUISimulator;
 import gui.Rectangle;
@@ -12,13 +9,11 @@ import gui.ImageElement;
 import manager.*;
 import robot.*;
 import plan.*;
-import io.*;
 import donnees.*;
 import evenement.*;
 import incendie.*;
 
 import java.io.*;
-import java.util.*;
 import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
@@ -28,26 +23,25 @@ import java.util.zip.DataFormatException;
 
 */
 public class Test4 {
-    public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
-            System.exit(1);
-        }
-        try {
-          DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
-          int factor = data.getCarte().getTailleCases()/6;
-          int X = data.getCarte().getNbColonnes() * factor;
-          int Y = data.getCarte().getNbLignes() * factor;
-          GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
-          Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
-
-        /*  FIN DE SIMULATION DONNées */ 
-        } catch (FileNotFoundException e) {
-            System.out.println("fichier " + args[0] + " inconnu ou illisible");
-        } catch (DataFormatException e) {
-            System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
-        }
+  public static void main(String[] args) {
+    if (args.length < 1) {
+        System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
+        System.exit(1);
     }
+    try {
+      String fichier = args[0];
+      DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
+      GUISimulator gui = new GUISimulator(1400, 930, Color.BLACK);
+      int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
+      Simulateurr simulateur = new Simulateurr(gui, data, factor, fichier);
+
+    /*  FIN DE SIMULATION DONNées */
+    } catch (FileNotFoundException e) {
+        System.out.println("fichier " + args[0] + " inconnu ou illisible");
+    } catch (DataFormatException e) {
+        System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
+    }
+}
 }
 
 
@@ -57,14 +51,12 @@ class Simulateurr implements Simulable {
     private ChefPompier chef;
     private int factor;
     private long dateSimulation;
-    private int x_drone;
-    private int y_drone;
-    private Iterator<Integer> xIterator;
-    private Iterator<Integer> yIterator;
+    private String fichier;
 
-    public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
+    public Simulateurr(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
         this.factor = f;
         this.gui = gui;
+        this.fichier = fichier;
         this.chef = new ChefPompier(data);
         gui.setSimulable(this);				
         draw();
@@ -107,9 +99,32 @@ class Simulateurr implements Simulable {
       }
     }
 
+    private void initDraw(){
+      for(int i=0; i<this.getCarte().getNbLignes();i++){
+        for(int j=0; j<this.getCarte().getNbColonnes();j++){
+          this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
+        }
+      }
+      draw();
+    }
+
     @Override
     public void restart() {
-        draw();
+       gui.reset();
+
+      try {
+        System.out.println("[restart] fichier : "+fichier+"\n");
+        DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
+        this.chef = new ChefPompier(dataNew);
+        this.chef.setListeRobot(dataNew.getListeRobot());
+        this.chef.setListeIncendie(dataNew.getListeIncendie());
+        this.chef.setListeEvenements(new LinkedList<Evenement>());
+      } catch (FileNotFoundException e) {
+          System.out.println("fichier " + fichier + " inconnu ou illisible");
+      } catch (DataFormatException e) {
+          System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
+      }
+      initDraw();
     }
 
     public Carte getCarte(){
@@ -130,7 +145,7 @@ class Simulateurr implements Simulable {
               case TERRAIN_LIBRE :
                 gui.addGraphicalElement(new Rectangle(j*factor + (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#af601a"),factor)); break;
               case EAU :
-               gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2e86c1"),factor)); break;
+               gui.addGraphicalElemBLACKnt(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#2e86c1"),factor)); break;
               case HABITAT :
               gui.addGraphicalElement(new Rectangle(j*factor+ (factor/2), i*factor+ (factor/2), Color.decode("#000000"), Color.decode("#884ea0"),factor)); break;
               case FORET :

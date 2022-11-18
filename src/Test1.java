@@ -39,7 +39,6 @@ public class Test1 {
           int factor = data.getCarte().getTailleCases();
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
-          int k = 1,z=1;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
           Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
 
@@ -93,8 +92,6 @@ class Simulateurr implements Simulable {
     private long dateSimulation;
     private int x_drone;
     private int y_drone;
-    private Iterator<Integer> xIterator;
-    private Iterator<Integer> yIterator;
 
     public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
         this.factor = f;
@@ -146,7 +143,6 @@ class Simulateurr implements Simulable {
               }
           }
           draw();
-        ents().remove(0);
       }
     }
 
@@ -159,9 +155,7 @@ class Simulateurr implements Simulable {
     public LinkedList<Incendie> getListeIncendie(){
       return this.listeIncendie;
     }
-    private void draw_2() {
-         gui.addGraphicalElement(new ImageElement(x_drone,y_drone,"image/drone.png",factor,factor,gui));
-    }
+    
     private void draw() {
          gui.reset();	// clear the window
         for(int i=0; i<this.getCarte().getNbLignes();i++){
@@ -198,5 +192,11 @@ class Simulateurr implements Simulable {
               gui.addGraphicalElement(new Text(5*factor, 10*t, Color.decode("#FFFFFF"), s));
               t ++;
         }
+    }
+
+    @Override
+    public void restart() {
+      // TODO Auto-generated method stub
+      
     }
 }

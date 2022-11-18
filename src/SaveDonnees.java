@@ -40,6 +40,9 @@ public class SaveDonnees {
         return data;
     }
 
+    /**
+     * 
+     */
     private void saveGraph(){
         for(Robot robots : data.getListeRobot()){
                 data.ajouteGraph(new Graph(data.getCarte(),robots));
@@ -123,7 +126,7 @@ public class SaveDonnees {
 
     /**
      * Lit et enregistre les donnees du i-eme incendie.
-     * @param i
+     * @param i indice de l'incendie
      */
     private void saveIncendie(int i) throws DataFormatException {
         ignorerCommentaires();

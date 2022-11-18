@@ -1,8 +1,7 @@
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
+import java.lang.Object;
+import java.awt.Component;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
@@ -18,7 +17,6 @@ import evenement.*;
 import incendie.*;
 
 import java.io.*;
-import java.util.*;
 import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
@@ -56,15 +54,8 @@ class Simulateur implements Simulable {
     private ChefPompier chef;
     private int factor;
     private long dateSimulation;
-    private int x_drone;
-    private int y_drone;
     private String fichier;
     private Carte carte;
-    private LinkedList<Robot> listeRobot;
-    private LinkedList<Incendie> listeIncendie;
-    private LinkedList<Evenement> listeEvenement;
-    private Iterator<Integer> xIterator;
-    private Iterator<Integer> yIterator;
     private Rectangle box;
     private int height_lign;
     private int box_width;
@@ -77,18 +68,28 @@ class Simulateur implements Simulable {
     private int decalage_box_x;
     private int decalage_box_y;
     private int t;
+    private int compt_draw;
+    private int nb_occ_before_redraw;
 
     public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
         this.factor = f;
         this.gui = gui;
         this.fichier = fichier;
         this.chef = new ChefPompier(data);
-        this.listeRobot = chef.getListeRobot();
-        this.listeIncendie = chef.getListeIncendie();
-        this.listeEvenement = chef.getListeEvenements();
         this.carte = chef.getCarte();
         this.height_lign = 20;
         gui.setSimulable(this);
+
+        decalage_box_x=100; decalage_box_y=0;
+        dec_jauge_x=100;
+        dec_text_x=70; dec_text_y=30;
+        jauge_height = (int)(height_lign - (height_lign*0.3));
+        jauge_width_max = 70;
+        box_width=300;
+        box_height=(7+getListeRobot().size()+getListeIncendie().size())*height_lign;
+        box = new Rectangle(gui.getPanelWidth()-decalage_box_x,gui.getPanelHeight()/2-decalage_box_y,Color.decode("#FFFFFF"), Color.decode("#000000"), box_width, box_height);
+        nb_occ_before_redraw = 15;
+
         initDraw();
 
     }
@@ -109,6 +110,8 @@ class Simulateur implements Simulable {
 
     @Override
     public void next() {
+      //System.out.println("\n\nAPPEL DE NEXT!!!\n\n");
+
         incrementeDate();
         this.chef.SimulationV04(getDateSimulation());
         if(simulationTerminee()){
@@ -139,10 +142,10 @@ class Simulateur implements Simulable {
       try {
         System.out.println("[restart] fichier : "+fichier+"\n");
         DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
-        this.listeRobot = dataNew.getListeRobot();
-        this.listeIncendie = dataNew.getListeIncendie();
-        this.listeEvenement = new LinkedList<Evenement>();
         this.chef = new ChefPompier(dataNew);
+        this.chef.setListeRobot(dataNew.getListeRobot());
+        this.chef.setListeIncendie(dataNew.getListeIncendie());
+        this.chef.setListeEvenements(new LinkedList<Evenement>());
       } catch (FileNotFoundException e) {
           System.out.println("fichier " + fichier + " inconnu ou illisible");
       } catch (DataFormatException e) {
@@ -150,8 +153,6 @@ class Simulateur implements Simulable {
       }
       initDraw();
     }
-
-
     public Carte getCarte(){
        return this.chef.getCarte();
     }
@@ -164,13 +165,13 @@ class Simulateur implements Simulable {
 
 
     private void initDraw(){
-      decalage_box_x=100; decalage_box_y=0;
-      dec_jauge_x=100;
-      dec_text_x=70; dec_text_y=30;
-      jauge_height = (int)(height_lign - (height_lign*0.3));
-      jauge_width_max = 70;
-      box_width=300;
-      box_height=(7+getListeRobot().size()+getListeIncendie().size())*height_lign;
+      System.out.println("\n\n\n\n[initDraw] compt_draw = "+compt_draw+"\n\n\n\n");
+      compt_draw = 0;
+      gui.reset();
+      gui.addGraphicalElement(box);
+      gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y , Color.decode("#FFFFFF"), "Incendies :"));
+      gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y+(getListeIncendie().size()+3)*height_lign , Color.decode("#FFFFFF"), "Robots :"));
+     
       for(int i=0; i<this.getCarte().getNbLignes();i++){
         for(int j=0; j<this.getCarte().getNbColonnes();j++){
           this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
@@ -180,14 +181,16 @@ class Simulateur implements Simulable {
     }
 
     private void draw2() {
+        System.out.println("[draw2] ----compt_draw = "+compt_draw+"\n\n");
+        if(compt_draw>=nb_occ_before_redraw) initDraw();
         t=2;
-        int etat, f=4, dec=2;
-        box = new Rectangle(gui.getPanelWidth()-decalage_box_x,gui.getPanelHeight()/2-decalage_box_y,Color.decode("#FFFFFF"), Color.decode("#000000"), box_width, box_height);
-        gui.addGraphicalElement(box);
-        gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y , Color.decode("#FFFFFF"), "Incendies :"));
-        gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y+(getListeIncendie().size()+3)*height_lign , Color.decode("#FFFFFF"), "Robots :"));
+        int etat, f=4, dec=2;        
         while(this.getCarte().getListToDraw().size()!=0){
-
+            // System.out.println("[draw2] il reste "+this.getCarte().getListToDraw().size()+" cases a dessiner !\n");
+            this.gui.repaint(box.getX(), box.getY(), box_width, box_height);
+            gui.addGraphicalElement(box);
+            gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y , Color.decode("#FFFFFF"), "Incendies :"));
+            gui.addGraphicalElement(new Text(box.getX()-dec_text_x, box.getY()-box_height/2+ dec_text_y+(getListeIncendie().size()+3)*height_lign , Color.decode("#FFFFFF"), "Robots :"));
             Case caseToDraw = this.getCarte().getListToDraw().removeFirst();
             int i = caseToDraw.getLigne();
             int j = caseToDraw.getColonne();
@@ -365,9 +368,25 @@ class Simulateur implements Simulable {
               int x = box.getX()-dec_text_x;
               int y=box.getY()-box_height/2+ dec_text_y + t*height_lign;
               Text text = new Text(x, y, Color.decode("#FFFFFF"), s);
-              gui.addGraphicalElement(text);
               int jauge_width = (int)(jauge_width_max*prctge);
-              gui.addGraphicalElement(new Rectangle(text.getX()+dec_jauge_x,text.getY(),Color.decode("#FFFFFF"), Color.decode("#FF0000"), jauge_width, jauge_height));
+              
+              Rectangle jauge = new Rectangle(text.getX()+dec_jauge_x,text.getY(),Color.decode("#FFFFFF"), Color.decode("#FF0000"), jauge_width, jauge_height);
+              int widthActualize = (s.length()*height_lign+dec_jauge_x+jauge_width_max)/2;
+              int xCenter = text.getX()+ dec_jauge_x/2;// + s.length()*height_lign/2 + dec_jauge_x/2;
+              Rectangle cache = new Rectangle(xCenter, text.getY(), Color.BLACK, Color.BLACK, widthActualize, height_lign);
+              
+              
+              // gui.remove(jauge);
+              // gui.remove(incendies.getTextElement());
+              // gui.remove(incendies.getJaugeElement());
+              // incendies.setTextElement(text);
+              // incendies.setJaugeElement(jauge);
+              this.gui.addGraphicalElement(cache);
+              gui.addGraphicalElement(text);
+              gui.addGraphicalElement(jauge);
+              this.gui.repaint(xCenter, text.getY(), widthActualize, height_lign);
+              
+              compt_draw++;
               num--;
               t++;
 
@@ -383,14 +402,23 @@ class Simulateur implements Simulable {
               }
               float prctge = ((float)robots.getCapActuelle())/((float)robots.getCapMax());
               int int_prctge = (int)(prctge*100);
-              String s =  "  "+type+" -- "+ int_prctge +" %";
-              int x = box.getX()-dec_text_x;
+              String s =  "  "+type+" -- "+ int_prctge +" %";              int x = box.getX()-dec_text_x;
               int y=box.getY()-box_height/2+ dec_text_y + t*height_lign;
               Text text = new Text(x, y, Color.decode("#FFFFFF"), s);
-              gui.addGraphicalElement(text);
               int jauge_width = (int)(jauge_width_max*prctge);
-              gui.addGraphicalElement(new Rectangle(text.getX()+dec_jauge_x,text.getY(),Color.decode("#FFFFFF"), Color.decode("#1151D9"), jauge_width, jauge_height));
-              t ++;
+              
+              Rectangle jauge = new Rectangle(text.getX()+dec_jauge_x,text.getY(),Color.decode("#FFFFFF"), Color.decode("#0000FF"), jauge_width, jauge_height);
+              int widthActualize = (s.length()*height_lign+dec_jauge_x+jauge_width_max)/2;
+              int xCenter = text.getX()+ dec_jauge_x/2;// + s.length()*height_lign/2 + dec_jauge_x/2;
+              Rectangle cache = new Rectangle(xCenter, text.getY(), Color.BLACK, Color.BLACK, widthActualize, height_lign);
+              
+              this.gui.addGraphicalElement(cache);
+              gui.addGraphicalElement(text);
+              gui.addGraphicalElement(jauge);
+              this.gui.repaint(xCenter, text.getY(), widthActualize, height_lign);
+
+              compt_draw++;
+              t++;
         }
     }
 

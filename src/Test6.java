@@ -56,24 +56,14 @@ class Simulateur implements Simulable {
     private ChefPompier chef;
     private int factor;
     private long dateSimulation;
-    private int x_drone;
-    private int y_drone;
     private String fichier;
     private Carte carte;
-    private LinkedList<Robot> listeRobot;
-    private LinkedList<Incendie> listeIncendie;
-    private LinkedList<Evenement> listeEvenement;
-    private Iterator<Integer> xIterator;
-    private Iterator<Integer> yIterator;
 
     public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
         this.factor = f;
         this.gui = gui;
         this.fichier = fichier;
         this.chef = new ChefPompier(data);
-        this.listeRobot = chef.getListeRobot();
-        this.listeIncendie = chef.getListeIncendie();
-        this.listeEvenement = chef.getListeEvenements();
         this.carte = chef.getCarte();
         gui.setSimulable(this);
         initDraw();
@@ -98,7 +88,7 @@ class Simulateur implements Simulable {
     public void next() {
         incrementeDate();
         // c'est la version la plus optimise
-        this.chef.SimulationV04(getDateSimulation());
+        this.chef.SimulationV01(getDateSimulation());
         if(simulationTerminee()){
              System.out.println("Pas d'event a lancer FFIIINNN \n");
         }
@@ -126,10 +116,10 @@ class Simulateur implements Simulable {
       try {
         System.out.println("[restart] fichier : "+fichier+"\n");
         DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
-        this.listeRobot = dataNew.getListeRobot();
-        this.listeIncendie = dataNew.getListeIncendie();
-        this.listeEvenement = new LinkedList<Evenement>();
         this.chef = new ChefPompier(dataNew);
+        this.chef.setListeRobot(dataNew.getListeRobot());
+        this.chef.setListeIncendie(dataNew.getListeIncendie());
+        this.chef.setListeEvenements(new LinkedList<Evenement>());
       } catch (FileNotFoundException e) {
           System.out.println("fichier " + fichier + " inconnu ou illisible");
       } catch (DataFormatException e) {
@@ -443,7 +433,7 @@ class Simulateur implements Simulable {
   }
 }
 
-/*
+/**
 Explication de la fonction situation : return | nombre de voisins de memenature | position des voisins
 1er chiffre -> inutile mais obligatoire (ne peut pas commencer par 0)
 2e chiffre : NORD -> 1 = OUI / 0 = NON

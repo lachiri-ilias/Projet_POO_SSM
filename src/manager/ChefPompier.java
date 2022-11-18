@@ -280,6 +280,16 @@ public LinkedList<Robot> getListeRobot(){
 public LinkedList<Incendie> getListeIncendie(){
       return this.listeIncendie;
     }
+
+public void setListeRobot(LinkedList<Robot> listR ){
+      this.listeRobot=listR;
+}
+public void setListeIncendie(LinkedList<Incendie> listI){
+  this.listeIncendie=listI;
+}
+public void setListeEvenements(LinkedList<Evenement> listE){
+  this.listeEvenement=listE;
+}
 private LinkedList<Case> getListeCaseEau(){
     return this.listeCaseEau;
 }

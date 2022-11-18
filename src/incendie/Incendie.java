@@ -1,5 +1,12 @@
 package incendie;
 
+// import gui.GUISimulator;
+// import gui.GraphicalElement;
+// import gui.Rectangle;
+// import gui.Simulable;
+// import gui.Text;
+// import gui.ImageElement;
+
 import plan.*;
 
 public class Incendie {
@@ -7,6 +14,9 @@ public class Incendie {
     private int nbLitresEauInit;
     private Case position;
     protected boolean isTaken;
+    // private GraphicalElement text;
+    // private GraphicalElement jauge;
+
 
 
     public Incendie(int nbLitresEau, Case position){
@@ -22,6 +32,18 @@ public class Incendie {
     public boolean getIsTaken(){
         return this.isTaken;
     }
+    // public GraphicalElement getTextElement(){
+    //     return this.text;
+    // }
+    // public GraphicalElement getJaugeElement(){
+    //     return this.jauge;
+    // }
+    // public void setTextElement(GraphicalElement g){
+    //     this.text=g;
+    // }
+    // public void setJaugeElement(GraphicalElement g){
+    //     this.text=g;
+    // }
     public int getLitresEau(){
         return this.nbLitresEau;
     }
