@@ -33,8 +33,8 @@ public  class Test5 {
           String fichier = args[0];
           DonneesSimulation data = new SaveDonnees().creeDonnees(fichier);
           GUISimulator gui = new GUISimulator(1400, 930, Color.BLACK);
-          int factor = gui.getPanelHeight()/data.getCarte().getNbLignes();
-          Simulateur simulateur = new Simulateur(gui, data, factor, fichier);
+          int tailleCasePixel = gui.getPanelHeight()/data.getCarte().getNbLignes();
+          Simulateur simulateur = new Simulateur(gui, data, tailleCasePixel, fichier);
 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
@@ -49,7 +49,7 @@ public  class Test5 {
 class Simulateur implements Simulable {
     private GUISimulator gui;
     private ChefPompier chef;
-    private int factor;
+    private int tailleCasePixel;
     private long dateSimulation;
     private String fichier;
     private Carte carte;
@@ -69,7 +69,7 @@ class Simulateur implements Simulable {
     private int nb_occ_before_redraw;
 
     public Simulateur(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
-        this.factor = f;
+        this.tailleCasePixel = f;
         this.gui = gui;
         this.fichier = fichier;
         this.chef = new ChefPompier(data);
@@ -196,159 +196,154 @@ class Simulateur implements Simulable {
             switch(this.getCarte().getCase(i,j).getNature()){
               case TERRAIN_LIBRE :
 
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));  break;
+                gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_grass_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
               case HABITAT :
 
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
+                gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_grass_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));
 
                 if(etat==0){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3-2, "image/3D/habitat/tent_detailedClosed_SW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3-2, "image/3D/habitat/tent_detailedClosed_SW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==11001){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3-2, "image/3D/habitat/tent_detailedClosed_NW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3-2, "image/3D/habitat/tent_detailedClosed_NW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==11100){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3-2, "image/3D/habitat/tent_detailedClosed_NE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3-2, "image/3D/habitat/tent_detailedClosed_NE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==10110){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3-2, "image/3D/habitat/tent_detailedOpen_SE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3-2, "image/3D/habitat/tent_detailedOpen_SE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 else{
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3-2, "image/3D/habitat/tent_detailedOpen_SW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3-2, "image/3D/habitat/tent_detailedOpen_SW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
 
               case FORET :
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
+                gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_grass_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));
 
                 if(etat==0){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_tall_dark_SE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2, "image/3D/foret/tree_tall_dark_SE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==10110){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_SE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2, "image/3D/foret/tree_thin_dark_SE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==10011){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_SW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2, "image/3D/foret/tree_thin_dark_SW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==11001){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_NW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2, "image/3D/foret/tree_thin_dark_NW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 else{
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/2, "image/3D/foret/tree_thin_dark_NE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2, "image/3D/foret/tree_thin_dark_NE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
-
-
 
               case ROCHE :
 
-                gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_grass_NE.png",factor-1,factor-1,gui));
+                gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_grass_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));
 
                 if(etat==0){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/statue_head_SW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3, "image/3D/roche/statue_head_SW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==11001){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallA_SE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3, "image/3D/roche/stone_tallA_SE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==11100){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallA_SW.png", f*factor, f*factor, gui)); break;
-                }
-                if(etat==10110){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3, "image/3D/roche/stone_tallA_SW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==10011){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NW.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3, "image/3D/roche/stone_tallB_NW.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 if(etat==11111){
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallG_SE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3, "image/3D/roche/stone_tallG_SE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
                 else{
-                  gui.addGraphicalElement(new ImageElement(j*factor-f*factor/dec+factor/2,i*factor-f*factor/dec+factor/3, "image/3D/roche/stone_tallB_NE.png", f*factor, f*factor, gui)); break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/2,i*tailleCasePixel-f*tailleCasePixel/dec+tailleCasePixel/3, "image/3D/roche/stone_tallB_NE.png", f*tailleCasePixel, f*tailleCasePixel, gui)); break;
                 }
 
               case EAU :
 
                 if(etat==0){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverTile_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverTile_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==11000){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverEndClosed_SE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverEndClosed_SE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==10100){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverEndClosed_SO.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverEndClosed_SO.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==10010){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverEndClosed_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverEndClosed_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==10001){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverEndClosed_NS.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverEndClosed_NS.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 if(etat==11100){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCorner_EE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCorner_EE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==11010){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverRocks_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverRocks_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==11001){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCorner_SE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCorner_SE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 if(etat==10110){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCorner_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCorner_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==10101){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverRocks_NW.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverRocks_NW.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 if(etat==10011){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCorner_NS.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCorner_NS.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 if(etat==11110){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverSide_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverSide_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==11101){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverSide_NO.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverSide_NO.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==11011){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverSide_SO.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverSide_SO.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 if(etat==10111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverSide_SE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverSide_SE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 if(etat==11111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverOpen_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverOpen_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
                 // SPECIAL CASE
 
                 if(etat==21111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCrossroads.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCrossroads.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==21001){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverBend_NS.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverBend_NS.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==21100){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverBend_NW.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverBend_NW.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==20110){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverBend_NN.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverBend_NN.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==20011){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverBend_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverBend_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==31111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCornerSmall_NW.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCornerSmall_NW.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==41111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCornerSmall_NE.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCornerSmall_NE.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==51111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCornerSmall_NN.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCornerSmall_NN.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
                 if(etat==61111){
-                  gui.addGraphicalElement(new ImageElement(j*factor,i*factor,"image/sol/ground_riverCornerSmall_NS.png",factor-1,factor-1,gui));  break;
+                  gui.addGraphicalElement(new ImageElement(j*tailleCasePixel,i*tailleCasePixel,"image/sol/ground_riverCornerSmall_NS.png",tailleCasePixel-1,tailleCasePixel-1,gui));  break;
                 }
 
               default : break;
@@ -356,7 +351,7 @@ class Simulateur implements Simulable {
         }
         /*  Incendie  */
         for(Incendie incendies : getListeIncendie()){
-              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*factor, incendies.getCase().getLigne()*factor-5,"image/feux.gif",factor,factor,gui));
+              gui.addGraphicalElement(new ImageElement(( incendies.getCase().getColonne())*tailleCasePixel, incendies.getCase().getLigne()*tailleCasePixel,"image/feu.png",tailleCasePixel,tailleCasePixel,gui));
               float prctge = ((float)incendies.getLitresEau())/((float)incendies.getLitresEauInit());
               int int_prctge = (int)(prctge*100);
               int num = getListeIncendie().size()-t+2;
@@ -385,10 +380,10 @@ class Simulateur implements Simulable {
         for(Robot robots : getListeRobot()){
               String type="";
               switch(robots.getRobotType()){
-                  case "Drone" :      gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/drone.png",factor,factor,gui));type="Dro"; break;
-                  case "R_Pattes" :   gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_pattes.png",factor,factor,gui));type="Pat";break;
-                  case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));type="Rou";break;
-                  case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));type="Che";break;
+                  case "Drone" :      gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*tailleCasePixel,robots.getPosition().getLigne()*tailleCasePixel,"image/drone.png",tailleCasePixel,tailleCasePixel,gui));type="Dro"; break;
+                  case "R_Pattes" :   gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*tailleCasePixel,robots.getPosition().getLigne()*tailleCasePixel,"image/r_pattes.png",tailleCasePixel,tailleCasePixel,gui));type="Pat";break;
+                  case "R_Roue" :     gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*tailleCasePixel,robots.getPosition().getLigne()*tailleCasePixel,"image/r_roue.png",tailleCasePixel,tailleCasePixel,gui));type="Rou";break;
+                  case "R_Chenille" : gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*tailleCasePixel,robots.getPosition().getLigne()*tailleCasePixel,"image/r_chenille.png",tailleCasePixel,tailleCasePixel,gui));type="Che";break;
               }
               float prctge = ((float)robots.getCapActuelle())/((float)robots.getCapMax());
               int int_prctge = (int)(prctge*100);
