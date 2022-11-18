@@ -8,12 +8,10 @@ Pour compiler :
               root@root : cd projet_poo_g25    (repertoire du Makefile)
               root@root : make                 (pour compiler)
               root@root : make exeSimul       (pour lancer la simulattion avec tout les optimisation & 
-                                                affichage graphique avancé)
+                                                affichage graphique avancé) 
 
-              root@root : make exeSimulV01      (pour lancer la simulation avec affichage graphique optimisé & 
-                                                strategie    elementaire)
               root@root : make exeSimulBasic    (pour lancer la simulattion avec tout les optimisation & affichage basique)
-              root@root : make exeSimulBasicV01 (pour lancer la simulation avec affichage basique & strategie elementaire)
+
               root@root : make exeTest1         (pour simuler le premier scenario -voir rapport- que pour la carte test)
               root@root : make exeTest2         (pour simuler le deuxieme scenario -voir rapport- que pour la carte test)
 
@@ -24,6 +22,12 @@ Rq : Pour par defaut c'est la carte Test qui est lancé, pour tester les autres 
 
 Par exemple :  make exeSimul map=mushroomOfHell-20x20.map
 
+Rq : 
+  Pour lancer la simulation en mode non optimiséé il faut modifer les deux fonctions de test : 
+
+  Simul.java : ligne(112-119) commenter ou decommenter selon votre choix
+
+  SimulBas.java : ligne(81-88) commenter ou decommenter selon votre choix
 
 ============================
 

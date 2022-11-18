@@ -23,7 +23,7 @@ import java.util.zip.DataFormatException;
    Cette classe test le fct automatique des pompier .....
 
 */
-public  class Test6 {
+public  class Simul {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
@@ -108,8 +108,15 @@ class Simulateur implements Simulable {
     public void next() {
 
         incrementeDate(); 
-        // La version optimisés
+
+        /* La version optimisés */
+
         this.chef.Simulationopt(getDateSimulation());
+
+        /* la version de base */
+        
+        //this.chef.Simulationbas(getDateSimulation());
+
         if(simulationTerminee()){
           gui.addGraphicalElement(new Text(box.getX(), box.getY()-box_height/2- dec_text_y , Color.decode("#FFFFFF"), "FIN SIMULATION EN : "+getDateSimulation()+" pas !"));
           this.dateSimulation --;

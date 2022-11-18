@@ -17,7 +17,7 @@
 
 map ?= carteSujet.map
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier testInvader testLecture TestLecteurDonnees Test1 Test2 Test3 Test4 Test5 
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier testInvader testLecture TestLecteurDonnees Test1 Test2  SimulBas  Simul 
 
 
 testInvader:
@@ -32,14 +32,11 @@ Test2:
 Test3:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test3.java
 
-Test4:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test4.java
+SimulBas:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/SimulBas.java
 
-Test5:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test5.java
-
-Test6:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test6.java
+Simul:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Simul.java
 
 testLecture:
 	javac -d bin -sourcepath src src/TestLecteurDonnees.java
@@ -96,16 +93,11 @@ exeTest1:
 exeTest2:
 	java -classpath bin:bin/gui.jar Test2 cartes/carteSujet.map
 
-exeSimulBasicV01:
-	java -classpath bin:bin/gui.jar Test3 cartes/$(map)
-
 exeSimulBasic:
-	java -classpath bin:bin/gui.jar Test4 cartes/$(map)
+	java -classpath bin:bin/gui.jar SimulBas cartes/$(map)
 
-
-
-exeSimulV01:
-	java -classpath bin:bin/gui.jar Test5 cartes/$(map)
+exeSimul:
+	java -classpath bin:bin/gui.jar Simul cartes/$(map)
 
 
 
