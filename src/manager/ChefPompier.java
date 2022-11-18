@@ -69,7 +69,8 @@ Fills all the linked lists given as attributes
 /**
 Called every date to fill the given events
 Version optimised 
- */public void SimulationV04(long date){
+ */
+ public void Simulationopt(long date){
     long k = date +1;
     LinkedList<Direction> listeDirection=null;
     int courtDistance = Integer.MAX_VALUE;
@@ -119,7 +120,7 @@ Version optimised
 Called every date to fill the given events
 Version not yet optimised V01
  */
-  public void SimulationV01(long date){
+  public void Simulationbas(long date){
     long k = date +1;
     for(Graph graphs : listeGraph){
         if(graphs.getRobot().getIsLibre() && graphs.getRobot().getCapActuelle() == 0){

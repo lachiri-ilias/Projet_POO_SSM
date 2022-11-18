@@ -15,7 +15,9 @@
 #   -classpath : repertoire dans lequel sont cherches les .class deja compiles
 #   -sourcepath : repertoire dans lequel sont cherches les .java (dependances)
 
-all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier Test5  testInvader testLecture  TestLecteurDonnees #Test4 Test6
+map ?= carteSujet.map
+
+all: Carte Case SaveDonnees Robot DonneesSimulation Incendie Graph Dijkstra ChefPompier testInvader testLecture TestLecteurDonnees Test1 Test2 Test3 Test4 Test5 
 
 
 testInvader:
@@ -24,11 +26,17 @@ testInvader:
 Test1:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test1.java
 
-Test5:
-	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test5.java
+Test2:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test2.java
+
+Test3:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test3.java
 
 Test4:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test4.java
+
+Test5:
+	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test5.java
 
 Test6:
 	javac -d bin -classpath bin/gui.jar -sourcepath src src/Test6.java
@@ -77,26 +85,29 @@ exeInvader:
 		java -classpath bin:bin/gui.jar TestInvader
 
 exeLecture:
-	java -classpath bin TestLecteurDonnees cartes/carteSujet.map
+	java -classpath bin TestLecteurDonnees cartes/$(map)
 
 exeSave:
-	java -classpath bin TestSaveDonnees cartes/carteSujet.map
+	java -classpath bin TestSaveDonnees cartes/$(map)
 
 exeTest1:
 	java -classpath bin:bin/gui.jar Test1 cartes/carteSujet.map
 
-exeTest5:
-	java -classpath bin:bin/gui.jar Test5 cartes/desertOfDeath-20x20.map
+exeTest2:
+	java -classpath bin:bin/gui.jar Test2 cartes/carteSujet.map
 
-exeTest4:
-#java -classpath bin:bin/gui.jar Test4 cartes/spiralOfMadness-50x50.map
-#java -classpath bin:bin/gui.jar Test4 cartes/mushroomOfHell-20x20.map
-#java -classpath bin:bin/gui.jar Test4 cartes/desertOfDeath-20x20.map
-	java -classpath bin:bin/gui.jar Test4 cartes/carteSujet.map
+exeSimulBasicV01:
+	java -classpath bin:bin/gui.jar Test3 cartes/$(map)
 
-exeTest6:
-	java -classpath bin:bin/gui.jar Test6 cartes/carteSujet.map
-#java -classpath bin:bin/gui.jar Test5 cartes/mushroomOfHell-20x20.map
+exeSimulBasic:
+	java -classpath bin:bin/gui.jar Test4 cartes/$(map)
+
+
+
+exeSimulV01:
+	java -classpath bin:bin/gui.jar Test5 cartes/$(map)
+
+
 
 
 clean:

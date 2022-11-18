@@ -75,7 +75,7 @@ class Simulateurr implements Simulable {
     public void next() {
         incrementeDate();
         // c'est la version de base non optimisé 
-        this.chef.SimulationV01(getDateSimulation()); 
+        this.chef.Simulationbas(getDateSimulation()); 
         if(simulationTerminee()){
           System.out.println("Pas d'event a lancer FFIIINNN \n");
         }

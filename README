@@ -2,6 +2,7 @@ Merciiii pour le temps que vous allez consacrer à corriger notre projet. :) :) 
 ============================
 PHELMA & Ensimag 2A POO - TP 2022/23
 ============================
+
 Pour compiler : 
   Au terminal => 
               root@root : cd projet_poo_g25    (repertoire du Makefile)
@@ -9,18 +10,19 @@ Pour compiler :
               root@root : make exeSimul       (pour lancer la simulattion avec tout les optimisation & 
                                                 affichage graphique avancé)
 
-
-              root@root : make exeSimulg        (pour lancer la simulation avec affichage graphique optimisé & 
-                                                strategie    elementaire)
               root@root : make exeSimulV01      (pour lancer la simulation avec affichage graphique optimisé & 
                                                 strategie    elementaire)
               root@root : make exeSimulBasic    (pour lancer la simulattion avec tout les optimisation & affichage basique)
               root@root : make exeSimulBasicV01 (pour lancer la simulation avec affichage basique & strategie elementaire)
-              root@root : make exeTest1         (pour simuler le premier scenario -voir rapport-)
-              root@root : make exeTest2         (pour simuler le deuxieme scenario -voir rapport-)
-
+              root@root : make exeTest1         (pour simuler le premier scenario -voir rapport- que pour la carte test)
+              root@root : make exeTest2         (pour simuler le deuxieme scenario -voir rapport- que pour la carte test)
 
               root@root : make clean            (pour enlever les fichier .bin de compilation)
+
+
+Rq : Pour par defaut c'est la carte Test qui est lancé, pour tester les autres carte il suffit de d'ajouter à la commande make => map=nom_de_la_carte.map 
+
+Par exemple :  make exeSimul map=mushroomOfHell-20x20.map
 
 
 ============================
