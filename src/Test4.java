@@ -113,7 +113,6 @@ class Simulateurr implements Simulable {
        gui.reset();
 
       try {
-        System.out.println("[restart] fichier : "+fichier+"\n");
         DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
         this.chef = new ChefPompier(dataNew);
         this.chef.setListeRobot(dataNew.getListeRobot());
@@ -170,7 +169,7 @@ class Simulateurr implements Simulable {
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              String s = robots.getRobotType() + " : capacite reservoire = "+ robots.getCapActuelle();
+              String s = robots.getRobotType() + " : capacite reservoir = "+ robots.getCapActuelle();
               gui.addGraphicalElement(new Text(1500, 15*t, Color.decode("#FFFFFF"), s));
               t ++;
         }

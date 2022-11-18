@@ -2,7 +2,6 @@ package evenement;
 import io.*;
 import robot.*;
 import plan.*;
-import manager.*;
 
 
 public class Deplacer_Robot extends Evenement{

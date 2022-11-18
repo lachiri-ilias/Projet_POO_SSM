@@ -3,7 +3,6 @@ package donnees;
 import robot.*;
 import plan.*;
 import incendie.*;
-import java.util.*;
 import java.util.LinkedList;
 
 public class DonneesSimulation {

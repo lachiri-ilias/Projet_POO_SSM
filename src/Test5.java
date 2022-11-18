@@ -108,7 +108,8 @@ class Simulateur implements Simulable {
     public void next() {
 
         incrementeDate();
-        this.chef.SimulationV04(getDateSimulation());
+        // la version de base
+        this.chef.SimulationV01(getDateSimulation());
         if(simulationTerminee()){
           gui.addGraphicalElement(new Text(box.getX(), box.getY()-box_height/2- dec_text_y , Color.decode("#FFFFFF"), "FIN SIMULATION EN : "+getDateSimulation()+" pas !"));
           this.dateSimulation --;

@@ -1,6 +1,5 @@
 package robot;
 
-import io.Direction;
 import io.NatureTerrain;
 import plan.*;
 

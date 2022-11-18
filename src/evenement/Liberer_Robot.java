@@ -1,8 +1,6 @@
 package evenement;
 
-import io.Direction;
 import robot.*;
-import plan.*;
 
 
 public class Liberer_Robot extends Evenement{

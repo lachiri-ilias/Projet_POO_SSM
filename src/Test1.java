@@ -1,7 +1,5 @@
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
 
 import gui.GUISimulator;
 import gui.Rectangle;
@@ -9,7 +7,7 @@ import gui.Simulable;
 import gui.Text;
 import gui.ImageElement;
 
-import manager.*;
+
 import robot.*;
 import plan.*;
 import io.*;
@@ -18,7 +16,6 @@ import evenement.*;
 import incendie.*;
 
 import java.io.*;
-import java.util.*;
 import java.util.LinkedList;
 import java.util.zip.DataFormatException;
 
@@ -35,42 +32,21 @@ public class Test1 {
         }
         
         try {
+          String fichier = args[0];
           DonneesSimulation data = new SaveDonnees().creeDonnees(args[0]);
           int factor = data.getCarte().getTailleCases();
           int X = data.getCarte().getNbColonnes() * factor;
           int Y = data.getCarte().getNbLignes() * factor;
           GUISimulator gui = new GUISimulator(X, Y, Color.BLACK);
-          Simulateurr Simulateurr = new Simulateurr(gui, data, factor);
+          Simulateurr Simulateurr = new Simulateurr(gui, data, factor, fichier);
 
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),1,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),2,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),3,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),4,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),5,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),7,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),8,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),9,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),data.getListeIncendie().get(0),10,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),14,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),15,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),16,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.OUEST,data.getListeRobot().get(0),17,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),18,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),19,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),20,data.getCarte()));
-         
-          Simulateurr.ajouteEvenement(new Remplir_Reservoir(data.getListeRobot().get(0),21,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),22,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),23,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.SUD,data.getListeRobot().get(0),24,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),25,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),27,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),28,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),29,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.EST,data.getListeRobot().get(0),30,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),31,data.getCarte()));
-          Simulateurr.ajouteEvenement(new Eteindre_Incendie(data.getListeRobot().get(0),data.getListeIncendie(),data.getListeIncendie().get(1),33,data.getCarte()));
-
+          
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),2,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),3,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),4,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),5,data.getCarte()));
+          Simulateurr.ajouteEvenement(new Deplacer_Robot(Direction.NORD,data.getListeRobot().get(0),6,data.getCarte()));
+          
         /*  FIN DE SIMULATION DONNées */ 
         } catch (FileNotFoundException e) {
             System.out.println("fichier " + args[0] + " inconnu ou illisible");
@@ -90,17 +66,17 @@ class Simulateurr implements Simulable {
     private LinkedList<Evenement> listeEvenement;
     private int factor;
     private long dateSimulation;
-    private int x_drone;
-    private int y_drone;
+    private String fichier;
 
-    public Simulateurr(GUISimulator gui, DonneesSimulation data, int f) {
+    public Simulateurr(GUISimulator gui, DonneesSimulation data, int f, String fichier) {
         this.factor = f;
         this.gui = gui;
         this.carte = data.getCarte();
         this.listeRobot = data.getListeRobot();
         this.listeIncendie = data.getListeIncendie();
         this.listeEvenement = new LinkedList<Evenement>();
-        gui.setSimulable(this);				// association a la gui!
+        this.fichier = fichier;
+        gui.setSimulable(this);	
         draw();
     }
 
@@ -124,7 +100,6 @@ class Simulateurr implements Simulable {
     @Override
     public void next() {
         incrementeDate();
-         System.out.println(" la liste est :  "+ this.listeEvenement+"\n");
         if(simulationTerminee()){
           System.out.println("Pas d'event a lancer FFIIINNN \n");
         }
@@ -132,7 +107,6 @@ class Simulateurr implements Simulable {
           int size_liste = getListeEvenements().size();
           for(int k=0;k<size_liste;k++){
              if(getListeEvenements().get(k).getDate()==getDateSimulation()){
-                System.out.println("Execution\n");
                 getListeEvenements().get(k).execute(getDateSimulation());
                 if(getListeEvenements().get(k).getisExecuted()){
                   getListeEvenements().remove(getListeEvenements().get(k));
@@ -157,7 +131,7 @@ class Simulateurr implements Simulable {
     }
     
     private void draw() {
-         gui.reset();	// clear the window
+         gui.reset();
         for(int i=0; i<this.getCarte().getNbLignes();i++){
           for(int j=0; j<this.getCarte().getNbColonnes();j++){
             switch(this.getCarte().getCase(i,j).getNature()){
@@ -188,15 +162,34 @@ class Simulateurr implements Simulable {
                   case "R_Roue" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_roue.png",factor,factor,gui));break;
                   case "R_Chenille" :  gui.addGraphicalElement(new ImageElement(robots.getPosition().getColonne()*factor,robots.getPosition().getLigne()*factor,"image/r_chenille.png",factor,factor,gui));break;
               }
-              String s = robots.getRobotType() + " : capacite reservoire = "+ robots.getCapActuelle();
+              String s = robots.getRobotType() + " : capacite reservoir = "+ robots.getCapActuelle();
               gui.addGraphicalElement(new Text(5*factor, 10*t, Color.decode("#FFFFFF"), s));
               t ++;
         }
     }
 
+    private void initDraw(){
+      for(int i=0; i<this.getCarte().getNbLignes();i++){
+        for(int j=0; j<this.getCarte().getNbColonnes();j++){
+          this.getCarte().getListToDraw().add(this.getCarte().getCase(i,j));
+        }
+      }
+      draw();
+    }
+
     @Override
     public void restart() {
-      // TODO Auto-generated method stub
-      
+      gui.reset();
+      try {
+        DonneesSimulation dataNew = new SaveDonnees().creeDonnees(fichier);
+        this.listeRobot = dataNew.getListeRobot();
+        this.listeIncendie = dataNew.getListeIncendie();
+        this.listeEvenement = new LinkedList<Evenement>();
+      } catch (FileNotFoundException e) {
+          System.out.println("fichier " + fichier + " inconnu ou illisible");
+      } catch (DataFormatException e) {
+          System.out.println("\n\t**format du fichier " + fichier + " invalide: " + e.getMessage());
+      }
+      initDraw();
     }
 }

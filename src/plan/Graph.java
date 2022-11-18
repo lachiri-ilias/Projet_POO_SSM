@@ -1,8 +1,6 @@
 package plan;
 
-import java.util.*;
 import robot.*;
-import io.*;
 
 
 public class Graph{

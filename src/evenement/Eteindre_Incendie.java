@@ -1,10 +1,8 @@
 package evenement;
 
-import io.Direction;
 import robot.*;
 import plan.*;
 import incendie.*;
-import java.util.List;
 import java.util.LinkedList;
 
 public class Eteindre_Incendie extends Evenement{
